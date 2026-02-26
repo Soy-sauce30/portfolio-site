@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dad</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0f0f14;
+      --bg-card: #18181f;
+      --border: rgba(255, 255, 255, 0.07);
+      --text: #e4e4e7;
+      --text-muted: #71717a;
+      --accent: #a78bfa;
+      --accent-dim: rgba(167, 139, 250, 0.10);
+      --accent-glow: rgba(167, 139, 250, 0.3);
+      --gold: #fbbf24;
+      --gold-dim: rgba(251, 191, 36, 0.1);
+      --gold-glow: rgba(251, 191, 36, 0.25);
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    ::selection { background: var(--accent-dim); color: var(--accent); }
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
+
+    /* ── Canvas background ── */
+    #canvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── Main layout ── */
+    main {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 4rem 2rem;
+      gap: 3rem;
+    }
+
+    /* ── Back link ── */
+    .back {
+      position: fixed;
+      top: 1.5rem;
+      left: 1.75rem;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: color 0.2s;
+      z-index: 10;
+    }
+    .back:hover { color: var(--text); }
+    .back svg { width: 14px; height: 14px; }
+
+    /* ── Crown ── */
+    .crown-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      animation: fadeDown 0.6s ease both;
+    }
+
+    .crown {
+      font-size: 3.5rem;
+      filter: drop-shadow(0 0 18px var(--gold-glow));
+      animation: float 4s ease-in-out infinite;
+    }
+
+    .crown-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      opacity: 0.7;
+    }
+
+    /* ── Hero text ── */
+    .hero {
+      text-align: center;
+      animation: fadeDown 0.6s 0.1s ease both;
+    }
+
+    .hero h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(3rem, 10vw, 6rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      background: linear-gradient(135deg, #e4e4e7 0%, var(--accent) 50%, var(--gold) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero h1 span {
+      display: block;
+      font-size: 0.38em;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      -webkit-text-fill-color: var(--text-muted);
+      margin-top: 0.4em;
+    }
+
+    /* ── Stats row ── */
+    .stats {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      animation: fadeUp 0.6s 0.2s ease both;
+    }
+
+    .stat {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.25rem 1.75rem;
+      text-align: center;
+      min-width: 110px;
+      transition: border-color 0.2s, transform 0.2s;
+      cursor: default;
+    }
+
+    .stat:hover {
+      border-color: var(--accent-glow);
+      transform: translateY(-2px);
+    }
+
+    .stat-num {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--accent);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-top: 0.4rem;
+    }
+
+    /* ── Quote card ── */
+    .quote-card {
+      max-width: 560px;
+      width: 100%;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2.25rem 2.5rem;
+      position: relative;
+      overflow: hidden;
+      animation: fadeUp 0.6s 0.3s ease both;
+      transition: border-color 0.3s;
+    }
+
+    .quote-card:hover {
+      border-color: rgba(167,139,250,0.2);
+    }
+
+    .quote-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--gold), var(--accent));
+      background-size: 200% 100%;
+      animation: shimmer 3s linear infinite;
+    }
+
+    .quote-mark {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 5rem;
+      line-height: 0.5;
+      color: var(--accent);
+      opacity: 0.18;
+      position: absolute;
+      top: 1.5rem;
+      left: 1.75rem;
+      pointer-events: none;
+    }
+
+    .quote-text {
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: var(--text-muted);
+      position: relative;
+      z-index: 1;
+      font-style: italic;
+    }
+
+    .quote-text strong {
+      color: var(--text);
+      font-style: normal;
+      font-weight: 500;
+    }
+
+    /* ── Traits grid ── */
+    .traits {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.875rem;
+      max-width: 560px;
+      width: 100%;
+      animation: fadeUp 0.6s 0.4s ease both;
+    }
+
+    .trait {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      transition: border-color 0.2s, transform 0.2s;
+      cursor: default;
+    }
+
+    .trait:hover {
+      border-color: var(--accent-glow);
+      transform: translateY(-1px);
+    }
+
+    .trait-icon { font-size: 1.2rem; }
+
+    .trait-name {
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    /* ── CTA ── */
+    .cta {
+      animation: fadeUp 0.6s 0.5s ease both;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.8rem 2rem;
+      border-radius: 8px;
+      font-weight: 500;
+      font-size: 0.875rem;
+      text-decoration: none;
+      background: var(--accent);
+      color: #0f0f14;
+      box-shadow: 0 2px 20px var(--accent-glow);
+      transition: all 0.2s;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 28px var(--accent-glow);
+    }
+
+    /* ── Animations ── */
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-10px); }
+    }
+
+    @keyframes shimmer {
+      0%   { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 600px) {
+      .traits { grid-template-columns: repeat(2, 1fr); }
+      .quote-card { padding: 1.75rem 1.5rem; }
+      .stats { gap: 0.875rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="canvas"></canvas>
+
+  <a href="/" class="back">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="15 18 9 12 15 6"/>
+    </svg>
+    Back
+  </a>
+
+  <main>
+
+    <div class="crown-wrap">
+      <div class="crown">👑</div>
+      <div class="crown-label">World's Greatest</div>
+    </div>
+
+    <div class="hero">
+      <h1>
+        Dad
+        <span>est. forever ago</span>
+      </h1>
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-num" data-target="100">0</div>
+        <div class="stat-label">% Reliable</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num" data-target="∞">0</div>
+        <div class="stat-label">Dad Jokes</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num" data-target="1">#0</div>
+        <div class="stat-label">Overall Rank</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num" data-target="24">0</div>
+        <div class="stat-label">hrs Available</div>
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <div class="quote-mark">"</div>
+      <p class="quote-text">
+        The kind of person who shows up <strong>every single time</strong>,
+        fixes things before you know they're broken,
+        and somehow always knows exactly what to say.
+        Not everyone gets a dad like that —
+        <strong>I got lucky.</strong>
+      </p>
+    </div>
+
+    <div class="traits">
+      <div class="trait">
+        <span class="trait-icon">🔧</span>
+        <span class="trait-name">Fixes everything</span>
+      </div>
+      <div class="trait">
+        <span class="trait-icon">🧠</span>
+        <span class="trait-name">Knows stuff</span>
+      </div>
+      <div class="trait">
+        <span class="trait-icon">😄</span>
+        <span class="trait-name">Endlessly funny</span>
+      </div>
+      <div class="trait">
+        <span class="trait-icon">🏋️</span>
+        <span class="trait-name">Tough as nails</span>
+      </div>
+      <div class="trait">
+        <span class="trait-icon">❤️</span>
+        <span class="trait-name">Big heart</span>
+      </div>
+      <div class="trait">
+        <span class="trait-icon">☕</span>
+        <span class="trait-name">Coffee guy</span>
+      </div>
+    </div>
+
+    <div class="cta">
+      <a href="/" class="btn">
+        ← Back to site
+      </a>
+    </div>
+
+  </main>
+
+  <script>
+    // ── Starfield canvas ──────────────────────────────
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    let W, H, stars = [];
+
+    function resize() {
+      W = canvas.width  = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+    }
+
+    function makeStar() {
+      return {
+        x: Math.random() * W,
+        y: Math.random() * H,
+        r: Math.random() * 1.2 + 0.2,
+        alpha: Math.random() * 0.5 + 0.1,
+        speed: Math.random() * 0.12 + 0.02,
+        drift: (Math.random() - 0.5) * 0.04,
+      };
+    }
+
+    function initStars() {
+      stars = Array.from({ length: 160 }, makeStar);
+    }
+
+    function drawStars() {
+      ctx.clearRect(0, 0, W, H);
+      for (const s of stars) {
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(167,139,250,${s.alpha})`;
+        ctx.fill();
+
+        s.y -= s.speed;
+        s.x += s.drift;
+        s.alpha += (Math.random() - 0.5) * 0.02;
+        s.alpha = Math.max(0.05, Math.min(0.65, s.alpha));
+
+        if (s.y < -2) {
+          s.y = H + 2;
+          s.x = Math.random() * W;
+        }
+        if (s.x < 0) s.x = W;
+        if (s.x > W) s.x = 0;
+      }
+      requestAnimationFrame(drawStars);
+    }
+
+    resize();
+    initStars();
+    drawStars();
+    window.addEventListener('resize', () => { resize(); initStars(); });
+
+    // ── Counter animation ─────────────────────────────
+    const counters = document.querySelectorAll('.stat-num[data-target]');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const el = entry.target;
+        const target = el.dataset.target;
+        observer.unobserve(el);
+
+        if (target === '∞') {
+          let n = 0;
+          const iv = setInterval(() => {
+            n += 37;
+            el.textContent = n > 999 ? '∞' : n;
+            if (n > 999) clearInterval(iv);
+          }, 30);
+          return;
+        }
+
+        const end = parseInt(target);
+        const prefix = el.dataset.target === '1' ? '#' : '';
+        let current = 0;
+        const step = Math.ceil(end / 40);
+        const iv = setInterval(() => {
+          current = Math.min(current + step, end);
+          el.textContent = prefix + current;
+          if (current >= end) clearInterval(iv);
+        }, 30);
+      });
+    }, { threshold: 0.5 });
+
+    counters.forEach(c => observer.observe(c));
+
+    // Fix the rank counter label
+    document.querySelectorAll('.stat-num').forEach(el => {
+      if (el.dataset.target === '1') el.textContent = '#0';
+    });
+  </script>
+</body>
+</html>

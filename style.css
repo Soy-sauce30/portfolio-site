@@ -2,8 +2,8 @@
    CSS Custom Properties
    ========================================= */
 :root {
-  --bg: #0f0f14;
-  --bg-card: #18181f;
+  --bg: #2a2a2a;
+  --bg-card: rgba(30, 30, 30, 0.85);
   --border: rgba(255, 255, 255, 0.07);
   --text: #e4e4e7;
   --text-muted: #71717a;
@@ -32,6 +32,54 @@ body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   line-height: 1.6;
   overflow-x: hidden;
+  position: relative;
+}
+
+/* Netherite texture + enchant glint */
+body::before,
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Netherite-like noise texture */
+body::before {
+  background:
+    repeating-conic-gradient(#2a2a2a 0% 25%, #252525 0% 50%) 0 0 / 4px 4px,
+    linear-gradient(145deg, #2e2e2e 0%, #1f1f1f 30%, #2b2828 50%, #222 70%, #2a2725 100%);
+  opacity: 1;
+}
+
+/* Enchantment glint sweep */
+body::after {
+  background: linear-gradient(
+    -45deg,
+    transparent 0%,
+    transparent 40%,
+    rgba(120, 80, 200, 0.07) 45%,
+    rgba(100, 60, 180, 0.13) 48%,
+    rgba(140, 100, 220, 0.10) 50%,
+    rgba(100, 60, 180, 0.13) 52%,
+    rgba(120, 80, 200, 0.07) 55%,
+    transparent 60%,
+    transparent 100%
+  );
+  background-size: 400% 400%;
+  animation: enchantGlint 6s ease-in-out infinite;
+}
+
+@keyframes enchantGlint {
+  0%, 100% { background-position: 150% 150%; }
+  50% { background-position: -50% -50%; }
+}
+
+/* Ensure content sits above the background */
+body > * {
+  position: relative;
+  z-index: 1;
 }
 
 ::selection {

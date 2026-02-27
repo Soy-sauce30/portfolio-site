@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,71 +7,62 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="leaderboard.css">
 </head>
 <body>
 
-  <!-- Navigation -->
-  <nav class="nav scrolled">
-    <div class="nav-container">
-      <a href="index.html" class="nav-logo">Sawyer</a>
-      <ul class="nav-links">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="#" class="active">Leaderboard</a></li>
-      </ul>
-    </div>
-  </nav>
+  <div class="page-wrap">
 
-  <main class="lb-page">
+    <!-- Top nav -->
+    <header class="top-bar">
+      <a href="index.html" class="top-logo">Sawyer</a>
+      <a href="https://mctiers.com" target="_blank" rel="noopener" class="top-link">MCTiers</a>
+    </header>
 
-    <!-- Gamemode Tabs Bar -->
-    <div class="lb-modes-bar">
-      <div class="lb-modes" id="gamemodeTabs">
-        <button class="lb-mode active" data-mode="overall">
-          <span class="lb-mode-label">Overall</span>
-        </button>
-      </div>
+    <!-- Gamemode tabs -->
+    <div class="tabs-row" id="gamemodeTabs">
+      <button class="tab active" data-mode="overall">Overall</button>
     </div>
 
-    <div class="lb-container">
+    <!-- Main content card (connected to tabs) -->
+    <div class="main-card">
 
-      <!-- Search + filter row -->
-      <div class="lb-toolbar">
-        <div class="lb-tier-filter" id="tierFilter" style="display:none;">
-          <button class="lb-tier-btn active" data-filter="all">All</button>
-          <button class="lb-tier-btn" data-filter="high">High</button>
-          <button class="lb-tier-btn" data-filter="low">Low</button>
+      <!-- Toolbar inside card -->
+      <div class="card-toolbar">
+        <div class="tier-filter" id="tierFilter" style="display:none;">
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="high">High</button>
+          <button class="filter-btn" data-filter="low">Low</button>
         </div>
-        <div class="lb-search">
+        <div class="search-box">
           <input type="text" id="playerSearch" placeholder="Search player..." autocomplete="off">
         </div>
       </div>
 
       <!-- Player search result -->
-      <div class="lb-player-card" id="playerCard" style="display:none;"></div>
+      <div class="player-card" id="playerCard" style="display:none;"></div>
 
-      <!-- Rankings content (tier cards rendered here by JS) -->
-      <div class="lb-content" id="lbContent">
-        <div class="lb-loading" id="loading">Loading...</div>
-        <div class="lb-empty" id="emptyState" style="display:none;">No players found.</div>
-      </div>
-
-      <!-- Pagination -->
-      <div class="lb-pagination" id="pagination" style="display:none;">
-        <button class="lb-page-btn" id="prevBtn">Previous</button>
-        <span class="lb-page-info" id="pageInfo"></span>
-        <button class="lb-page-btn" id="nextBtn">Next</button>
+      <!-- Rankings rendered here -->
+      <div class="rankings" id="rankings">
+        <div class="state-msg" id="loading">Loading...</div>
+        <div class="state-msg" id="emptyState" style="display:none;">No players found.</div>
       </div>
 
     </div>
-  </main>
 
-  <footer class="footer">
-    <div class="container">
-      <p>Data from <a href="https://mctiers.com" target="_blank" rel="noopener" style="color:var(--accent)">MCTiers API</a> &middot; Player heads from <a href="https://crafatar.com" target="_blank" rel="noopener" style="color:var(--accent)">Crafatar</a></p>
+    <!-- Pagination below card -->
+    <div class="page-nav" id="pagination" style="display:none;">
+      <button class="page-btn" id="prevBtn">Previous</button>
+      <span class="page-num" id="pageInfo"></span>
+      <button class="page-btn" id="nextBtn">Next</button>
     </div>
-  </footer>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+      <p>Data from <a href="https://mctiers.com" target="_blank" rel="noopener">MCTiers</a> &middot; Heads from <a href="https://crafatar.com" target="_blank" rel="noopener">Crafatar</a></p>
+    </footer>
+
+  </div>
 
   <script src="leaderboard.js"></script>
 </body>

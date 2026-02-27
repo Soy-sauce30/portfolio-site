@@ -2,13 +2,13 @@
    MCTiers Leaderboard
    ========================================= */
 const API = 'https://mctiers.com/api/v2';
-const CRAFATAR = 'https://crafatar.com/avatars/';
+const HEAD_URL = 'https://crafatar.com/renders/head/';
 const PLAYERDB = 'https://playerdb.co/api/player/minecraft/';
 const PER_PAGE = 25;
 
 let currentMode = 'overall';
 let currentPage = 0;
-let currentTierFilter = 'all'; // 'all', 'high' (1-2), 'low' (3-5)
+let currentTierFilter = 'all'; // 'all', 'high' (pos 0), 'low' (pos 1)
 let gamemodes = {};
 
 const body = document.getElementById('leaderboardBody');
@@ -23,9 +23,6 @@ const tierFilter = document.getElementById('tierFilter');
 const searchInput = document.getElementById('playerSearch');
 const playerCard = document.getElementById('playerCard');
 const table = document.getElementById('leaderboardTable');
-
-const HIGH_TIERS = [1, 2];
-const LOW_TIERS = [3, 4, 5];
 
 /* =========================================
    Init — Load gamemodes then leaderboard
@@ -81,17 +78,14 @@ function updateTierFilterUI() {
     tierFilter.style.display = 'none';
   } else {
     tierFilter.style.display = 'flex';
-    // Reset active button
     tierFilter.querySelectorAll('.lb-tier-btn').forEach(b => {
       b.classList.toggle('active', b.dataset.filter === currentTierFilter);
     });
   }
 }
 
-function getTiersForFilter() {
-  if (currentTierFilter === 'high') return HIGH_TIERS;
-  if (currentTierFilter === 'low') return LOW_TIERS;
-  return [1, 2, 3, 4, 5];
+function playerHead(uuid, size) {
+  return `${HEAD_URL}${uuid}?size=${size}&overlay`;
 }
 
 /* =========================================
@@ -137,7 +131,7 @@ async function loadOverall() {
       <td class="col-rank">${rankBadge(rank)}</td>
       <td class="col-player">
         <div class="player-cell">
-          <img src="${CRAFATAR}${p.uuid}?size=28&overlay" alt="" loading="lazy">
+          <img src="${playerHead(p.uuid, 32)}" alt="${escHtml(p.name)}">
           <span>${escHtml(p.name)}</span>
         </div>
       </td>
@@ -160,37 +154,53 @@ async function loadGamemode(mode) {
 
   updateHeaders(['#', 'Player', 'Region', 'Tier']);
 
-  const visibleTiers = getTiersForFilter();
   let hasAny = false;
+  let rowNum = 0;
 
-  for (const tier of visibleTiers) {
+  // Tiers 1 through 5, each split into High (pos=0) and Low (pos=1)
+  for (let tier = 1; tier <= 5; tier++) {
     const players = tiers[tier];
     if (!players || players.length === 0) continue;
-    hasAny = true;
 
-    // Tier separator
-    const tierLabel = HIGH_TIERS.includes(tier) ? 'High' : 'Low';
-    const sep = document.createElement('tr');
-    sep.innerHTML = `<td colspan="4" class="tier-header"><span>Tier ${tier} — ${tierLabel}</span></td>`;
-    body.appendChild(sep);
+    // Split into high and low
+    const highPlayers = players.filter(p => p.pos === 0);
+    const lowPlayers = players.filter(p => p.pos === 1);
 
-    players.forEach((p, i) => {
-      const row = document.createElement('tr');
-      row.innerHTML = `
-        <td class="col-rank">${from + i + 1}</td>
-        <td class="col-player">
-          <div class="player-cell">
-            <img src="${CRAFATAR}${p.uuid}?size=28&overlay" alt="" loading="lazy">
-            <span>${escHtml(p.name)}</span>
-          </div>
-        </td>
-        <td class="col-region">${escHtml(p.region || '—')}</td>
-        <td class="col-score">Tier ${tier}</td>
-      `;
-      row.style.cursor = 'pointer';
-      row.addEventListener('click', () => searchPlayer(p.name));
-      body.appendChild(row);
-    });
+    const sections = [];
+    if (currentTierFilter === 'all' || currentTierFilter === 'high') {
+      if (highPlayers.length > 0) sections.push({ label: `Tier ${tier} — High`, players: highPlayers });
+    }
+    if (currentTierFilter === 'all' || currentTierFilter === 'low') {
+      if (lowPlayers.length > 0) sections.push({ label: `Tier ${tier} — Low`, players: lowPlayers });
+    }
+
+    for (const section of sections) {
+      hasAny = true;
+
+      // Section header
+      const sep = document.createElement('tr');
+      sep.innerHTML = `<td colspan="4" class="tier-header"><span>${section.label}</span></td>`;
+      body.appendChild(sep);
+
+      section.players.forEach((p) => {
+        rowNum++;
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td class="col-rank">${rowNum}</td>
+          <td class="col-player">
+            <div class="player-cell">
+              <img src="${playerHead(p.uuid, 32)}" alt="${escHtml(p.name)}">
+              <span>${escHtml(p.name)}</span>
+            </div>
+          </td>
+          <td class="col-region">${escHtml(p.region || '—')}</td>
+          <td class="col-score">${section.label}</td>
+        `;
+        row.style.cursor = 'pointer';
+        row.addEventListener('click', () => searchPlayer(p.name));
+        body.appendChild(row);
+      });
+    }
   }
 
   if (!hasAny) showEmpty();
@@ -242,15 +252,15 @@ async function searchPlayer(name) {
     let rankingsHtml = '';
     Object.entries(rankings).forEach(([mode, data]) => {
       const modeName = gamemodes[mode] ? gamemodes[mode].title : mode;
-      const tierLabel = HIGH_TIERS.includes(data.tier) ? 'HT' : 'LT';
-      rankingsHtml += `<span class="lb-player-rank">${escHtml(modeName)}: Tier ${data.tier} (${tierLabel})</span>`;
+      const posLabel = data.pos === 0 ? 'High' : 'Low';
+      rankingsHtml += `<span class="lb-player-rank">${escHtml(modeName)}: T${data.tier} ${posLabel}</span>`;
     });
 
     playerCard.innerHTML = `
-      <img src="${CRAFATAR}${uuid}?size=64&overlay" alt="${escHtml(username)}">
+      <img src="${playerHead(uuid, 64)}" alt="${escHtml(username)}">
       <div class="lb-player-info">
         <h3>${escHtml(username)}</h3>
-        <p>${points !== null ? `${points.toLocaleString()} points` : 'No MCTiers data'}${overallRank ? ` · #${overallRank} overall` : ''}</p>
+        <p>${points !== null ? `${points.toLocaleString()} points` : 'No MCTiers data'}${overallRank ? ` &middot; #${overallRank} overall` : ''}</p>
         ${rankingsHtml ? `<div class="lb-player-rankings">${rankingsHtml}</div>` : ''}
       </div>
       <button class="close-btn" onclick="this.parentElement.style.display='none'">&times;</button>

@@ -8,10 +8,10 @@ const PER_PAGE = 25;
 
 let currentMode = 'overall';
 let currentPage = 0;
-let currentTierFilter = 'all'; // 'all', 'high' (pos 0), 'low' (pos 1)
+let currentTierFilter = 'all';
 let gamemodes = {};
 
-const body = document.getElementById('leaderboardBody');
+const content = document.getElementById('lbContent');
 const loading = document.getElementById('loading');
 const emptyState = document.getElementById('emptyState');
 const pagination = document.getElementById('pagination');
@@ -22,39 +22,40 @@ const tabs = document.getElementById('gamemodeTabs');
 const tierFilter = document.getElementById('tierFilter');
 const searchInput = document.getElementById('playerSearch');
 const playerCard = document.getElementById('playerCard');
-const table = document.getElementById('leaderboardTable');
+
+function playerHead(uuid, size) {
+  return `${HEAD_URL}${uuid}?size=${size}&overlay`;
+}
 
 /* =========================================
-   Init — Load gamemodes then leaderboard
+   Init
    ========================================= */
 async function init() {
   try {
     const res = await fetch(`${API}/mode/list`);
-    if (!res.ok) throw new Error('Failed to fetch gamemodes');
+    if (!res.ok) throw new Error();
     gamemodes = await res.json();
 
-    // Build gamemode tabs
     Object.entries(gamemodes).forEach(([slug, mode]) => {
       const btn = document.createElement('button');
-      btn.className = 'lb-tab';
+      btn.className = 'lb-mode';
       btn.dataset.mode = slug;
-      btn.textContent = mode.title;
+      btn.innerHTML = `<span class="lb-mode-label">${escHtml(mode.title)}</span>`;
       tabs.appendChild(btn);
     });
 
-    // Gamemode tab clicks
     tabs.addEventListener('click', (e) => {
-      if (!e.target.classList.contains('lb-tab')) return;
-      tabs.querySelectorAll('.lb-tab').forEach(t => t.classList.remove('active'));
-      e.target.classList.add('active');
-      currentMode = e.target.dataset.mode;
+      const btn = e.target.closest('.lb-mode');
+      if (!btn) return;
+      tabs.querySelectorAll('.lb-mode').forEach(t => t.classList.remove('active'));
+      btn.classList.add('active');
+      currentMode = btn.dataset.mode;
       currentPage = 0;
       currentTierFilter = 'all';
       updateTierFilterUI();
       loadLeaderboard();
     });
 
-    // Tier sub-filter clicks
     tierFilter.addEventListener('click', (e) => {
       if (!e.target.classList.contains('lb-tier-btn')) return;
       tierFilter.querySelectorAll('.lb-tier-btn').forEach(b => b.classList.remove('active'));
@@ -71,7 +72,7 @@ async function init() {
 }
 
 /* =========================================
-   Tier Filter Visibility
+   Tier Filter
    ========================================= */
 function updateTierFilterUI() {
   if (currentMode === 'overall') {
@@ -84,17 +85,13 @@ function updateTierFilterUI() {
   }
 }
 
-function playerHead(uuid, size) {
-  return `${HEAD_URL}${uuid}?size=${size}&overlay`;
-}
-
 /* =========================================
-   Load Leaderboard Data
+   Load Leaderboard
    ========================================= */
 async function loadLeaderboard() {
   showLoading();
   hideEmpty();
-  body.innerHTML = '';
+  clearContent();
   updateTierFilterUI();
 
   try {
@@ -110,13 +107,14 @@ async function loadLeaderboard() {
   hideLoading();
 }
 
+/* =========================================
+   Overall Rankings
+   ========================================= */
 async function loadOverall() {
   const from = currentPage * PER_PAGE;
   const res = await fetch(`${API}/mode/overall?count=${PER_PAGE}&from=${from}`);
   if (!res.ok) throw new Error();
   const players = await res.json();
-
-  updateHeaders(['#', 'Player', 'Region', 'Points']);
 
   if (players.length === 0) {
     showEmpty();
@@ -124,87 +122,117 @@ async function loadOverall() {
     return;
   }
 
+  const card = document.createElement('div');
+  card.className = 'overall-card';
+
+  // Header
+  const header = document.createElement('div');
+  header.className = 'overall-header';
+  header.innerHTML = '<span>#</span><span>Player</span><span>Region</span><span>Points</span>';
+  card.appendChild(header);
+
+  // Rows
   players.forEach((p, i) => {
     const rank = from + i + 1;
-    const row = document.createElement('tr');
+    const row = document.createElement('div');
+    row.className = 'overall-row';
     row.innerHTML = `
-      <td class="col-rank">${rankBadge(rank)}</td>
-      <td class="col-player">
-        <div class="player-cell">
-          <img src="${playerHead(p.uuid, 32)}" alt="${escHtml(p.name)}">
-          <span>${escHtml(p.name)}</span>
-        </div>
-      </td>
-      <td class="col-region">${escHtml(p.region || '—')}</td>
-      <td class="col-score">${p.points.toLocaleString()}</td>
+      <div class="overall-rank">${overallRankBadge(rank)}</div>
+      <div class="overall-player">
+        <img src="${playerHead(p.uuid, 32)}" alt="${escHtml(p.name)}" loading="lazy">
+        <span>${escHtml(p.name)}</span>
+      </div>
+      <div class="overall-region"><span>${escHtml(p.region || '—')}</span></div>
+      <div class="overall-points">${p.points.toLocaleString()}</div>
     `;
-    row.style.cursor = 'pointer';
     row.addEventListener('click', () => searchPlayer(p.name));
-    body.appendChild(row);
+    card.appendChild(row);
   });
 
+  content.appendChild(card);
   showPagination(players.length);
 }
 
+function overallRankBadge(rank) {
+  if (rank === 1) return '<span class="rank-gold">1</span>';
+  if (rank === 2) return '<span class="rank-silver">2</span>';
+  if (rank === 3) return '<span class="rank-bronze">3</span>';
+  return `<span class="rank-default">${rank}</span>`;
+}
+
+/* =========================================
+   Gamemode Rankings (tier cards)
+   ========================================= */
 async function loadGamemode(mode) {
   const from = currentPage * PER_PAGE;
   const res = await fetch(`${API}/mode/${mode}?count=${PER_PAGE}&from=${from}`);
   if (!res.ok) throw new Error();
   const tiers = await res.json();
 
-  updateHeaders(['#', 'Player', 'Region', 'Tier']);
-
   let hasAny = false;
-  let rowNum = 0;
 
-  // Tiers 1 through 5, each split into High (pos=0) and Low (pos=1)
   for (let tier = 1; tier <= 5; tier++) {
     const players = tiers[tier];
     if (!players || players.length === 0) continue;
 
-    // Split into high and low
     const highPlayers = players.filter(p => p.pos === 0);
     const lowPlayers = players.filter(p => p.pos === 1);
 
+    // Build sections based on filter
     const sections = [];
     if (currentTierFilter === 'all' || currentTierFilter === 'high') {
-      if (highPlayers.length > 0) sections.push({ label: `Tier ${tier} — High`, players: highPlayers });
+      if (highPlayers.length > 0) sections.push({ sub: 'High', players: highPlayers });
     }
     if (currentTierFilter === 'all' || currentTierFilter === 'low') {
-      if (lowPlayers.length > 0) sections.push({ label: `Tier ${tier} — Low`, players: lowPlayers });
+      if (lowPlayers.length > 0) sections.push({ sub: 'Low', players: lowPlayers });
     }
 
     for (const section of sections) {
       hasAny = true;
-
-      // Section header
-      const sep = document.createElement('tr');
-      sep.innerHTML = `<td colspan="4" class="tier-header"><span>${section.label}</span></td>`;
-      body.appendChild(sep);
-
-      section.players.forEach((p) => {
-        rowNum++;
-        const row = document.createElement('tr');
-        row.innerHTML = `
-          <td class="col-rank">${rowNum}</td>
-          <td class="col-player">
-            <div class="player-cell">
-              <img src="${playerHead(p.uuid, 32)}" alt="${escHtml(p.name)}">
-              <span>${escHtml(p.name)}</span>
-            </div>
-          </td>
-          <td class="col-region">${escHtml(p.region || '—')}</td>
-          <td class="col-score">${section.label}</td>
-        `;
-        row.style.cursor = 'pointer';
-        row.addEventListener('click', () => searchPlayer(p.name));
-        body.appendChild(row);
-      });
+      const card = buildTierCard(tier, section.sub, section.players, from);
+      content.appendChild(card);
     }
   }
 
   if (!hasAny) showEmpty();
   showPagination(hasAny ? PER_PAGE : 0);
+}
+
+function buildTierCard(tier, sub, players, from) {
+  const card = document.createElement('div');
+  card.className = 'tier-card';
+
+  // Header
+  const header = document.createElement('div');
+  header.className = 'tier-card-header';
+  header.innerHTML = `
+    <span class="tier-badge tier-${tier}">T${tier}</span>
+    <span class="tier-card-title">Tier ${tier} — ${sub}</span>
+    <span class="tier-card-subtitle">${players.length} player${players.length !== 1 ? 's' : ''}</span>
+  `;
+  card.appendChild(header);
+
+  // Player rows
+  const list = document.createElement('div');
+  list.className = 'tier-players';
+
+  players.forEach((p, i) => {
+    const row = document.createElement('div');
+    row.className = 'player-row';
+    const hlClass = sub === 'High' ? 'hl-high' : 'hl-low';
+    row.innerHTML = `
+      <span class="player-rank">${from + i + 1}</span>
+      <img class="player-head" src="${playerHead(p.uuid, 32)}" alt="${escHtml(p.name)}" loading="lazy">
+      <span class="player-name">${escHtml(p.name)}</span>
+      <span class="player-region">${escHtml(p.region || '—')}</span>
+      <span class="player-hl ${hlClass}">${sub}</span>
+    `;
+    row.addEventListener('click', () => searchPlayer(p.name));
+    list.appendChild(row);
+  });
+
+  card.appendChild(list);
+  return card;
 }
 
 /* =========================================
@@ -225,14 +253,12 @@ async function searchPlayer(name) {
   playerCard.style.display = 'none';
 
   try {
-    // Get UUID from PlayerDB
     const dbRes = await fetch(`${PLAYERDB}${encodeURIComponent(name)}`);
     if (!dbRes.ok) throw new Error('Player not found');
     const dbData = await dbRes.json();
     const uuid = dbData.data.player.id;
     const username = dbData.data.player.username;
 
-    // Get MCTiers profile + rankings
     let rankings = {};
     let profile = null;
     try {
@@ -242,9 +268,7 @@ async function searchPlayer(name) {
       ]);
       if (profRes.ok) profile = await profRes.json();
       if (rankRes.ok) rankings = await rankRes.json();
-    } catch (e) {
-      // MCTiers data optional
-    }
+    } catch (e) { /* MCTiers data optional */ }
 
     const points = profile ? profile.points : null;
     const overallRank = profile ? profile.overall : null;
@@ -252,8 +276,10 @@ async function searchPlayer(name) {
     let rankingsHtml = '';
     Object.entries(rankings).forEach(([mode, data]) => {
       const modeName = gamemodes[mode] ? gamemodes[mode].title : mode;
-      const posLabel = data.pos === 0 ? 'High' : 'Low';
-      rankingsHtml += `<span class="lb-player-rank">${escHtml(modeName)}: T${data.tier} ${posLabel}</span>`;
+      const isHigh = data.pos === 0;
+      const cls = isHigh ? 'ht' : 'lt';
+      const label = isHigh ? 'High' : 'Low';
+      rankingsHtml += `<span class="lb-player-rank ${cls}">${escHtml(modeName)}: T${data.tier} ${label}</span>`;
     });
 
     playerCard.innerHTML = `
@@ -282,10 +308,7 @@ async function searchPlayer(name) {
    Pagination
    ========================================= */
 prevBtn.addEventListener('click', () => {
-  if (currentPage > 0) {
-    currentPage--;
-    loadLeaderboard();
-  }
+  if (currentPage > 0) { currentPage--; loadLeaderboard(); }
 });
 
 nextBtn.addEventListener('click', () => {
@@ -300,25 +323,16 @@ function showPagination(count) {
   pageInfo.textContent = `Page ${currentPage + 1}`;
 }
 
-function hidePagination() {
-  pagination.style.display = 'none';
-}
+function hidePagination() { pagination.style.display = 'none'; }
 
 /* =========================================
    Helpers
    ========================================= */
-function updateHeaders(labels) {
-  const ths = table.querySelectorAll('thead th');
-  labels.forEach((label, i) => {
-    if (ths[i]) ths[i].textContent = label;
+function clearContent() {
+  // Keep loading/empty elements, remove everything else
+  Array.from(content.children).forEach(el => {
+    if (el !== loading && el !== emptyState) el.remove();
   });
-}
-
-function rankBadge(rank) {
-  if (rank <= 3) {
-    return `<span class="rank-badge rank-${rank}">${rank}</span>`;
-  }
-  return rank;
 }
 
 function escHtml(str) {
@@ -327,8 +341,8 @@ function escHtml(str) {
   return div.innerHTML;
 }
 
-function showLoading() { loading.style.display = 'block'; table.style.display = 'none'; }
-function hideLoading() { loading.style.display = 'none'; table.style.display = 'table'; }
+function showLoading() { loading.style.display = 'block'; }
+function hideLoading() { loading.style.display = 'none'; }
 function showEmpty() { emptyState.style.display = 'block'; }
 function hideEmpty() { emptyState.style.display = 'none'; }
 function showError(msg) {

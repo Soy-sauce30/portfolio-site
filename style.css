@@ -2,11 +2,11 @@
    CSS Custom Properties
    ========================================= */
 :root {
-  --bg: #2a2a2a;
-  --bg-card: rgba(30, 30, 30, 0.85);
-  --border: rgba(255, 255, 255, 0.07);
+  --bg: #000000;
+  --bg-card: rgba(25, 18, 40, 0.85);
+  --border: rgba(140, 100, 220, 0.12);
   --text: #e4e4e7;
-  --text-muted: #71717a;
+  --text-muted: #8a8a9a;
   --accent: #a78bfa;
   --accent-dim: rgba(167, 139, 250, 0.12);
   --accent-glow: rgba(167, 139, 250, 0.25);
@@ -48,8 +48,8 @@ body::after {
 /* Netherite-like noise texture */
 body::before {
   background:
-    repeating-conic-gradient(#2a2a2a 0% 25%, #252525 0% 50%) 0 0 / 4px 4px,
-    linear-gradient(145deg, #2e2e2e 0%, #1f1f1f 30%, #2b2828 50%, #222 70%, #2a2725 100%);
+    repeating-conic-gradient(#0a0a0a 0% 25%, #070707 0% 50%) 0 0 / 4px 4px,
+    linear-gradient(145deg, #0c0c0c 0%, #050505 30%, #0a0808 50%, #060606 70%, #080706 100%);
   opacity: 1;
 }
 
@@ -105,7 +105,7 @@ body > * {
 }
 
 .nav.scrolled {
-  background: rgba(15, 15, 20, 0.9);
+  background: rgba(0, 0, 0, 0.92);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);

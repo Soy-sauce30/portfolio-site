@@ -103,6 +103,39 @@
 }
 
 /* =========================================
+   Tier Sub-filter
+   ========================================= */
+.lb-tier-filter {
+  display: flex;
+  gap: 0.35rem;
+  margin-bottom: 1.5rem;
+}
+
+.lb-tier-btn {
+  padding: 0.375rem 0.85rem;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-muted);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.lb-tier-btn:hover {
+  color: var(--text);
+  border-color: var(--accent-glow);
+}
+
+.lb-tier-btn.active {
+  background: var(--accent-dim);
+  color: var(--accent);
+  border-color: var(--accent-glow);
+}
+
+/* =========================================
    Player Search Card
    ========================================= */
 .lb-player-card {

@@ -8,6 +8,7 @@ const PER_PAGE = 25;
 
 let currentMode = 'overall';
 let currentPage = 0;
+let currentTierFilter = 'all'; // 'all', 'high' (1-2), 'low' (3-5)
 let gamemodes = {};
 
 const body = document.getElementById('leaderboardBody');
@@ -18,9 +19,13 @@ const prevBtn = document.getElementById('prevBtn');
 const nextBtn = document.getElementById('nextBtn');
 const pageInfo = document.getElementById('pageInfo');
 const tabs = document.getElementById('gamemodeTabs');
+const tierFilter = document.getElementById('tierFilter');
 const searchInput = document.getElementById('playerSearch');
 const playerCard = document.getElementById('playerCard');
 const table = document.getElementById('leaderboardTable');
+
+const HIGH_TIERS = [1, 2];
+const LOW_TIERS = [3, 4, 5];
 
 /* =========================================
    Init — Load gamemodes then leaderboard
@@ -31,7 +36,7 @@ async function init() {
     if (!res.ok) throw new Error('Failed to fetch gamemodes');
     gamemodes = await res.json();
 
-    // Build tabs
+    // Build gamemode tabs
     Object.entries(gamemodes).forEach(([slug, mode]) => {
       const btn = document.createElement('button');
       btn.className = 'lb-tab';
@@ -40,11 +45,24 @@ async function init() {
       tabs.appendChild(btn);
     });
 
+    // Gamemode tab clicks
     tabs.addEventListener('click', (e) => {
       if (!e.target.classList.contains('lb-tab')) return;
       tabs.querySelectorAll('.lb-tab').forEach(t => t.classList.remove('active'));
       e.target.classList.add('active');
       currentMode = e.target.dataset.mode;
+      currentPage = 0;
+      currentTierFilter = 'all';
+      updateTierFilterUI();
+      loadLeaderboard();
+    });
+
+    // Tier sub-filter clicks
+    tierFilter.addEventListener('click', (e) => {
+      if (!e.target.classList.contains('lb-tier-btn')) return;
+      tierFilter.querySelectorAll('.lb-tier-btn').forEach(b => b.classList.remove('active'));
+      e.target.classList.add('active');
+      currentTierFilter = e.target.dataset.filter;
       currentPage = 0;
       loadLeaderboard();
     });
@@ -56,12 +74,34 @@ async function init() {
 }
 
 /* =========================================
+   Tier Filter Visibility
+   ========================================= */
+function updateTierFilterUI() {
+  if (currentMode === 'overall') {
+    tierFilter.style.display = 'none';
+  } else {
+    tierFilter.style.display = 'flex';
+    // Reset active button
+    tierFilter.querySelectorAll('.lb-tier-btn').forEach(b => {
+      b.classList.toggle('active', b.dataset.filter === currentTierFilter);
+    });
+  }
+}
+
+function getTiersForFilter() {
+  if (currentTierFilter === 'high') return HIGH_TIERS;
+  if (currentTierFilter === 'low') return LOW_TIERS;
+  return [1, 2, 3, 4, 5];
+}
+
+/* =========================================
    Load Leaderboard Data
    ========================================= */
 async function loadLeaderboard() {
   showLoading();
   hideEmpty();
   body.innerHTML = '';
+  updateTierFilterUI();
 
   try {
     if (currentMode === 'overall') {
@@ -82,7 +122,6 @@ async function loadOverall() {
   if (!res.ok) throw new Error();
   const players = await res.json();
 
-  // Update table headers for overall
   updateHeaders(['#', 'Player', 'Region', 'Points']);
 
   if (players.length === 0) {
@@ -119,20 +158,20 @@ async function loadGamemode(mode) {
   if (!res.ok) throw new Error();
   const tiers = await res.json();
 
-  // Update table headers for gamemode
   updateHeaders(['#', 'Player', 'Region', 'Tier']);
 
+  const visibleTiers = getTiersForFilter();
   let hasAny = false;
 
-  // Tiers go from 1 (highest) to 5 (lowest)
-  for (let tier = 1; tier <= 5; tier++) {
+  for (const tier of visibleTiers) {
     const players = tiers[tier];
     if (!players || players.length === 0) continue;
     hasAny = true;
 
     // Tier separator
+    const tierLabel = HIGH_TIERS.includes(tier) ? 'High' : 'Low';
     const sep = document.createElement('tr');
-    sep.innerHTML = `<td colspan="4" class="tier-header"><span>Tier ${tier}</span></td>`;
+    sep.innerHTML = `<td colspan="4" class="tier-header"><span>Tier ${tier} — ${tierLabel}</span></td>`;
     body.appendChild(sep);
 
     players.forEach((p, i) => {
@@ -155,7 +194,6 @@ async function loadGamemode(mode) {
   }
 
   if (!hasAny) showEmpty();
-  // Gamemode view uses tier-based layout, pagination less useful but still shown
   showPagination(hasAny ? PER_PAGE : 0);
 }
 
@@ -204,7 +242,8 @@ async function searchPlayer(name) {
     let rankingsHtml = '';
     Object.entries(rankings).forEach(([mode, data]) => {
       const modeName = gamemodes[mode] ? gamemodes[mode].title : mode;
-      rankingsHtml += `<span class="lb-player-rank">${escHtml(modeName)}: Tier ${data.tier}</span>`;
+      const tierLabel = HIGH_TIERS.includes(data.tier) ? 'HT' : 'LT';
+      rankingsHtml += `<span class="lb-player-rank">${escHtml(modeName)}: Tier ${data.tier} (${tierLabel})</span>`;
     });
 
     playerCard.innerHTML = `

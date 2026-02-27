@@ -1,0 +1,367 @@
+/* =========================================
+   Leaderboard Page
+   ========================================= */
+.lb-page {
+  padding-top: 100px;
+  padding-bottom: 4rem;
+  min-height: 100vh;
+}
+
+.lb-header {
+  margin-bottom: 2.5rem;
+}
+
+.lb-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(1.5rem, 4vw, 2.25rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.5rem;
+}
+
+.lb-subtitle {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.lb-subtitle a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.lb-subtitle a:hover {
+  text-decoration: underline;
+}
+
+/* =========================================
+   Controls (Tabs + Search)
+   ========================================= */
+.lb-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.lb-tabs {
+  display: flex;
+  gap: 0.35rem;
+  overflow-x: auto;
+  padding-bottom: 2px;
+}
+
+.lb-tab {
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-muted);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.lb-tab:hover {
+  color: var(--text);
+  border-color: var(--accent-glow);
+}
+
+.lb-tab.active {
+  background: var(--accent-dim);
+  color: var(--accent);
+  border-color: var(--accent-glow);
+}
+
+.lb-search {
+  position: relative;
+}
+
+.lb-search input {
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  width: 220px;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.lb-search input::placeholder {
+  color: var(--text-muted);
+}
+
+.lb-search input:focus {
+  border-color: var(--accent);
+}
+
+/* =========================================
+   Player Search Card
+   ========================================= */
+.lb-player-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.lb-player-card img {
+  width: 64px;
+  height: 64px;
+  border-radius: 6px;
+  image-rendering: pixelated;
+}
+
+.lb-player-info h3 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.lb-player-info p {
+  color: var(--text-muted);
+  font-size: 0.825rem;
+}
+
+.lb-player-rankings {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.lb-player-rank {
+  font-size: 0.72rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: 4px;
+  background: var(--accent-dim);
+  color: var(--accent);
+}
+
+.lb-player-card .close-btn {
+  margin-left: auto;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0.25rem;
+  line-height: 1;
+}
+
+.lb-player-card .close-btn:hover {
+  color: var(--text);
+}
+
+/* =========================================
+   Table
+   ========================================= */
+.lb-table-wrap {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.lb-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.lb-table thead {
+  border-bottom: 1px solid var(--border);
+}
+
+.lb-table th {
+  padding: 0.75rem 1.25rem;
+  text-align: left;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.lb-table td {
+  padding: 0.75rem 1.25rem;
+  font-size: 0.875rem;
+  border-top: 1px solid var(--border);
+}
+
+.lb-table tbody tr {
+  transition: background 0.15s ease;
+}
+
+.lb-table tbody tr:hover {
+  background: rgba(167, 139, 250, 0.04);
+}
+
+.col-rank {
+  width: 60px;
+}
+
+.col-region {
+  width: 80px;
+}
+
+.col-score {
+  width: 100px;
+  text-align: right;
+}
+
+.lb-table td.col-score {
+  text-align: right;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Player cell with avatar */
+.player-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.player-cell img {
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  image-rendering: pixelated;
+}
+
+.player-cell span {
+  font-weight: 500;
+}
+
+/* Rank badges for top 3 */
+.rank-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 0.78rem;
+}
+
+.rank-1 {
+  background: rgba(250, 204, 21, 0.15);
+  color: #facc15;
+}
+
+.rank-2 {
+  background: rgba(203, 213, 225, 0.12);
+  color: #cbd5e1;
+}
+
+.rank-3 {
+  background: rgba(251, 146, 60, 0.12);
+  color: #fb923c;
+}
+
+/* Tier badges for gamemode view */
+.tier-header {
+  padding: 0.625rem 1.25rem;
+  background: rgba(167, 139, 250, 0.06);
+  border-top: 1px solid var(--border);
+}
+
+.tier-header span {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+/* =========================================
+   Loading & Empty States
+   ========================================= */
+.lb-loading,
+.lb-empty {
+  padding: 3rem;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+/* =========================================
+   Pagination
+   ========================================= */
+.lb-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.lb-page-btn {
+  padding: 0.5rem 1.25rem;
+  font-size: 0.8rem;
+}
+
+.lb-page-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.lb-page-info {
+  font-size: 0.825rem;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Active nav link */
+.nav-links a.active {
+  color: var(--accent);
+}
+
+/* =========================================
+   Responsive
+   ========================================= */
+@media (max-width: 600px) {
+  .lb-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .lb-search input {
+    width: 100%;
+  }
+
+  .lb-table th,
+  .lb-table td {
+    padding: 0.6rem 0.75rem;
+  }
+
+  .col-region {
+    display: none;
+  }
+
+  .lb-player-card {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .lb-player-card .close-btn {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+  }
+
+  .lb-player-card {
+    position: relative;
+  }
+}

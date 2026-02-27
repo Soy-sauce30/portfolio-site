@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Minecraft PvP Leaderboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="leaderboard.css">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav scrolled">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">Sawyer</a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="#" class="active">Leaderboard</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="lb-page">
+    <div class="container">
+
+      <!-- Header -->
+      <div class="lb-header">
+        <h1 class="lb-title">Minecraft PvP Leaderboard</h1>
+        <p class="lb-subtitle">Live rankings from <a href="https://mctiers.com" target="_blank" rel="noopener">MCTiers</a></p>
+      </div>
+
+      <!-- Controls -->
+      <div class="lb-controls">
+        <div class="lb-tabs" id="gamemodeTabs">
+          <button class="lb-tab active" data-mode="overall">Overall</button>
+        </div>
+        <div class="lb-search">
+          <input type="text" id="playerSearch" placeholder="Search player..." autocomplete="off">
+        </div>
+      </div>
+
+      <!-- Player search result -->
+      <div class="lb-player-card" id="playerCard" style="display:none;"></div>
+
+      <!-- Leaderboard table -->
+      <div class="lb-table-wrap">
+        <table class="lb-table" id="leaderboardTable">
+          <thead>
+            <tr>
+              <th class="col-rank">#</th>
+              <th class="col-player">Player</th>
+              <th class="col-region">Region</th>
+              <th class="col-score">Points</th>
+            </tr>
+          </thead>
+          <tbody id="leaderboardBody">
+          </tbody>
+        </table>
+        <div class="lb-loading" id="loading">Loading...</div>
+        <div class="lb-empty" id="emptyState" style="display:none;">No players found.</div>
+      </div>
+
+      <!-- Pagination -->
+      <div class="lb-pagination" id="pagination" style="display:none;">
+        <button class="btn btn-outline lb-page-btn" id="prevBtn">Previous</button>
+        <span class="lb-page-info" id="pageInfo"></span>
+        <button class="btn btn-outline lb-page-btn" id="nextBtn">Next</button>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>Data from <a href="https://mctiers.com" target="_blank" rel="noopener" style="color:var(--accent)">MCTiers API</a> &middot; Player heads from <a href="https://crafatar.com" target="_blank" rel="noopener" style="color:var(--accent)">Crafatar</a></p>
+    </div>
+  </footer>
+
+  <script src="leaderboard.js"></script>
+</body>
+</html>

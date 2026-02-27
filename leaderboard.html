@@ -1,65 +1,62 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Minecraft PvP Leaderboard</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="leaderboard.css">
 </head>
 <body>
 
-  <div class="page-wrap">
-
-    <!-- Top nav -->
-    <header class="top-bar">
-      <a href="index.html" class="top-logo">Sawyer</a>
-      <a href="https://mctiers.com" target="_blank" rel="noopener" class="top-link">MCTiers</a>
-    </header>
+  <div class="wrap">
 
     <!-- Gamemode tabs -->
-    <div class="tabs-row" id="gamemodeTabs">
-      <button class="tab active" data-mode="overall">Overall</button>
-    </div>
+    <nav class="mode-tabs" id="modeTabs">
+      <button class="mode-tab active" data-mode="overall">
+        <span class="mode-icon">&#x1F3C6;</span>
+        <span class="mode-name">Overall</span>
+      </button>
+    </nav>
 
-    <!-- Main content card (connected to tabs) -->
-    <div class="main-card">
-
-      <!-- Toolbar inside card -->
-      <div class="card-toolbar">
-        <div class="tier-filter" id="tierFilter" style="display:none;">
-          <button class="filter-btn active" data-filter="all">All</button>
-          <button class="filter-btn" data-filter="high">High</button>
-          <button class="filter-btn" data-filter="low">Low</button>
-        </div>
-        <div class="search-box">
-          <input type="text" id="playerSearch" placeholder="Search player..." autocomplete="off">
-        </div>
+    <!-- Info bar -->
+    <div class="info-bar">
+      <div class="tier-filter" id="tierFilter" style="display:none;">
+        <button class="fbtn active" data-filter="all">All</button>
+        <button class="fbtn" data-filter="high">High</button>
+        <button class="fbtn" data-filter="low">Low</button>
       </div>
-
-      <!-- Player search result -->
-      <div class="player-card" id="playerCard" style="display:none;"></div>
-
-      <!-- Rankings rendered here -->
-      <div class="rankings" id="rankings">
-        <div class="state-msg" id="loading">Loading...</div>
-        <div class="state-msg" id="emptyState" style="display:none;">No players found.</div>
+      <div class="search-wrap">
+        <input type="text" id="playerSearch" placeholder="Search player..." autocomplete="off">
       </div>
-
+      <div class="info-right">
+        <a href="index.html" class="back-link">&larr; Home</a>
+      </div>
     </div>
 
-    <!-- Pagination below card -->
-    <div class="page-nav" id="pagination" style="display:none;">
-      <button class="page-btn" id="prevBtn">Previous</button>
-      <span class="page-num" id="pageInfo"></span>
-      <button class="page-btn" id="nextBtn">Next</button>
+    <!-- Player lookup card -->
+    <div class="lookup-card" id="lookupCard" style="display:none;"></div>
+
+    <!-- Main rankings card -->
+    <div class="rankings-card">
+      <div id="rankingsContent">
+        <div class="state" id="loading">Loading...</div>
+        <div class="state" id="empty" style="display:none;">No players found.</div>
+      </div>
     </div>
 
-    <!-- Footer -->
-    <footer class="site-footer">
-      <p>Data from <a href="https://mctiers.com" target="_blank" rel="noopener">MCTiers</a> &middot; Heads from <a href="https://crafatar.com" target="_blank" rel="noopener">Crafatar</a></p>
+    <!-- Pagination -->
+    <div class="pager" id="pager" style="display:none;">
+      <button class="pgbtn" id="prevBtn">&larr; Prev</button>
+      <span class="pgnum" id="pageInfo"></span>
+      <button class="pgbtn" id="nextBtn">Next &rarr;</button>
+    </div>
+
+    <footer class="foot">
+      Data from <a href="https://mctiers.com" target="_blank">MCTiers</a> &middot;
+      Skins from <a href="https://crafatar.com" target="_blank">Crafatar</a>
     </footer>
 
   </div>

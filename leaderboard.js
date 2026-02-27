@@ -1,30 +1,41 @@
 /* =========================================
-   MCTiers Leaderboard
+   MCTiers Leaderboard — 5-Column Layout
    ========================================= */
 const API = 'https://mctiers.com/api/v2';
+const BODY = 'https://crafatar.com/renders/body/';
 const HEAD = 'https://crafatar.com/renders/head/';
 const PLAYERDB = 'https://playerdb.co/api/player/minecraft/';
-const PER_PAGE = 25;
+const PER_PAGE = 50;
+
+// Trophy/icon per tier
+const TIER_ICONS = {
+  1: '\u{1F3C6}',  // gold trophy
+  2: '\u{1F3C6}',  // trophy (silver style via CSS)
+  3: '\u{1F3C6}',  // trophy (bronze style via CSS)
+  4: '',
+  5: ''
+};
 
 let mode = 'overall';
-let page = 0;
+let pg = 0;
 let tierFilter = 'all';
 let gamemodes = {};
 
 const $ = id => document.getElementById(id);
-const rankings = $('rankings');
+const content = $('rankingsContent');
 const loading = $('loading');
-const empty = $('emptyState');
-const pager = $('pagination');
+const empty = $('empty');
+const pager = $('pager');
 const prevBtn = $('prevBtn');
 const nextBtn = $('nextBtn');
 const pageInfo = $('pageInfo');
-const tabs = $('gamemodeTabs');
+const tabs = $('modeTabs');
 const filter = $('tierFilter');
 const search = $('playerSearch');
-const pCard = $('playerCard');
+const lCard = $('lookupCard');
 
-function head(uuid, s) { return `${HEAD}${uuid}?size=${s}&overlay`; }
+function skinHead(uuid) { return `${HEAD}${uuid}?size=28&overlay`; }
+function skinBody(uuid) { return `${BODY}${uuid}?size=52&overlay`; }
 
 /* =========================================
    Init
@@ -35,44 +46,51 @@ async function init() {
     if (!r.ok) throw 0;
     gamemodes = await r.json();
 
+    // Mode icon mapping (approximate)
+    const icons = {
+      vanilla: '\u2694\uFE0F', uhc: '\u2764\uFE0F', pot: '\u{1F9EA}',
+      nethop: '\u{1F7E2}', smp: '\u{1F30D}', sword: '\u{1F5E1}\uFE0F',
+      axe: '\u{1FA93}', mace: '\u{1F528}', ltm: '\u2728'
+    };
+
     for (const [slug, m] of Object.entries(gamemodes)) {
       const b = document.createElement('button');
-      b.className = 'tab';
+      b.className = 'mode-tab';
       b.dataset.mode = slug;
-      b.textContent = m.title;
+      b.innerHTML = `<span class="mode-icon">${icons[slug] || '\u{1F3AE}'}</span><span class="mode-name">${esc(m.title)}</span>`;
       tabs.appendChild(b);
     }
 
     tabs.addEventListener('click', e => {
-      const b = e.target.closest('.tab');
+      const b = e.target.closest('.mode-tab');
       if (!b) return;
-      tabs.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      tabs.querySelectorAll('.mode-tab').forEach(t => t.classList.remove('active'));
       b.classList.add('active');
       mode = b.dataset.mode;
-      page = 0;
+      pg = 0;
       tierFilter = 'all';
       syncFilter();
       load();
     });
 
     filter.addEventListener('click', e => {
-      if (!e.target.classList.contains('filter-btn')) return;
-      filter.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      if (!e.target.classList.contains('fbtn')) return;
+      filter.querySelectorAll('.fbtn').forEach(b => b.classList.remove('active'));
       e.target.classList.add('active');
       tierFilter = e.target.dataset.filter;
-      page = 0;
+      pg = 0;
       load();
     });
 
     load();
   } catch (e) {
-    err('Could not load gamemodes.');
+    showErr('Could not load gamemodes.');
   }
 }
 
 function syncFilter() {
   filter.style.display = mode === 'overall' ? 'none' : 'flex';
-  filter.querySelectorAll('.filter-btn').forEach(b =>
+  filter.querySelectorAll('.fbtn').forEach(b =>
     b.classList.toggle('active', b.dataset.filter === tierFilter));
 }
 
@@ -86,121 +104,135 @@ async function load() {
   try {
     mode === 'overall' ? await loadOverall() : await loadMode(mode);
   } catch (e) {
-    err('Failed to load rankings.');
+    showErr('Failed to load rankings.');
   }
   hideLoading();
 }
 
 /* --- Overall --- */
 async function loadOverall() {
-  const from = page * PER_PAGE;
+  const from = pg * PER_PAGE;
   const r = await fetch(`${API}/mode/overall?count=${PER_PAGE}&from=${from}`);
   if (!r.ok) throw 0;
   const data = await r.json();
-
   if (!data.length) { showEmpty(); hidePager(); return; }
 
-  // Column header
-  const hdr = el('div', 'col-header');
-  hdr.innerHTML = `
-    <span class="ch-num">#</span>
-    <span class="ch-head"></span>
-    <span class="ch-name">Player</span>
-    <span class="ch-region">Region</span>
-    <span class="ch-pts">Points</span>`;
-  rankings.appendChild(hdr);
+  const list = el('div', 'overall-list');
+
+  const hdr = el('div', 'ov-hdr');
+  hdr.innerHTML = '<span class="oh-rank">#</span><span class="oh-skin"></span><span class="oh-name">Player</span><span class="oh-region">Region</span><span class="oh-pts">Points</span>';
+  list.appendChild(hdr);
 
   data.forEach((p, i) => {
     const rank = from + i + 1;
-    const row = el('div', 'p-row');
+    const row = el('div', 'ov-row');
+    let rcls = '';
+    if (rank === 1) rcls = 'gold';
+    else if (rank === 2) rcls = 'silver';
+    else if (rank === 3) rcls = 'bronze';
+
     row.innerHTML = `
-      <span class="p-num">${rankFmt(rank)}</span>
-      <img class="p-head" src="${head(p.uuid, 28)}" alt="" loading="lazy">
-      <span class="p-name">${esc(p.name)}</span>
-      <span class="p-region">${esc(p.region || '—')}</span>
-      <span class="p-pts">${p.points.toLocaleString()}</span>`;
+      <span class="ov-rank ${rcls}">${rank}</span>
+      <img class="ov-skin" src="${skinHead(p.uuid)}" alt="" loading="lazy">
+      <span class="ov-name">${esc(p.name)}</span>
+      <span class="ov-region">${esc(p.region || '—')}</span>
+      <span class="ov-pts">${p.points.toLocaleString()}</span>`;
     row.onclick = () => lookup(p.name);
-    rankings.appendChild(row);
+    list.appendChild(row);
   });
 
+  content.appendChild(list);
   showPager(data.length);
 }
 
-function rankFmt(n) {
-  if (n === 1) return '<span class="gold">1</span>';
-  if (n === 2) return '<span class="silver">2</span>';
-  if (n === 3) return '<span class="bronze">3</span>';
-  return n;
-}
-
-/* --- Gamemode --- */
+/* --- Gamemode: 5-column grid --- */
 async function loadMode(m) {
-  const from = page * PER_PAGE;
+  const from = pg * PER_PAGE;
   const r = await fetch(`${API}/mode/${m}?count=${PER_PAGE}&from=${from}`);
   if (!r.ok) throw 0;
   const tiers = await r.json();
 
+  const grid = el('div', 'tier-grid');
   let any = false;
 
   for (let t = 1; t <= 5; t++) {
-    const players = tiers[t];
-    if (!players || !players.length) continue;
+    const col = el('div', 'tier-col');
+
+    // Header
+    const hdr = el('div', `tier-hdr t${t}`);
+    const icon = TIER_ICONS[t];
+    hdr.innerHTML = `${icon ? '<span class="tier-hdr-icon">' + icon + '</span> ' : ''}<span>Tier ${t}</span>`;
+    col.appendChild(hdr);
+
+    // Rows container
+    const rows = el('div', 'tier-rows');
+    const players = tiers[t] || [];
 
     const hi = players.filter(p => p.pos === 0);
     const lo = players.filter(p => p.pos === 1);
 
-    const groups = [];
-    if (tierFilter !== 'low' && hi.length) groups.push({ sub: 'High', players: hi });
-    if (tierFilter !== 'high' && lo.length) groups.push({ sub: 'Low', players: lo });
+    const showHi = tierFilter !== 'low' && hi.length > 0;
+    const showLo = tierFilter !== 'high' && lo.length > 0;
 
-    for (const g of groups) {
+    if (showHi) {
       any = true;
-      const sec = el('div', 'tier-section');
-
-      // Heading
-      const hd = el('div', 'tier-heading');
-      hd.innerHTML = `
-        <span class="tier-pill tp-${t}">T${t}</span>
-        <span class="tier-label">Tier ${t}</span>
-        <span class="tier-sub">${g.sub}</span>
-        <span class="tier-count">${g.players.length} player${g.players.length !== 1 ? 's' : ''}</span>`;
-      sec.appendChild(hd);
-
-      // Rows
-      g.players.forEach((p, i) => {
-        const row = el('div', 'p-row');
-        const hlCls = g.sub === 'High' ? 'high' : 'low';
-        row.innerHTML = `
-          <span class="p-num">${from + i + 1}</span>
-          <img class="p-head" src="${head(p.uuid, 28)}" alt="" loading="lazy">
-          <span class="p-name">${esc(p.name)}</span>
-          <span class="p-region">${esc(p.region || '—')}</span>
-          <span class="p-hl ${hlCls}">${g.sub}</span>`;
-        row.onclick = () => lookup(p.name);
-        sec.appendChild(row);
-      });
-
-      rankings.appendChild(sec);
+      if (showLo || tierFilter === 'all') {
+        const label = el('div', 'tier-sub-label');
+        label.textContent = 'HIGH';
+        rows.appendChild(label);
+      }
+      hi.forEach(p => rows.appendChild(makeRow(p, 'high')));
     }
+
+    if (showLo) {
+      any = true;
+      if (showHi || tierFilter === 'all') {
+        const label = el('div', 'tier-sub-label');
+        label.textContent = 'LOW';
+        rows.appendChild(label);
+      }
+      lo.forEach(p => rows.appendChild(makeRow(p, 'low')));
+    }
+
+    if (!showHi && !showLo) {
+      const empty = el('div', 'state');
+      empty.textContent = '—';
+      empty.style.padding = '1.5rem';
+      rows.appendChild(empty);
+    }
+
+    col.appendChild(rows);
+    grid.appendChild(col);
   }
 
+  content.appendChild(grid);
   if (!any) showEmpty();
   showPager(any ? PER_PAGE : 0);
 }
 
+function makeRow(p, hl) {
+  const row = el('div', 'tr-row');
+  row.innerHTML = `
+    <img class="tr-head" src="${skinHead(p.uuid)}" alt="" loading="lazy">
+    <span class="tr-name">${esc(p.name)}</span>
+    <span class="tr-hl ${hl}">${hl === 'high' ? '\u25B2' : '\u25BC'}</span>`;
+  row.onclick = () => lookup(p.name);
+  return row;
+}
+
 /* =========================================
-   Player Search
+   Player Lookup
    ========================================= */
 let timer;
 search.addEventListener('input', () => {
   clearTimeout(timer);
   const q = search.value.trim();
-  if (q.length < 2) { pCard.style.display = 'none'; return; }
+  if (q.length < 2) { lCard.style.display = 'none'; return; }
   timer = setTimeout(() => lookup(q), 400);
 });
 
 async function lookup(name) {
-  pCard.style.display = 'none';
+  lCard.style.display = 'none';
   try {
     const r = await fetch(`${PLAYERDB}${encodeURIComponent(name)}`);
     if (!r.ok) throw 0;
@@ -222,64 +254,68 @@ async function lookup(name) {
     for (const [m, d] of Object.entries(ranks)) {
       const nm = gamemodes[m] ? gamemodes[m].title : m;
       const h = d.pos === 0;
-      rHtml += `<span class="pc-rank ${h ? 'high' : 'low'}">${esc(nm)}: T${d.tier} ${h ? 'High' : 'Low'}</span>`;
+      rHtml += `<span class="lc-rank ${h ? 'high' : 'low'}">${esc(nm)}: T${d.tier} ${h ? 'High' : 'Low'}</span>`;
     }
 
     const pts = prof ? prof.points : null;
     const ov = prof ? prof.overall : null;
 
-    pCard.innerHTML = `
-      <img class="pc-head" src="${head(uuid, 56)}" alt="${esc(uname)}">
-      <div class="pc-info">
+    lCard.innerHTML = `
+      <img class="lc-head" src="${skinHead(uuid)}" alt="">
+      <div class="lc-info">
         <h3>${esc(uname)}</h3>
-        <p>${pts !== null ? pts.toLocaleString() + ' points' : 'No MCTiers data'}${ov ? ' &middot; #' + ov + ' overall' : ''}</p>
-        ${rHtml ? '<div class="pc-ranks">' + rHtml + '</div>' : ''}
+        <p>${pts !== null ? pts.toLocaleString() + ' pts' : 'No MCTiers data'}${ov ? ' &middot; #' + ov : ''}</p>
+        ${rHtml ? '<div class="lc-ranks">' + rHtml + '</div>' : ''}
       </div>
-      <button class="pc-close" onclick="this.parentElement.style.display='none'">&times;</button>`;
-    pCard.style.display = 'flex';
+      <button class="lc-close" onclick="this.parentElement.style.display='none'">&times;</button>`;
+    lCard.style.display = 'flex';
   } catch (e) {
-    pCard.innerHTML = `
-      <div class="pc-info">
-        <h3>Not found</h3>
-        <p>"${esc(name)}" — check spelling</p>
-      </div>
-      <button class="pc-close" onclick="this.parentElement.style.display='none'">&times;</button>`;
-    pCard.style.display = 'flex';
+    lCard.innerHTML = `
+      <div class="lc-info"><h3>Not found</h3><p>"${esc(name)}"</p></div>
+      <button class="lc-close" onclick="this.parentElement.style.display='none'">&times;</button>`;
+    lCard.style.display = 'flex';
   }
 }
 
 /* =========================================
    Pagination
    ========================================= */
-prevBtn.onclick = () => { if (page > 0) { page--; load(); } };
-nextBtn.onclick = () => { page++; load(); };
+prevBtn.onclick = () => { if (pg > 0) { pg--; load(); } };
+nextBtn.onclick = () => { pg++; load(); };
 
 function showPager(n) {
   pager.style.display = 'flex';
-  prevBtn.disabled = page === 0;
+  prevBtn.disabled = pg === 0;
   nextBtn.disabled = n < PER_PAGE;
-  pageInfo.textContent = `Page ${page + 1}`;
+  pageInfo.textContent = `Page ${pg + 1}`;
 }
 function hidePager() { pager.style.display = 'none'; }
 
 /* =========================================
    Helpers
    ========================================= */
-function el(tag, cls) { const e = document.createElement(tag); e.className = cls; return e; }
+function el(tag, cls) {
+  const e = document.createElement(tag);
+  e.className = cls;
+  return e;
+}
 
-function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+function esc(s) {
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
 
 function clear() {
-  for (const c of [...rankings.children]) {
+  [...content.children].forEach(c => {
     if (c !== loading && c !== empty) c.remove();
-  }
+  });
 }
 
 function showLoading() { loading.style.display = 'block'; }
 function hideLoading() { loading.style.display = 'none'; }
 function showEmpty() { empty.style.display = 'block'; }
 function hideEmpty() { empty.style.display = 'none'; }
-function err(msg) { hideLoading(); empty.textContent = msg; showEmpty(); }
+function showErr(msg) { hideLoading(); empty.textContent = msg; showEmpty(); }
 
-// Go
 init();

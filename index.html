@@ -180,5 +180,64 @@
   </footer>
 
   <script src="script.js"></script>
+
+  <!-- BG Color Picker (temporary — remove when you've chosen) -->
+  <div id="bgPicker" style="
+    position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%);
+    display: flex; gap: 0.5rem; align-items: center;
+    background: rgba(20,20,30,0.95); border: 1px solid rgba(140,100,220,0.2);
+    border-radius: 10px; padding: 0.6rem 1rem; z-index: 9999;
+    font-family: 'Inter', sans-serif; backdrop-filter: blur(12px);
+  ">
+    <span style="font-size:0.7rem; color:#8a8a9a; font-weight:500; margin-right:0.25rem;">BG:</span>
+  </div>
+  <script>
+  (function() {
+    const options = [
+      { name: 'Pure Black',   bg: '#000000', texture: '#0a0a0a/#070707' },
+      { name: 'Dark Navy',    bg: '#0b1120', texture: '#0d1322/#0a0f1c' },
+      { name: 'Dark Plum',    bg: '#100c18', texture: '#120e1a/#0e0a15' },
+      { name: 'Warm Charcoal',bg: '#12100e', texture: '#141210/#100e0c' },
+      { name: 'Dark Teal',    bg: '#0a1214', texture: '#0c1416/#091012' },
+    ];
+    const bar = document.getElementById('bgPicker');
+    const label = document.createElement('span');
+    label.style.cssText = 'font-size:0.7rem;color:#e4e4e7;font-weight:500;min-width:90px;text-align:center;';
+
+    options.forEach((opt, i) => {
+      const btn = document.createElement('button');
+      btn.title = opt.name;
+      btn.style.cssText = `
+        width: 28px; height: 28px; border-radius: 6px; border: 2px solid rgba(255,255,255,0.1);
+        background: ${opt.bg}; cursor: pointer; transition: all 0.15s; flex-shrink: 0;
+      `;
+      btn.addEventListener('mouseenter', () => btn.style.borderColor = '#a78bfa');
+      btn.addEventListener('mouseleave', () => { if (!btn.classList.contains('active')) btn.style.borderColor = 'rgba(255,255,255,0.1)'; });
+      btn.addEventListener('click', () => {
+        // Update CSS custom property
+        document.documentElement.style.setProperty('--bg', opt.bg);
+        // Update the netherite texture colors
+        const [c1, c2] = opt.texture.split('/');
+        const before = document.styleSheets[document.styleSheets.length - 1];
+        document.body.style.background = opt.bg;
+        // Update active state
+        bar.querySelectorAll('button').forEach(b => {
+          b.classList.remove('active');
+          b.style.borderColor = 'rgba(255,255,255,0.1)';
+        });
+        btn.classList.add('active');
+        btn.style.borderColor = '#a78bfa';
+        label.textContent = opt.name;
+      });
+      if (i === 0) {
+        btn.classList.add('active');
+        btn.style.borderColor = '#a78bfa';
+        label.textContent = opt.name;
+      }
+      bar.appendChild(btn);
+    });
+    bar.appendChild(label);
+  })();
+  </script>
 </body>
 </html>

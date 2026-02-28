@@ -68,7 +68,8 @@ body::after {
     transparent 100%
   );
   background-size: 400% 400%;
-  animation: enchantGlint 6s ease-in-out infinite;
+  opacity: 0.5;
+  animation: enchantGlint 12s ease-in-out infinite;
 }
 
 @keyframes enchantGlint {

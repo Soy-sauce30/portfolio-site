@@ -107,7 +107,8 @@
         if (map[pid] && (map[pid].stats.plateAppearances || 0) >= pa) return;
 
         const tid = s.team?.id;
-        const pos = s.player?.primaryPosition?.abbreviation
+        const pos = s.position?.abbreviation
+                 || s.player?.primaryPosition?.abbreviation
                  || playerPositions[pid]
                  || '?';
 

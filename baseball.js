@@ -9,6 +9,7 @@
 
   // Stat metadata
   const STAT_META = {
+    overall:     { label: 'OVR', rate: false, key: 'plateAppearances' },
     avg:         { label: 'AVG', rate: true },
     homeRuns:    { label: 'HR',  rate: false },
     rbi:         { label: 'RBI', rate: false },
@@ -23,13 +24,13 @@
   };
 
   // Columns shown in the table
-  const COLUMNS = ['avg', 'homeRuns', 'rbi', 'hits', 'runs', 'stolenBases', 'ops'];
+  const COLUMNS = ['overall', 'avg', 'homeRuns', 'rbi', 'hits', 'runs', 'stolenBases', 'ops'];
 
   // ── State ──────────────────────────────────
   let teams = {};
   let playerPositions = {};
   let allPlayers = [];
-  let state = { pos: 'all', division: 'all', team: 'all', stat: 'homeRuns', season: 2025 };
+  let state = { pos: 'all', division: 'all', team: 'all', stat: 'overall', season: 2025 };
 
   // ── DOM ────────────────────────────────────
   const $ = id => document.getElementById(id);
@@ -148,7 +149,9 @@
     if (state.pos !== 'all') {
       list = list.filter(p => {
         if (p.pos === state.pos) return true;
-        // Include generic OF in outfield position filters
+        // OF tab shows all outfielders (LF, CF, RF, OF)
+        if (state.pos === 'OF' && ['LF', 'CF', 'RF', 'OF'].includes(p.pos)) return true;
+        // Individual outfield tabs also include generic OF
         if (['LF', 'CF', 'RF'].includes(state.pos) && p.pos === 'OF') return true;
         return false;
       });
@@ -165,7 +168,8 @@
     }
 
     // Sort
-    const key = state.stat;
+    const meta = STAT_META[state.stat];
+    const key = meta?.key || state.stat;
     list.sort((a, b) => {
       let va = a.stats[key];
       let vb = b.stats[key];
@@ -232,7 +236,8 @@
 
       COLUMNS.forEach(k => {
         const cls = k === state.stat ? ' active' : '';
-        h += `<td class="col-stat${cls}">${formatStat(k, p.stats[k])}</td>`;
+        const realKey = STAT_META[k]?.key || k;
+        h += `<td class="col-stat${cls}">${formatStat(k, p.stats[realKey])}</td>`;
       });
 
       h += '</tr>';

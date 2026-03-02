@@ -161,7 +161,7 @@
     </div>
   </section>
 
-<!-- Put Footer Here -->
+<!-- Footer -->
 <?php include 'footer.php';?>
 
   <script src="script.js"></script>

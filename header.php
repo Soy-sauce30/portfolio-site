@@ -10,14 +10,14 @@
         <li class="nav-dropdown">
           <a href="#" class="nav-dropdown-toggle">Sports</a>
           <ul class="nav-dropdown-menu">
-            <li><a href="baseball.html">MLB Leaders</a></li>
+            <li><a href="baseball.php">MLB Leaders</a></li>
             <li>Test Second Row</li>
           </ul>
         </li>
         <li class="nav-dropdown">
           <a href="#" class="nav-dropdown-toggle">Video Games</a>
           <ul class="nav-dropdown-menu">
-            <li><a href="leaderboard.html">MC PvP Leaderboard</a></li>
+            <li><a href="leaderboard.php">MC PvP Leaderboard</a></li>
           </ul>
         </li>
       </ul>

@@ -595,7 +595,7 @@ section:not(.hero) {
    Footer
    ========================================= */
 .footer {
-  padding: 2rem 0;
+  padding: 2rem 0 4.5rem;
   border-top: 1px solid var(--border);
   text-align: center;
   color: var(--text-muted);

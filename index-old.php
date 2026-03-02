@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sawyer — Developer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <?php include 'header.php';?>
+
+  <!-- Hero Section -->
+  <section class="hero" id="home">
+    <div class="hero-content">
+      <h1 class="hero-name">Hi, I'm <span class="accent">Sawyer A</span></h1>
+      <div class="hero-tagline">
+        I build <span class="typed-text" id="typedText"></span><span class="cursor">|</span>
+      </div>
+      <p class="hero-desc">Developer crafting fast, clean, and thoughtful web experiences.</p>
+      <div class="hero-ctas">
+        <a href="#projects" class="btn btn-primary">View My Work</a>
+        <a href="#contact" class="btn btn-outline">Get In Touch</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section class="about" id="about">
+    <div class="container">
+      <h2 class="section-title">About Me</h2>
+      <div class="about-grid">
+        <div class="about-text">
+          <p>I'm a developer who loves turning ideas into reality through clean code and thoughtful design. Whether it's a complex web app or a simple landing page, I bring the same level of care to every project.</p>
+          <p>When I'm not coding, you can find me exploring new technologies, contributing to open source, or thinking about the future of the web.</p>
+        </div>
+        <div class="about-card">
+          <div class="code-block">
+            <div class="code-header">
+              <span class="dot red"></span>
+              <span class="dot yellow"></span>
+              <span class="dot green"></span>
+            </div>
+            <pre class="code-text"><span class="code-keyword">const</span> <span class="code-var">sawyer</span> = {
+  <span class="code-prop">role</span>: <span class="code-string">"Developer"</span>,
+  <span class="code-prop">location</span>: <span class="code-string">"Earth"</span>,
+  <span class="code-prop">passion</span>: <span class="code-string">"Building cool stuff"</span>,
+  <span class="code-prop">available</span>: <span class="code-bool">true</span>,
+  <span class="code-prop">coffee</span>: <span class="code-string">"always"</span>,
+};</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Skills Section -->
+  <section class="skills" id="skills">
+    <div class="container">
+      <h2 class="section-title">Tech Stack</h2>
+      <div class="skills-grid">
+        <div class="skill-card">
+          <h3>Frontend</h3>
+          <div class="skill-tags">
+            <span>HTML / CSS</span>
+            <span>JavaScript</span>
+            <span>React</span>
+            <span>TypeScript</span>
+          </div>
+        </div>
+        <div class="skill-card">
+          <h3>Backend</h3>
+          <div class="skill-tags">
+            <span>Node.js</span>
+            <span>Python</span>
+            <span>REST APIs</span>
+            <span>Databases</span>
+          </div>
+        </div>
+        <div class="skill-card">
+          <h3>Tools</h3>
+          <div class="skill-tags">
+            <span>Git</span>
+            <span>VS Code</span>
+            <span>Figma</span>
+            <span>Vercel</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects Section -->
+  <section class="projects" id="projects">
+    <div class="container">
+      <h2 class="section-title">Projects</h2>
+      <div class="projects-grid">
+        <div class="project-card">
+          <div class="project-tag">Web App</div>
+          <h3 class="project-title">Project One</h3>
+          <p class="project-desc">An awesome project that solves real problems with elegant solutions and a polished interface.</p>
+          <div class="project-stack">
+            <span>React</span>
+            <span>Node.js</span>
+            <span>MongoDB</span>
+          </div>
+          <div class="project-links">
+            <a href="#" class="project-link">GitHub &rarr;</a>
+            <a href="#" class="project-link">Live &rarr;</a>
+          </div>
+        </div>
+        <div class="project-card featured">
+          <div class="project-tag">Featured</div>
+          <h3 class="project-title">Project Two</h3>
+          <p class="project-desc">A featured project with complex architecture, beautiful design, and seamless user experience.</p>
+          <div class="project-stack">
+            <span>TypeScript</span>
+            <span>Next.js</span>
+            <span>Tailwind</span>
+          </div>
+          <div class="project-links">
+            <a href="#" class="project-link">GitHub &rarr;</a>
+            <a href="#" class="project-link">Live &rarr;</a>
+          </div>
+        </div>
+        <div class="project-card">
+          <div class="project-tag">Open Source</div>
+          <h3 class="project-title">Project Three</h3>
+          <p class="project-desc">An open source tool the community loves, built with clean code and thoughtful architecture.</p>
+          <div class="project-stack">
+            <span>Python</span>
+            <span>FastAPI</span>
+            <span>Docker</span>
+          </div>
+          <div class="project-links">
+            <a href="#" class="project-link">GitHub &rarr;</a>
+            <a href="#" class="project-link">Live &rarr;</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section class="contact" id="contact">
+    <div class="container">
+      <h2 class="section-title">Get In Touch</h2>
+      <p class="contact-desc">Have a project in mind or just want to chat? My inbox is always open.</p>
+      <div class="contact-card">
+        <a href="mailto:hello@sawyer.dev" class="contact-email">hello@sawyer.dev</a>
+        <div class="contact-socials">
+          <a href="#" class="social-link">GitHub</a>
+          <a href="#" class="social-link">Twitter</a>
+          <a href="#" class="social-link">LinkedIn</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<!-- Footer -->
+<?php include 'footer.php';?>
+
+  <script src="script.js"></script>
+
+  <!-- BG Color Picker (temporary — remove when you've chosen) -->
+  <div id="bgPicker" style="
+    position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%);
+    display: flex; gap: 0.5rem; align-items: center;
+    background: rgba(20,20,30,0.95); border: 1px solid rgba(140,100,220,0.2);
+    border-radius: 10px; padding: 0.6rem 1rem; z-index: 9999;
+    font-family: 'Inter', sans-serif; backdrop-filter: blur(12px);
+  ">
+    <span style="font-size:0.7rem; color:#8a8a9a; font-weight:500; margin-right:0.25rem;">BG:</span>
+  </div>
+  <style id="bgOverride"></style>
+  <script>
+  (function() {
+    const options = [
+      { name: 'Pure Black',    bg: '#000000', t1: '#0a0a0a', t2: '#070707', g: '#0c0c0c,#050505,#0a0808,#060606,#080706' },
+      { name: 'Dark Navy',     bg: '#0b1120', t1: '#0e1525', t2: '#091019', g: '#0f1626,#0a1020,#0d1424,#091019,#0b1220' },
+      { name: 'Dark Plum',     bg: '#100c18', t1: '#130f1c', t2: '#0d0a14', g: '#14101d,#0e0a15,#120e1a,#0d0a14,#100c18' },
+      { name: 'Warm Charcoal', bg: '#12100e', t1: '#151311', t2: '#0f0d0b', g: '#161412,#100e0c,#141210,#0f0d0b,#121010' },
+      { name: 'Dark Teal',     bg: '#0a1214', t1: '#0d1618', t2: '#081011', g: '#0e1719,#091112,#0c1416,#081011,#0a1213' },
+    ];
+    const bar = document.getElementById('bgPicker');
+    const sheet = document.getElementById('bgOverride');
+    const label = document.createElement('span');
+    label.style.cssText = 'font-size:0.7rem;color:#e4e4e7;font-weight:500;min-width:90px;text-align:center;';
+
+    function apply(opt) {
+      const [g1,g2,g3,g4,g5] = opt.g.split(',');
+      sheet.textContent = `
+        :root { --bg: ${opt.bg} !important; }
+        body::before {
+          background:
+            repeating-conic-gradient(${opt.t1} 0% 25%, ${opt.t2} 0% 50%) 0 0 / 4px 4px,
+            linear-gradient(145deg, ${g1} 0%, ${g2} 30%, ${g3} 50%, ${g4} 70%, ${g5} 100%) !important;
+        }
+      `;
+    }
+
+    options.forEach((opt, i) => {
+      const btn = document.createElement('button');
+      btn.title = opt.name;
+      btn.style.cssText = `
+        width: 28px; height: 28px; border-radius: 6px; border: 2px solid rgba(255,255,255,0.1);
+        background: ${opt.bg}; cursor: pointer; transition: all 0.15s; flex-shrink: 0;
+      `;
+      btn.addEventListener('mouseenter', () => btn.style.borderColor = '#a78bfa');
+      btn.addEventListener('mouseleave', () => { if (!btn.classList.contains('active')) btn.style.borderColor = 'rgba(255,255,255,0.1)'; });
+      btn.addEventListener('click', () => {
+        apply(opt);
+        bar.querySelectorAll('button').forEach(b => {
+          b.classList.remove('active');
+          b.style.borderColor = 'rgba(255,255,255,0.1)';
+        });
+        btn.classList.add('active');
+        btn.style.borderColor = '#a78bfa';
+        label.textContent = opt.name;
+      });
+      if (i === 0) {
+        btn.classList.add('active');
+        btn.style.borderColor = '#a78bfa';
+        label.textContent = opt.name;
+      }
+      bar.appendChild(btn);
+    });
+    bar.appendChild(label);
+  })();
+  </script>
+</body>
+</html>

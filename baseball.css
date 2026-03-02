@@ -18,6 +18,89 @@
   --accent: #a78bfa;
 }
 
+/* =========================================
+   Light Mode Overrides
+   ========================================= */
+[data-theme="light"] {
+  --bg: #f5f5f7;
+  --card: rgba(255, 255, 255, 0.9);
+  --row: rgba(245, 242, 255, 0.9);
+  --row-hover: rgba(235, 230, 250, 0.95);
+  --row-alt: rgba(248, 245, 255, 0.9);
+  --border: rgba(140, 100, 220, 0.18);
+  --fg: #1a1a2e;
+  --muted: #5a5a6e;
+  --dim: #8a8a9a;
+  --gold: #b8860b;
+  --silver: #6b6b6b;
+  --bronze: #cd6600;
+  --accent: #7c3aed;
+}
+
+[data-theme="light"] body::before {
+  background:
+    repeating-conic-gradient(#e8e8ec 0% 25%, #ededf0 0% 50%) 0 0 / 4px 4px,
+    linear-gradient(145deg, #f0f0f4 0%, #e8e8ec 30%, #f2f0f0 50%, #eaeaee 70%, #f0eeec 100%);
+}
+
+[data-theme="light"] body::after {
+  background: linear-gradient(
+    -45deg,
+    transparent 0%, transparent 40%,
+    rgba(120, 80, 200, 0.04) 45%,
+    rgba(100, 60, 180, 0.07) 48%,
+    rgba(140, 100, 220, 0.05) 50%,
+    rgba(100, 60, 180, 0.07) 52%,
+    rgba(120, 80, 200, 0.04) 55%,
+    transparent 60%, transparent 100%
+  );
+  background-size: 400% 400%;
+}
+
+[data-theme="light"] .page-title {
+  background: linear-gradient(135deg, #1a1a2e 0%, #7c3aed 60%, #b8860b 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+[data-theme="light"] ::selection { background: rgba(124, 58, 237, 0.2); color: #7c3aed; }
+
+[data-theme="light"] .stats-table tbody tr {
+  border-bottom-color: rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="light"] .fg select {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+/* =========================================
+   Theme Toggle Button
+   ========================================= */
+.theme-toggle {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.35rem;
+  cursor: pointer;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease, border-color 0.2s ease;
+  align-self: center;
+}
+
+.theme-toggle:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.icon-sun  { display: none; }
+.icon-moon { display: block; }
+
+[data-theme="light"] .icon-sun  { display: block; }
+[data-theme="light"] .icon-moon { display: none; }
+
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 

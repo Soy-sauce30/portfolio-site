@@ -13,6 +13,86 @@
 }
 
 /* =========================================
+   Light Mode Overrides
+   ========================================= */
+[data-theme="light"] {
+  --bg: #f5f5f7;
+  --bg-card: rgba(255, 255, 255, 0.9);
+  --border: rgba(140, 100, 220, 0.18);
+  --text: #1a1a2e;
+  --text-muted: #5a5a6e;
+  --accent: #7c3aed;
+  --accent-dim: rgba(124, 58, 237, 0.1);
+  --accent-glow: rgba(124, 58, 237, 0.2);
+}
+
+[data-theme="light"] body::before {
+  background:
+    repeating-conic-gradient(#e8e8ec 0% 25%, #ededf0 0% 50%) 0 0 / 4px 4px,
+    linear-gradient(145deg, #f0f0f4 0%, #e8e8ec 30%, #f2f0f0 50%, #eaeaee 70%, #f0eeec 100%);
+}
+
+[data-theme="light"] .nav.scrolled {
+  background: rgba(245, 245, 247, 0.92);
+}
+
+[data-theme="light"] .nav-dropdown-menu {
+  background: rgba(255, 255, 255, 0.97);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+[data-theme="light"] .code-header {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="light"] .code-var     { color: #2563eb; }
+[data-theme="light"] .code-string  { color: #16a34a; }
+[data-theme="light"] .code-bool    { color: #d97706; }
+
+[data-theme="light"] .btn-primary {
+  color: #ffffff;
+}
+
+[data-theme="light"] .project-stack span {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="light"] .stats-table tbody tr {
+  border-bottom-color: rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="light"] ::-webkit-scrollbar-track { background: var(--bg); }
+
+/* =========================================
+   Theme Toggle Button
+   ========================================= */
+.theme-toggle {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.4rem;
+  cursor: pointer;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease, border-color 0.2s ease;
+  flex-shrink: 0;
+}
+
+.theme-toggle:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+/* Show moon in dark mode, sun in light mode */
+.icon-sun  { display: none; }
+.icon-moon { display: block; }
+
+[data-theme="light"] .icon-sun  { display: block; }
+[data-theme="light"] .icon-moon { display: none; }
+
+/* =========================================
    Reset & Base
    ========================================= */
 *, *::before, *::after {

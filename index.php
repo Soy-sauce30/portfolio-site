@@ -11,7 +11,8 @@
 </head>
 <body>
 
-  <!-- Put Header Here -->
+  <!-- Header -->
+  <?php include 'header.php';?>
 
   <!-- Hero Section -->
   <section class="hero" id="home">
@@ -161,6 +162,7 @@
   </section>
 
 <!-- Put Footer Here -->
+<?php include 'footer.php';?>
 
   <script src="script.js"></script>
 

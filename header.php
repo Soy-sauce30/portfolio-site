@@ -1,12 +1,12 @@
 <!-- Navigation -->
   <nav class="nav" id="nav">
     <div class="nav-container">
-      <a href="#" class="nav-logo">Sawyer</a>
+      <a href="/" class="nav-logo">Sawyer</a>
       <ul class="nav-links">
-        <li><a href="#about">About Me</a></li>
-        <li><a href="#skills">Skills</a></li>
-        <li><a href="#projects">Projects</a></li>
-        <li><a href="#contact">Contact</a></li>
+        <li><a href="/#about">About Me</a></li>
+        <li><a href="/#skills">Skills</a></li>
+        <li><a href="/#projects">Projects</a></li>
+        <li><a href="/#contact">Contact</a></li>
         <li class="nav-dropdown">
           <a href="#" class="nav-dropdown-toggle">Sports</a>
           <ul class="nav-dropdown-menu">

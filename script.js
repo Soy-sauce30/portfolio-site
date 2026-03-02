@@ -14,32 +14,34 @@ let charIndex = 0;
 let isDeleting = false;
 const typedEl = document.getElementById('typedText');
 
-function type() {
-  const current = phrases[phraseIndex];
+if (typedEl) {
+  function type() {
+    const current = phrases[phraseIndex];
 
-  if (isDeleting) {
-    charIndex--;
-    typedEl.textContent = current.slice(0, charIndex);
-  } else {
-    charIndex++;
-    typedEl.textContent = current.slice(0, charIndex);
+    if (isDeleting) {
+      charIndex--;
+      typedEl.textContent = current.slice(0, charIndex);
+    } else {
+      charIndex++;
+      typedEl.textContent = current.slice(0, charIndex);
+    }
+
+    let delay = isDeleting ? 40 : 80;
+
+    if (!isDeleting && charIndex === current.length) {
+      delay = 2200;
+      isDeleting = true;
+    } else if (isDeleting && charIndex === 0) {
+      isDeleting = false;
+      phraseIndex = (phraseIndex + 1) % phrases.length;
+      delay = 350;
+    }
+
+    setTimeout(type, delay);
   }
 
-  let delay = isDeleting ? 40 : 80;
-
-  if (!isDeleting && charIndex === current.length) {
-    delay = 2200;
-    isDeleting = true;
-  } else if (isDeleting && charIndex === 0) {
-    isDeleting = false;
-    phraseIndex = (phraseIndex + 1) % phrases.length;
-    delay = 350;
-  }
-
-  setTimeout(type, delay);
+  setTimeout(type, 1000);
 }
-
-setTimeout(type, 1000);
 
 /* =========================================
    Nav Dropdowns (click to toggle)

@@ -11,7 +11,6 @@
           <a href="#" class="nav-dropdown-toggle">Sports</a>
           <ul class="nav-dropdown-menu">
             <li><a href="baseball.php">MLB Leaders</a></li>
-            <li>Test Second Row</li>
           </ul>
         </li>
         <li class="nav-dropdown">

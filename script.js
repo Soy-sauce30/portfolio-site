@@ -42,6 +42,28 @@ function type() {
 setTimeout(type, 1000);
 
 /* =========================================
+   Nav Dropdowns (click to toggle)
+   ========================================= */
+document.querySelectorAll('.nav-dropdown-toggle').forEach(toggle => {
+  toggle.addEventListener('click', e => {
+    e.preventDefault();
+    const dropdown = toggle.closest('.nav-dropdown');
+    const wasOpen = dropdown.classList.contains('open');
+    // Close all dropdowns first
+    document.querySelectorAll('.nav-dropdown.open').forEach(d => d.classList.remove('open'));
+    // Toggle the clicked one
+    if (!wasOpen) dropdown.classList.add('open');
+  });
+});
+
+// Close dropdowns when clicking outside
+document.addEventListener('click', e => {
+  if (!e.target.closest('.nav-dropdown')) {
+    document.querySelectorAll('.nav-dropdown.open').forEach(d => d.classList.remove('open'));
+  }
+});
+
+/* =========================================
    Nav Scroll Effect
    ========================================= */
 const nav = document.getElementById('nav');

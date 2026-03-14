@@ -6,12 +6,18 @@
   <title>MLB Leaders</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="baseball.css">
+  <script>
+    (function(){var t=localStorage.getItem('theme')||(window.matchMedia('(prefers-color-scheme:light)').matches?'light':'dark');document.documentElement.setAttribute('data-theme',t)})();
+  </script>
 </head>
 <body>
 
-  <div class="wrap">
+  <?php include 'header.php'; ?>
+
+  <div class="wrap" style="padding-top: 5rem;">
 
     <h1 class="page-title">MLB Leaders</h1>
 
@@ -75,7 +81,6 @@
           <option value="2023">2023</option>
         </select>
       </div>
-      <a href="index.html" class="back-link">&larr; Home</a>
     </div>
 
     <!-- Rankings -->
@@ -93,6 +98,10 @@
 
   </div>
 
+  <?php include 'footer.php'; ?>
+
+  <script src="script.js"></script>
   <script src="baseball.js"></script>
+  <script src="theme.js"></script>
 </body>
 </html>

@@ -11,6 +11,7 @@
 </head>
 <body>
 
+<<<<<<< HEAD:index.html
   <!-- Navigation -->
   <nav class="nav" id="nav">
     <div class="nav-container">
@@ -26,6 +27,10 @@
       </ul>
     </div>
   </nav>
+=======
+  <!-- Header -->
+  <?php include 'header.php';?>
+>>>>>>> c302c981852cbca1d9092b202728e11845c7c50e:old_stuff/index-old.php
 
   <!-- Hero Section -->
   <section class="hero" id="home">
@@ -174,12 +179,8 @@
     </div>
   </section>
 
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="container">
-      <p>Built by Sawyer &middot; 2026</p>
-    </div>
-  </footer>
+<!-- Footer -->
+<?php include 'footer.php';?>
 
   <script src="script.js"></script>
 

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sawyer — Developer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script>
+    (function(){var t=localStorage.getItem('theme')||(window.matchMedia('(prefers-color-scheme:light)').matches?'light':'dark');document.documentElement.setAttribute('data-theme',t)})();
+  </script>
+</head>
+<body>
+
+  <!-- Header -->
+  <?php include 'header.php';?>
+
+  <!-- Hero Section -->
+  <section class="hero" id="home">
+    <div class="hero-content">
+      <h1 class="hero-name">Hi, I'm <span class="accent">Sawyer A</span></h1>
+      <div class="hero-tagline">
+        I build <span class="typed-text" id="typedText"></span><span class="cursor">|</span>
+      </div>
+      <p class="hero-desc">Developer crafting fast, clean, and thoughtful web experiences.</p>
+      <div class="hero-ctas">
+        <a href="#projects" class="btn btn-primary">View My Work</a>
+        <a href="#contact" class="btn btn-outline">Get In Touch</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section class="about" id="about">
+    <div class="container">
+      <h2 class="section-title">About Me</h2>
+      <div class="about-grid">
+        <div class="about-text">
+          <p>I'm a developer who loves turning ideas into reality through clean code and thoughtful design. Whether it's a complex web app or a simple landing page, I bring the same level of care to every project.</p>
+          <p>When I'm not coding, you can find me exploring new technologies, contributing to open source, or thinking about the future of the web.</p>
+        </div>
+        <div class="about-card">
+          <div class="code-block">
+            <div class="code-header">
+              <span class="dot red"></span>
+              <span class="dot yellow"></span>
+              <span class="dot green"></span>
+            </div>
+            <pre class="code-text"><span class="code-keyword">const</span> <span class="code-var">sawyer</span> = {
+  <span class="code-prop">role</span>: <span class="code-string">"Developer"</span>,
+  <span class="code-prop">location</span>: <span class="code-string">"Earth"</span>,
+  <span class="code-prop">passion</span>: <span class="code-string">"Building cool stuff"</span>,
+  <span class="code-prop">available</span>: <span class="code-bool">true</span>,
+  <span class="code-prop">coffee</span>: <span class="code-string">"always"</span>,
+};</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Skills Section -->
+  <section class="skills" id="skills">
+    <div class="container">
+      <h2 class="section-title">Tech Stack</h2>
+      <div class="skills-grid">
+        <div class="skill-card">
+          <h3>Frontend</h3>
+          <div class="skill-tags">
+            <span>HTML / CSS</span>
+            <span>JavaScript</span>
+            <span>React</span>
+            <span>TypeScript</span>
+          </div>
+        </div>
+        <div class="skill-card">
+          <h3>Backend</h3>
+          <div class="skill-tags">
+            <span>Node.js</span>
+            <span>Python</span>
+            <span>REST APIs</span>
+            <span>Databases</span>
+          </div>
+        </div>
+        <div class="skill-card">
+          <h3>Tools</h3>
+          <div class="skill-tags">
+            <span>Git</span>
+            <span>VS Code</span>
+            <span>Figma</span>
+            <span>Vercel</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects Section -->
+  <section class="projects" id="projects">
+    <div class="container">
+      <h2 class="section-title">Projects</h2>
+      <div class="projects-grid">
+        <div class="project-card">
+          <div class="project-tag">Web App</div>
+          <h3 class="project-title">Project One</h3>
+          <p class="project-desc">An awesome project that solves real problems with elegant solutions and a polished interface.</p>
+          <div class="project-stack">
+            <span>React</span>
+            <span>Node.js</span>
+            <span>MongoDB</span>
+          </div>
+          <div class="project-links">
+            <a href="#" class="project-link">GitHub &rarr;</a>
+            <a href="#" class="project-link">Live &rarr;</a>
+          </div>
+        </div>
+        <div class="project-card featured">
+          <div class="project-tag">Featured</div>
+          <h3 class="project-title">Project Two</h3>
+          <p class="project-desc">A featured project with complex architecture, beautiful design, and seamless user experience.</p>
+          <div class="project-stack">
+            <span>TypeScript</span>
+            <span>Next.js</span>
+            <span>Tailwind</span>
+          </div>
+          <div class="project-links">
+            <a href="#" class="project-link">GitHub &rarr;</a>
+            <a href="#" class="project-link">Live &rarr;</a>
+          </div>
+        </div>
+        <div class="project-card">
+          <div class="project-tag">Open Source</div>
+          <h3 class="project-title">Project Three</h3>
+          <p class="project-desc">An open source tool the community loves, built with clean code and thoughtful architecture.</p>
+          <div class="project-stack">
+            <span>Python</span>
+            <span>FastAPI</span>
+            <span>Docker</span>
+          </div>
+          <div class="project-links">
+            <a href="#" class="project-link">GitHub &rarr;</a>
+            <a href="#" class="project-link">Live &rarr;</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section class="contact" id="contact">
+    <div class="container">
+      <h2 class="section-title">Get In Touch</h2>
+      <p class="contact-desc">Have a project in mind or just want to chat? My inbox is always open.</p>
+      <div class="contact-card">
+        <a href="mailto:hello@sawyer.dev" class="contact-email">hello@sawyer.dev</a>
+        <div class="contact-socials">
+          <a href="#" class="social-link">GitHub</a>
+          <a href="#" class="social-link">Twitter</a>
+          <a href="#" class="social-link">LinkedIn</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<!-- Footer -->
+<?php include 'footer.php';?>
+
+  <script src="script.js"></script>
+  <script src="theme.js"></script>
+</body>
+</html>

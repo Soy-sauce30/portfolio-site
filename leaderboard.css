@@ -115,13 +115,7 @@ body::before {
   background:
     repeating-conic-gradient(#0a0a0a 0% 25%, #070707 0% 50%) 0 0 / 4px 4px,
     linear-gradient(145deg, #0c0c0c 0%, #050505 30%, #0a0808 50%, #060606 70%, #080706 100%);
-<<<<<<< HEAD
 }
-=======
-  opacity: 1;
-}
-
->>>>>>> c302c981852cbca1d9092b202728e11845c7c50e
 
 body > * {
   position: relative;

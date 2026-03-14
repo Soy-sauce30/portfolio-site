@@ -35,46 +35,16 @@ body {
   position: relative;
 }
 
-/* Netherite texture + enchant glint */
-body::before,
-body::after {
+/* Netherite texture */
+body::before {
   content: '';
   position: fixed;
   inset: 0;
   pointer-events: none;
   z-index: 0;
-}
-
-/* Netherite-like noise texture */
-body::before {
   background:
     repeating-conic-gradient(#0a0a0a 0% 25%, #070707 0% 50%) 0 0 / 4px 4px,
     linear-gradient(145deg, #0c0c0c 0%, #050505 30%, #0a0808 50%, #060606 70%, #080706 100%);
-  opacity: 1;
-}
-
-/* Enchantment glint sweep */
-body::after {
-  background: linear-gradient(
-    -45deg,
-    transparent 0%,
-    transparent 40%,
-    rgba(120, 80, 200, 0.07) 45%,
-    rgba(100, 60, 180, 0.13) 48%,
-    rgba(140, 100, 220, 0.10) 50%,
-    rgba(100, 60, 180, 0.13) 52%,
-    rgba(120, 80, 200, 0.07) 55%,
-    transparent 60%,
-    transparent 100%
-  );
-  background-size: 400% 400%;
-  opacity: 0.5;
-  animation: enchantGlint 12s ease-in-out infinite;
-}
-
-@keyframes enchantGlint {
-  0%, 100% { background-position: 150% 150%; }
-  50% { background-position: -50% -50%; }
 }
 
 /* Ensure content sits above the background */

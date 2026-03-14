@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Soccer Standings</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="soccer.css">
+</head>
+<body>
+
+  <div class="wrap">
+
+    <h1 class="page-title">Soccer Standings</h1>
+
+    <!-- League tabs -->
+    <nav class="league-tabs" id="leagueTabs">
+      <button class="league-tab active" data-league="eng.1">
+        <span class="tab-name">Premier League</span>
+      </button>
+      <button class="league-tab" data-league="esp.1">
+        <span class="tab-name">La Liga</span>
+      </button>
+      <button class="league-tab" data-league="ger.1">
+        <span class="tab-name">Bundesliga</span>
+      </button>
+      <button class="league-tab" data-league="ita.1">
+        <span class="tab-name">Serie A</span>
+      </button>
+      <button class="league-tab" data-league="fra.1">
+        <span class="tab-name">Ligue 1</span>
+      </button>
+      <button class="league-tab" data-league="usa.1">
+        <span class="tab-name">MLS</span>
+      </button>
+    </nav>
+
+    <!-- Info bar -->
+    <div class="info-bar">
+      <div class="fg">
+        <label>Sort by</label>
+        <select id="statSort">
+          <option value="rank">Rank</option>
+          <option value="points">Pts</option>
+          <option value="wins">W</option>
+          <option value="pointDifferential">GD</option>
+          <option value="pointsFor">GF</option>
+          <option value="gamesPlayed">GP</option>
+        </select>
+      </div>
+      <a href="index.html" class="back-link">&larr; Home</a>
+    </div>
+
+    <!-- Standings -->
+    <div class="rankings-card">
+      <div id="content">
+        <div class="state" id="loading">Loading...</div>
+        <div class="state" id="empty" style="display:none;">No standings found.</div>
+        <div class="state" id="error" style="display:none;">Failed to load data.</div>
+      </div>
+    </div>
+
+    <footer class="foot">
+      Data from <a href="https://www.espn.com" target="_blank">ESPN</a>
+    </footer>
+
+  </div>
+
+  <script src="soccer.js"></script>
+</body>
+</html>

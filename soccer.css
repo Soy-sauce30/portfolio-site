@@ -1,5 +1,5 @@
 /* =========================================
-   MLB Leaders — Netherite Theme
+   Soccer Standings — Netherite Theme
    ========================================= */
 
 :root {
@@ -16,6 +16,10 @@
   --silver: #bdbdbd;
   --bronze: #ffab40;
   --accent: #a78bfa;
+  --green: #66bb6a;
+  --blue: #42a5f5;
+  --orange: #ffa726;
+  --red: #ef5350;
 }
 
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -52,7 +56,7 @@ a:hover { color: var(--fg); }
    Layout
    ========================================= */
 .wrap {
-  max-width: 1100px;
+  max-width: 900px;
   margin: 0 auto;
   padding: 1rem 1.5rem 2rem;
 }
@@ -63,16 +67,16 @@ a:hover { color: var(--fg); }
   font-weight: 800;
   letter-spacing: -0.02em;
   padding: 1.25rem 0 0;
-  background: linear-gradient(135deg, #e2e8f0 0%, #a78bfa 60%, #ffd54f 100%);
+  background: linear-gradient(135deg, #e2e8f0 0%, #66bb6a 60%, #ffd54f 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 /* =========================================
-   Position Tabs
+   League Tabs
    ========================================= */
-.pos-tabs {
+.league-tabs {
   display: flex;
   gap: 0;
   justify-content: center;
@@ -81,8 +85,8 @@ a:hover { color: var(--fg); }
   -webkit-overflow-scrolling: touch;
 }
 
-.pos-tab {
-  padding: 0.45rem 0.9rem;
+.league-tab {
+  padding: 0.5rem 1rem;
   border: none;
   background: transparent;
   color: var(--muted);
@@ -95,17 +99,17 @@ a:hover { color: var(--fg); }
   white-space: nowrap;
 }
 
-.pos-tab:hover { color: var(--fg); }
+.league-tab:hover { color: var(--fg); }
 
-.pos-tab.active {
+.league-tab.active {
   color: var(--fg);
-  border-bottom-color: var(--accent);
+  border-bottom-color: var(--green);
 }
 
 /* =========================================
-   Filter Bar
+   Info Bar
    ========================================= */
-.filter-bar {
+.info-bar {
   display: flex;
   align-items: flex-end;
   gap: 0.75rem;
@@ -137,7 +141,7 @@ a:hover { color: var(--fg); }
   font-size: 0.78rem;
   outline: none;
   cursor: pointer;
-  min-width: 110px;
+  min-width: 90px;
 }
 
 .fg select:focus { border-color: var(--accent); }
@@ -168,16 +172,16 @@ a:hover { color: var(--fg); }
 }
 
 /* =========================================
-   Stats Table
+   Standings Table
    ========================================= */
-.stats-table {
+.standings-table {
   width: 100%;
   border-collapse: collapse;
   font-size: 0.8rem;
-  min-width: 700px;
+  min-width: 550px;
 }
 
-.stats-table thead th {
+.standings-table thead th {
   padding: 0.5rem 0.5rem;
   text-align: left;
   font-size: 0.68rem;
@@ -192,26 +196,26 @@ a:hover { color: var(--fg); }
   user-select: none;
 }
 
-.stats-table thead th:hover { color: var(--muted); }
-.stats-table thead th.active { color: var(--accent); }
+.standings-table thead th:hover { color: var(--muted); }
+.standings-table thead th.active { color: var(--accent); }
 
-.stats-table tbody tr {
+.standings-table tbody tr {
   border-bottom: 1px solid rgba(255, 255, 255, 0.03);
   transition: background 0.1s;
 }
 
-.stats-table tbody tr:hover { background: var(--row-hover); }
-.stats-table tbody tr:nth-child(even) { background: var(--row-alt); }
-.stats-table tbody tr:nth-child(even):hover { background: var(--row-hover); }
+.standings-table tbody tr:hover { background: var(--row-hover); }
+.standings-table tbody tr:nth-child(even) { background: var(--row-alt); }
+.standings-table tbody tr:nth-child(even):hover { background: var(--row-hover); }
 
-.stats-table td {
-  padding: 0.45rem 0.5rem;
+.standings-table td {
+  padding: 0.5rem 0.5rem;
   white-space: nowrap;
 }
 
 /* Column types */
 .col-rank {
-  width: 36px;
+  width: 30px;
   text-align: center;
   font-weight: 700;
   color: var(--dim);
@@ -221,34 +225,46 @@ a:hover { color: var(--fg); }
 .col-rank.silver { color: var(--silver); }
 .col-rank.bronze { color: var(--bronze); }
 
-.col-name {
-  font-weight: 500;
-  max-width: 180px;
-  overflow: hidden;
-  text-overflow: ellipsis;
+/* Zone indicators */
+.col-zone {
+  width: 4px;
+  padding: 0 !important;
 }
+
+.zone-ucl { background: var(--green); }
+.zone-uel { background: var(--orange); }
+.zone-uecl { background: var(--blue); }
+.zone-rel { background: var(--red); }
 
 .col-team {
-  color: var(--muted);
-  font-size: 0.72rem;
-  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-weight: 500;
 }
 
-.col-pos {
-  color: var(--dim);
-  font-size: 0.72rem;
-  font-weight: 600;
+.team-logo {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  object-fit: contain;
 }
 
 .col-stat {
-  text-align: right;
+  text-align: center;
   font-variant-numeric: tabular-nums;
   color: var(--muted);
+  min-width: 36px;
 }
 
 .col-stat.active {
   color: var(--accent);
   font-weight: 700;
+}
+
+.col-stat.pts {
+  font-weight: 700;
+  color: var(--fg);
 }
 
 /* =========================================
@@ -269,8 +285,8 @@ a:hover { color: var(--fg); }
 @media (max-width: 700px) {
   .wrap { padding: 0.5rem 0.5rem 1rem; }
   .rankings-card { padding: 0.5rem; }
-  .filter-bar { flex-direction: column; align-items: stretch; gap: 0.5rem; }
+  .info-bar { flex-direction: column; align-items: stretch; gap: 0.5rem; }
   .fg select { width: 100%; }
   .back-link { margin-left: 0; }
-  .pos-tabs { justify-content: flex-start; padding: 0.75rem 0; }
+  .league-tabs { justify-content: flex-start; }
 }

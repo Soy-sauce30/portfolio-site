@@ -1,137 +1,180 @@
 (() => {
-  const STATS_API = 'https://api.nhle.com/stats/rest/en';
-  const WEB_API   = 'https://api-web.nhle.com/v1';
-  const SEASON    = 20252026;
+  const SEASON = 2026;
+  const STATS_URL    = 'https://site.web.api.espn.com/apis/common/v3/sports/hockey/nhl/statistics/byathlete';
+  const STANDINGS_URL = 'https://site.api.espn.com/apis/v2/sports/hockey/nhl/standings?level=3';
 
-  // Skater stat metadata
+  // Skater stat metadata (ESPN name -> label)
   const SKATER_STATS = {
-    points:           { label: 'PTS', key: 'points' },
-    goals:            { label: 'G',   key: 'goals' },
-    assists:          { label: 'A',   key: 'assists' },
-    plusMinus:        { label: '+/-', key: 'plusMinus' },
-    shots:            { label: 'SOG', key: 'shots' },
-    ppGoals:          { label: 'PPG', key: 'ppGoals' },
-    shGoals:          { label: 'SHG', key: 'shGoals' },
-    gameWinningGoals: { label: 'GWG', key: 'gameWinningGoals' },
-    penaltyMinutes:   { label: 'PIM', key: 'penaltyMinutes' },
-    gamesPlayed:      { label: 'GP',  key: 'gamesPlayed' },
+    points:           { label: 'PTS' },
+    goals:            { label: 'G' },
+    assists:          { label: 'A' },
+    plusMinus:        { label: '+/-' },
+    shotsTotal:       { label: 'SOG' },
+    powerPlayGoals:   { label: 'PPG' },
+    gameWinningGoals: { label: 'GWG' },
+    shootingPct:      { label: 'SH%', rate: true, decimals: 1, percent: true },
+    penalties:        { label: 'PIM' },  // we alias from penalties array
+    games:            { label: 'GP' },
   };
 
-  const SKATER_COLUMNS = ['gamesPlayed', 'goals', 'assists', 'points', 'plusMinus', 'shots', 'penaltyMinutes'];
+  const SKATER_COLUMNS = ['games', 'goals', 'assists', 'points', 'plusMinus', 'shotsTotal', 'penalties'];
 
   // Goalie stat metadata
   const GOALIE_STATS = {
-    wins:                { label: 'W',    key: 'wins' },
-    losses:              { label: 'L',    key: 'losses' },
-    otLosses:            { label: 'OTL',  key: 'otLosses' },
-    savePct:             { label: 'SV%',  key: 'savePct',  rate: true, decimals: 3 },
-    goalsAgainstAverage: { label: 'GAA',  key: 'goalsAgainstAverage', decimals: 2 },
-    shutouts:            { label: 'SO',   key: 'shutouts' },
-    saves:               { label: 'SV',   key: 'saves' },
-    shotsAgainst:        { label: 'SA',   key: 'shotsAgainst' },
-    gamesPlayed:         { label: 'GP',   key: 'gamesPlayed' },
+    wins:        { label: 'W' },
+    losses:      { label: 'L' },
+    otLosses:    { label: 'OTL' },
+    savePct:     { label: 'SV%', rate: true, decimals: 3 },
+    goalsAgainstAvg: { label: 'GAA', decimals: 2 },
+    shutouts:    { label: 'SO' },
+    saves:       { label: 'SV' },
+    shotsAgainst:{ label: 'SA' },
+    games:       { label: 'GP' },
   };
 
-  const GOALIE_COLUMNS = ['gamesPlayed', 'wins', 'losses', 'otLosses', 'savePct', 'goalsAgainstAverage', 'shutouts'];
+  const GOALIE_COLUMNS = ['games', 'wins', 'losses', 'otLosses', 'savePct', 'goalsAgainstAvg', 'shutouts'];
 
   // State
   let skaters = [];
   let goalies = [];
   let standings = [];
-  let teamMeta = {};  // abbr -> { conference, division, name, logo }
+  let teamMeta = {};  // abbr -> { name, logo, conference, division }
 
   let state = {
-    view: 'players',         // 'players' | 'standings'
-    pos: 'all',              // 'all' | 'C' | 'L' | 'R' | 'D' | 'G'
+    view: 'players',
+    pos: 'all',
     conference: 'all',
     division: 'all',
     team: 'all',
     stat: 'points',
-    standingsView: 'division', // 'division' | 'conference' | 'league'
+    standingsView: 'division',
   };
 
   // DOM
   const $ = id => document.getElementById(id);
   const els = {
-    viewTabs:       $('viewTabs'),
-    playersView:    $('playersView'),
-    standingsView:  $('standingsView'),
-    posTabs:        $('posTabs'),
-    confFilter:     $('confFilter'),
-    divFilter:      $('divFilter'),
-    teamFilter:     $('teamFilter'),
-    statSort:       $('statSort'),
-    playersContent: $('playersContent'),
-    playersLoading: $('playersLoading'),
-    playersEmpty:   $('playersEmpty'),
-    playersError:   $('playersError'),
+    viewTabs:         $('viewTabs'),
+    playersView:      $('playersView'),
+    standingsView:    $('standingsView'),
+    posTabs:          $('posTabs'),
+    confFilter:       $('confFilter'),
+    divFilter:        $('divFilter'),
+    teamFilter:       $('teamFilter'),
+    statSort:         $('statSort'),
+    playersContent:   $('playersContent'),
+    playersLoading:   $('playersLoading'),
+    playersEmpty:     $('playersEmpty'),
+    playersError:     $('playersError'),
     standingsTabs:    $('standingsTabs'),
     standingsContent: $('standingsContent'),
     standingsLoading: $('standingsLoading'),
     standingsError:   $('standingsError'),
   };
 
-  const esc = s => { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; };
+  const esc = s => { const d = document.createElement('div'); d.textContent = String(s); return d.innerHTML; };
 
   // ── API ────────────────────────────────────
-  async function fetchSkaters() {
-    const url = `${STATS_API}/skater/summary?limit=-1&cayenneExp=seasonId=${SEASON}%20and%20gameTypeId=2`;
-    const res = await fetch(url);
-    const data = await res.json();
-    skaters = (data.data || []).map(p => ({
-      id: p.playerId,
-      name: p.skaterFullName || '?',
-      pos: p.positionCode || '?',
-      team: p.teamAbbrevs || '?',
-      stats: p,
-    }));
-  }
-
-  async function fetchGoalies() {
-    const url = `${STATS_API}/goalie/summary?limit=-1&cayenneExp=seasonId=${SEASON}%20and%20gameTypeId=2`;
-    const res = await fetch(url);
-    const data = await res.json();
-    goalies = (data.data || []).map(p => ({
-      id: p.playerId,
-      name: p.goalieFullName || '?',
-      pos: 'G',
-      team: p.teamAbbrevs || '?',
-      stats: p,
-    }));
-  }
-
   async function fetchStandings() {
-    const res = await fetch(`${WEB_API}/standings/now`);
+    const res = await fetch(STANDINGS_URL);
     const data = await res.json();
-    standings = (data.standings || []).map(t => ({
-      name: t.teamName?.default || t.placeName?.default || '?',
-      abbr: t.teamAbbrev?.default || t.teamAbbrev || '?',
-      logo: t.teamLogo || '',
-      conference: t.conferenceName || '',
-      division: t.divisionName || '',
-      gp: t.gamesPlayed || 0,
-      w: t.wins || 0,
-      l: t.losses || 0,
-      otl: t.otLosses || 0,
-      pts: t.points || 0,
-      gf: t.goalFor || 0,
-      ga: t.goalAgainst || 0,
-      diff: t.goalDifferential || 0,
-      streak: (t.streakCode || '') + (t.streakCount || ''),
-    }));
 
-    // Build team metadata lookup
+    standings = []; // flat list with meta
     teamMeta = {};
-    standings.forEach(t => {
-      teamMeta[t.abbr] = {
-        name: t.name,
-        logo: t.logo,
-        conference: t.conference,
-        division: t.division,
-      };
+
+    (data.children || []).forEach(conf => {
+      const conferenceName = (conf.name || '').replace(' Conference', ''); // Eastern / Western
+      (conf.children || []).forEach(div => {
+        const divisionName = (div.name || '').replace(' Division', ''); // Atlantic / Metropolitan / Central / Pacific
+        const entries = (div.standings || {}).entries || [];
+        entries.forEach(e => {
+          const team = e.team || {};
+          const stats = {};
+          (e.stats || []).forEach(s => { stats[s.name] = s.value; stats[s.name + '_d'] = s.displayValue; });
+
+          const entry = {
+            name: team.displayName || team.name || '?',
+            abbr: (team.abbreviation || '').toUpperCase(),
+            logo: (team.logos || [{}])[0].href || '',
+            conference: conferenceName,
+            division: divisionName,
+            gp: stats.gamesPlayed || 0,
+            w: stats.wins || 0,
+            l: stats.losses || 0,
+            otl: stats.otLosses || stats.overtimeLosses || 0,
+            pts: stats.points || 0,
+            gf: stats.pointsFor || 0,
+            ga: stats.pointsAgainst || 0,
+            diff: stats.pointDifferential || 0,
+            streak: stats.streak_d || '',
+          };
+          standings.push(entry);
+          if (entry.abbr) teamMeta[entry.abbr] = {
+            name: entry.name,
+            logo: entry.logo,
+            conference: entry.conference,
+            division: entry.division,
+          };
+        });
+      });
     });
 
     populateTeamDropdown();
+  }
+
+  async function fetchAthletesPage(page) {
+    const url = `${STATS_URL}?limit=500&page=${page}&season=${SEASON}&seasontype=2`;
+    const res = await fetch(url);
+    return res.json();
+  }
+
+  async function fetchAthletes() {
+    // Fetch all 3 pages in parallel (1038 athletes, 500 per page)
+    const [p1, p2, p3] = await Promise.all([
+      fetchAthletesPage(1),
+      fetchAthletesPage(2),
+      fetchAthletesPage(3),
+    ]);
+
+    // Build category name mappings from page 1 (same across all pages)
+    const catNames = {};  // catName -> array of stat names
+    ((p1.categories) || []).forEach(c => { catNames[c.name] = c.names || []; });
+
+    skaters = [];
+    goalies = [];
+
+    [p1, p2, p3].forEach(page => {
+      (page.athletes || []).forEach(a => {
+        const person = a.athlete || {};
+        const pos = person.position?.abbreviation || '?';
+        const teamAbbr = (person.teamShortName || '').toUpperCase();
+
+        // Merge category values into a flat stats object
+        const stats = {};
+        (a.categories || []).forEach(cat => {
+          const names = catNames[cat.name] || [];
+          (cat.values || []).forEach((v, i) => {
+            if (names[i]) stats[names[i]] = v;
+          });
+        });
+
+        // PIM comes as its own category "penalties" with one value
+        const pen = (a.categories || []).find(c => c.name === 'penalties');
+        if (pen) stats.penalties = (pen.values || [])[0] || 0;
+
+        // Goaltending stats are under "defensive" — alias GAA for clarity
+        if (stats['goalsAgainstAverage'] != null) stats.goalsAgainstAvg = stats['goalsAgainstAverage'];
+
+        const entry = {
+          name: person.displayName || '?',
+          pos,
+          team: teamAbbr,
+          stats,
+        };
+
+        if (pos === 'G') goalies.push(entry);
+        else skaters.push(entry);
+      });
+    });
   }
 
   function populateTeamDropdown() {
@@ -153,20 +196,20 @@
       });
   }
 
-  // ── Players filter/sort ────────────────────
+  // ── Filter / Sort ──────────────────────────
   function getPlayerList() {
     const isGoalie = state.pos === 'G';
     let list = isGoalie ? [...goalies] : [...skaters];
 
-    // Position filter
+    // Skater position filter
     if (!isGoalie && state.pos !== 'all') {
       list = list.filter(p => p.pos === state.pos);
     }
 
-    // Team meta filters
+    // Conference / division / team filters (via teamMeta)
     list = list.filter(p => {
       const meta = teamMeta[p.team];
-      if (!meta) return true; // no meta yet, keep
+      if (!meta) return state.conference === 'all' && state.division === 'all' && state.team === 'all';
       if (state.conference !== 'all' && meta.conference !== state.conference) return false;
       if (state.division !== 'all' && meta.division !== state.division) return false;
       if (state.team !== 'all' && p.team !== state.team) return false;
@@ -174,31 +217,25 @@
     });
 
     // Sort
-    const stat = isGoalie ? getValidGoalieStat(state.stat) : state.stat;
-    const meta = (isGoalie ? GOALIE_STATS : SKATER_STATS)[stat];
-    const key = meta?.key || stat;
+    const validStat = isGoalie
+      ? (GOALIE_STATS[state.stat] ? state.stat : 'wins')
+      : (SKATER_STATS[state.stat] ? state.stat : 'points');
 
     list.sort((a, b) => {
-      let va = a.stats[key] ?? 0;
-      let vb = b.stats[key] ?? 0;
-      // GAA sorts ascending (lower is better)
-      if (stat === 'goalsAgainstAverage') return va - vb;
+      const va = a.stats[validStat] ?? 0;
+      const vb = b.stats[validStat] ?? 0;
+      // GAA: lower is better
+      if (validStat === 'goalsAgainstAvg') return va - vb;
       return vb - va;
     });
 
-    return { list, isGoalie };
+    return { list, isGoalie, sortStat: validStat };
   }
 
-  function getValidGoalieStat(s) {
-    if (GOALIE_STATS[s]) return s;
-    return 'wins'; // default when switching to goalie view
-  }
-
-  // ── Render players ─────────────────────────
+  // ── Render Players ─────────────────────────
   function renderPlayers() {
-    const { list, isGoalie } = getPlayerList();
+    const { list, isGoalie, sortStat } = getPlayerList();
 
-    // Remove old table
     const old = els.playersContent.querySelector('.stats-table');
     if (old) old.remove();
 
@@ -211,7 +248,6 @@
 
     const META = isGoalie ? GOALIE_STATS : SKATER_STATS;
     const COLS = isGoalie ? GOALIE_COLUMNS : SKATER_COLUMNS;
-    const sortStat = isGoalie ? getValidGoalieStat(state.stat) : state.stat;
 
     let h = '<table class="stats-table"><thead><tr>';
     h += '<th class="col-rank">#</th>';
@@ -232,14 +268,15 @@
       h += `<td class="col-rank ${medal}">${i + 1}</td>`;
       h += `<td class="col-name">${esc(p.name)}</td>`;
       h += `<td class="col-team">${esc(p.team)}</td>`;
-      h += `<td class="col-pos">${esc(formatPos(p.pos))}</td>`;
+      h += `<td class="col-pos">${esc(p.pos)}</td>`;
 
       COLS.forEach(k => {
         const cls = k === sortStat ? ' active' : '';
-        const val = formatStat(k, p.stats[META[k].key], META[k]);
+        const meta = META[k];
+        const val = formatStat(p.stats[k], meta);
         let extra = '';
-        if (k === 'plusMinus' && p.stats.plusMinus > 0) extra = ' plus';
-        if (k === 'plusMinus' && p.stats.plusMinus < 0) extra = ' minus';
+        if (k === 'plusMinus' && (p.stats.plusMinus || 0) > 0) extra = ' plus';
+        if (k === 'plusMinus' && (p.stats.plusMinus || 0) < 0) extra = ' minus';
         h += `<td class="col-stat${cls}${extra}">${val}</td>`;
       });
 
@@ -260,34 +297,26 @@
     });
   }
 
-  function formatPos(pos) {
-    if (pos === 'L') return 'LW';
-    if (pos === 'R') return 'RW';
-    return pos;
-  }
-
-  function formatStat(key, val, meta) {
+  function formatStat(val, meta) {
     if (val == null) return '-';
     if (meta?.rate) {
-      // save percentage, shown as .XXX
-      const n = typeof val === 'string' ? parseFloat(val) : val;
+      const n = +val;
+      if (meta.percent) return (n).toFixed(meta.decimals || 1) + '%';
       return n.toFixed(meta.decimals || 3).replace(/^0/, '');
     }
     if (meta?.decimals) {
-      const n = typeof val === 'string' ? parseFloat(val) : val;
-      return n.toFixed(meta.decimals);
+      return (+val).toFixed(meta.decimals);
     }
-    if (key === 'plusMinus' && val > 0) return '+' + val;
+    if (typeof val === 'number' && val > 0 && meta?.label === '+/-') return '+' + val;
     return val;
   }
 
-  // ── Render standings ───────────────────────
+  // ── Render Standings ───────────────────────
   function renderStandings() {
     const old = els.standingsContent.querySelector('.standings-wrap');
     if (old) old.remove();
 
     hideStates('standings');
-
     if (standings.length === 0) return;
 
     let h = '<div class="standings-wrap">';
@@ -332,7 +361,6 @@
     h += '<th class="col-stat">GF</th>';
     h += '<th class="col-stat">GA</th>';
     h += '<th class="col-stat">DIFF</th>';
-    h += '<th class="col-stat">STRK</th>';
     h += '</tr></thead><tbody>';
 
     teams.forEach((t, i) => {
@@ -341,8 +369,7 @@
       const diffCls = t.diff > 0 ? ' plus' : t.diff < 0 ? ' minus' : '';
       h += '<tr>';
       h += `<td class="col-rank ${medal}">${i + 1}</td>`;
-      h += '<td>';
-      h += '<div class="col-team-cell">';
+      h += `<td><div class="col-team-cell">`;
       if (t.logo) h += `<img class="team-logo" src="${esc(t.logo)}" alt="" loading="lazy">`;
       h += `${esc(t.name)}</div></td>`;
       h += `<td class="col-stat">${t.gp}</td>`;
@@ -353,7 +380,6 @@
       h += `<td class="col-stat">${t.gf}</td>`;
       h += `<td class="col-stat">${t.ga}</td>`;
       h += `<td class="col-stat${diffCls}">${diff}</td>`;
-      h += `<td class="col-stat">${esc(t.streak || '-')}</td>`;
       h += '</tr>';
     });
 
@@ -372,12 +398,12 @@
     }
   }
 
-  // ── Stat dropdown swap for goalies ─────────
+  // ── Swap stat dropdown for goalies ─────────
   function updateStatDropdownForPosition() {
     const isGoalie = state.pos === 'G';
     const entries = isGoalie
-      ? [['wins','W'],['savePct','SV%'],['goalsAgainstAverage','GAA'],['shutouts','SO'],['saves','SV'],['losses','L'],['otLosses','OTL'],['gamesPlayed','GP']]
-      : [['points','PTS'],['goals','G'],['assists','A'],['plusMinus','+/-'],['shots','SOG'],['ppGoals','PPG'],['shGoals','SHG'],['gameWinningGoals','GWG'],['penaltyMinutes','PIM'],['gamesPlayed','GP']];
+      ? [['wins','W'],['savePct','SV%'],['goalsAgainstAvg','GAA'],['shutouts','SO'],['saves','SV'],['losses','L'],['otLosses','OTL'],['games','GP']]
+      : [['points','PTS'],['goals','G'],['assists','A'],['plusMinus','+/-'],['shotsTotal','SOG'],['powerPlayGoals','PPG'],['gameWinningGoals','GWG'],['penalties','PIM'],['games','GP']];
 
     els.statSort.innerHTML = '';
     entries.forEach(([v, l]) => {
@@ -387,7 +413,6 @@
       els.statSort.appendChild(opt);
     });
 
-    // Adjust state.stat to be valid for the current role
     if (isGoalie && !GOALIE_STATS[state.stat]) state.stat = 'wins';
     if (!isGoalie && !SKATER_STATS[state.stat]) state.stat = 'points';
     els.statSort.value = state.stat;
@@ -459,9 +484,9 @@
   // ── Init ───────────────────────────────────
   async function init() {
     try {
-      // Fetch standings first so teamMeta is populated before player render
+      // Fetch standings first so teamMeta is ready
       await fetchStandings();
-      await Promise.all([fetchSkaters(), fetchGoalies()]);
+      await fetchAthletes();
       renderPlayers();
     } catch (e) {
       console.error('NHL init failed:', e);

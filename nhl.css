@@ -1,0 +1,340 @@
+/* =========================================
+   NHL Leaders — Netherite Theme
+   ========================================= */
+
+:root {
+  --bg: #000000;
+  --card: rgba(20, 14, 35, 0.9);
+  --row: rgba(25, 18, 42, 0.9);
+  --row-hover: rgba(32, 22, 55, 0.92);
+  --row-alt: rgba(22, 16, 38, 0.9);
+  --border: rgba(140, 100, 220, 0.12);
+  --fg: #e2e8f0;
+  --muted: #8a8a9a;
+  --dim: #5a5a6a;
+  --gold: #ffd54f;
+  --silver: #bdbdbd;
+  --bronze: #ffab40;
+  --accent: #a78bfa;
+  --ice: #7dd3fc;
+  --green: #66bb6a;
+  --red: #ef5350;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: 'Inter', -apple-system, sans-serif;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    repeating-conic-gradient(#0a0a0a 0% 25%, #070707 0% 50%) 0 0 / 4px 4px,
+    linear-gradient(145deg, #0c0c0c 0%, #050505 30%, #0a0808 50%, #060606 70%, #080706 100%);
+}
+
+body > * { position: relative; z-index: 1; }
+
+::selection { background: rgba(167, 139, 250, 0.25); color: #a78bfa; }
+a { color: var(--muted); text-decoration: none; }
+a:hover { color: var(--fg); }
+
+/* =========================================
+   Layout
+   ========================================= */
+.wrap {
+  max-width: 1150px;
+  margin: 0 auto;
+  padding: 1rem 1.5rem 2rem;
+}
+
+.page-title {
+  text-align: center;
+  font-size: 1.6rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  padding: 1.25rem 0 0;
+  background: linear-gradient(135deg, #e2e8f0 0%, #7dd3fc 60%, #a78bfa 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* =========================================
+   View toggle (Players / Standings)
+   ========================================= */
+.view-tabs {
+  display: flex;
+  gap: 0.25rem;
+  justify-content: center;
+  padding: 1rem 0 0.5rem;
+}
+
+.view-tab {
+  padding: 0.5rem 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--muted);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.12s;
+}
+
+.view-tab:hover { color: var(--fg); border-color: var(--muted); }
+
+.view-tab.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #0f0f14;
+}
+
+/* =========================================
+   Position tabs
+   ========================================= */
+.pos-tabs {
+  display: flex;
+  gap: 0;
+  justify-content: center;
+  padding: 1rem 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.pos-tab {
+  padding: 0.45rem 0.9rem;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.12s;
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+}
+
+.pos-tab:hover { color: var(--fg); }
+
+.pos-tab.active {
+  color: var(--fg);
+  border-bottom-color: var(--ice);
+}
+
+/* =========================================
+   Filter bar
+   ========================================= */
+.filter-bar {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.fg {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.fg label {
+  font-size: 0.62rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--dim);
+}
+
+.fg select {
+  padding: 0.4rem 0.65rem;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--fg);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.78rem;
+  outline: none;
+  cursor: pointer;
+  min-width: 110px;
+}
+
+.fg select:focus { border-color: var(--accent); }
+
+.back-link {
+  font-size: 0.8rem;
+  font-weight: 500;
+  margin-left: auto;
+  align-self: center;
+}
+
+/* =========================================
+   Card
+   ========================================= */
+.rankings-card {
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 0.75rem;
+  overflow-x: auto;
+}
+
+.state {
+  padding: 3rem;
+  text-align: center;
+  color: var(--dim);
+  font-size: 0.88rem;
+}
+
+/* =========================================
+   Tables (shared)
+   ========================================= */
+.stats-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+  min-width: 720px;
+}
+
+.stats-table thead th {
+  padding: 0.5rem 0.5rem;
+  text-align: left;
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--dim);
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color 0.12s;
+  user-select: none;
+}
+
+.stats-table thead th:hover { color: var(--muted); }
+.stats-table thead th.active { color: var(--accent); }
+
+.stats-table tbody tr {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  transition: background 0.1s;
+}
+
+.stats-table tbody tr:hover { background: var(--row-hover); }
+.stats-table tbody tr:nth-child(even) { background: var(--row-alt); }
+.stats-table tbody tr:nth-child(even):hover { background: var(--row-hover); }
+
+.stats-table td {
+  padding: 0.5rem 0.5rem;
+  white-space: nowrap;
+}
+
+.col-rank {
+  width: 36px;
+  text-align: center;
+  font-weight: 700;
+  color: var(--dim);
+}
+
+.col-rank.gold { color: var(--gold); }
+.col-rank.silver { color: var(--silver); }
+.col-rank.bronze { color: var(--bronze); }
+
+.col-name {
+  font-weight: 500;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.col-team {
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+.col-pos {
+  color: var(--dim);
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+.col-stat {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+}
+
+.col-stat.active {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.col-stat.plus { color: var(--green); }
+.col-stat.minus { color: var(--red); }
+
+/* Team column with logo */
+.col-team-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+}
+
+.team-logo {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  object-fit: contain;
+}
+
+/* Standings group headers */
+.group-header {
+  padding: 0.75rem 0.5rem 0.35rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  border-bottom: 1px solid var(--border);
+  margin-top: 0.75rem;
+}
+
+.group-header:first-child { margin-top: 0; }
+
+/* =========================================
+   Footer
+   ========================================= */
+.foot {
+  text-align: center;
+  padding: 2rem 0 1rem;
+  font-size: 0.72rem;
+  color: var(--dim);
+}
+
+.foot a { color: var(--muted); }
+
+/* =========================================
+   Responsive
+   ========================================= */
+@media (max-width: 700px) {
+  .wrap { padding: 0.5rem 0.5rem 1rem; }
+  .rankings-card { padding: 0.5rem; }
+  .filter-bar { flex-direction: column; align-items: stretch; gap: 0.5rem; }
+  .fg select { width: 100%; }
+  .back-link { margin-left: 0; }
+  .pos-tabs { justify-content: flex-start; padding: 0.75rem 0; }
+}

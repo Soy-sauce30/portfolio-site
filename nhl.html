@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NHL Leaders</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="nhl.css">
+</head>
+<body>
+
+  <div class="wrap">
+
+    <h1 class="page-title">NHL Leaders</h1>
+
+    <!-- View toggle: Players vs Standings -->
+    <nav class="view-tabs" id="viewTabs">
+      <button class="view-tab active" data-view="players">Players</button>
+      <button class="view-tab" data-view="standings">Team Standings</button>
+    </nav>
+
+    <!-- ============ PLAYERS VIEW ============ -->
+    <div class="view" id="playersView">
+
+      <!-- Position tabs -->
+      <nav class="pos-tabs" id="posTabs">
+        <button class="pos-tab active" data-pos="all">All Skaters</button>
+        <button class="pos-tab" data-pos="C">C</button>
+        <button class="pos-tab" data-pos="L">LW</button>
+        <button class="pos-tab" data-pos="R">RW</button>
+        <button class="pos-tab" data-pos="D">D</button>
+        <button class="pos-tab" data-pos="G">G</button>
+      </nav>
+
+      <!-- Filters -->
+      <div class="filter-bar">
+        <div class="fg">
+          <label>Conference</label>
+          <select id="confFilter">
+            <option value="all">All</option>
+            <option value="Eastern">Eastern</option>
+            <option value="Western">Western</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label>Division</label>
+          <select id="divFilter">
+            <option value="all">All Divisions</option>
+            <option value="Atlantic">Atlantic</option>
+            <option value="Metropolitan">Metropolitan</option>
+            <option value="Central">Central</option>
+            <option value="Pacific">Pacific</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label>Team</label>
+          <select id="teamFilter">
+            <option value="all">All Teams</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label>Sort by</label>
+          <select id="statSort">
+            <option value="points">PTS</option>
+            <option value="goals">G</option>
+            <option value="assists">A</option>
+            <option value="plusMinus">+/-</option>
+            <option value="shots">SOG</option>
+            <option value="ppGoals">PPG</option>
+            <option value="shGoals">SHG</option>
+            <option value="gameWinningGoals">GWG</option>
+            <option value="penaltyMinutes">PIM</option>
+            <option value="gamesPlayed">GP</option>
+          </select>
+        </div>
+        <a href="index.html" class="back-link">&larr; Home</a>
+      </div>
+
+      <div class="rankings-card">
+        <div id="playersContent">
+          <div class="state" id="playersLoading">Loading...</div>
+          <div class="state" id="playersEmpty" style="display:none;">No players found.</div>
+          <div class="state" id="playersError" style="display:none;">Failed to load data.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ STANDINGS VIEW ============ -->
+    <div class="view" id="standingsView" style="display:none;">
+
+      <!-- Standings view tabs -->
+      <nav class="pos-tabs" id="standingsTabs">
+        <button class="pos-tab active" data-view="division">By Division</button>
+        <button class="pos-tab" data-view="conference">By Conference</button>
+        <button class="pos-tab" data-view="league">League-wide</button>
+      </nav>
+
+      <div class="rankings-card">
+        <div id="standingsContent">
+          <div class="state" id="standingsLoading">Loading...</div>
+          <div class="state" id="standingsError" style="display:none;">Failed to load data.</div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="foot">
+      Data from <a href="https://www.nhl.com" target="_blank">NHL</a>
+    </footer>
+
+  </div>
+
+  <script src="nhl.js"></script>
+</body>
+</html>

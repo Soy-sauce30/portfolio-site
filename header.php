@@ -11,6 +11,7 @@
           <a href="#" class="nav-dropdown-toggle">Sports</a>
           <ul class="nav-dropdown-menu">
             <li><a href="baseball.php">MLB Leaders</a></li>
+            <li><a href="nhl.html">NHL Leaders</a></li>
             <li><a href="soccer.html">Soccer Standings</a></li>
           </ul>
         </li>

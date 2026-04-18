@@ -6,12 +6,18 @@
   <title>Soccer Standings</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="soccer.css">
+  <script>
+    (function(){var t=localStorage.getItem('theme')||(window.matchMedia('(prefers-color-scheme:light)').matches?'light':'dark');document.documentElement.setAttribute('data-theme',t)})();
+  </script>
 </head>
 <body>
 
-  <div class="wrap">
+  <?php include 'header.php'; ?>
+
+  <div class="wrap" style="padding-top: 5rem;">
 
     <h1 class="page-title">Soccer Standings</h1>
 
@@ -63,7 +69,6 @@
         <label>Search</label>
         <input type="text" id="teamSearch" placeholder="Search team..." autocomplete="off">
       </div>
-      <a href="/" class="back-link">&larr; Home</a>
     </div>
 
     <!-- Standings -->
@@ -81,6 +86,10 @@
 
   </div>
 
+  <?php include 'footer.php'; ?>
+
+  <script src="script.js"></script>
   <script src="soccer.js"></script>
+  <script src="theme.js"></script>
 </body>
 </html>

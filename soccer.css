@@ -107,6 +107,38 @@ a:hover { color: var(--fg); }
 }
 
 /* =========================================
+   Zone Filter Tabs
+   ========================================= */
+.zone-tabs {
+  display: flex;
+  gap: 2px;
+  justify-content: center;
+  padding: 0 0 1rem;
+  flex-wrap: wrap;
+}
+
+.zone-tab {
+  padding: 0.35rem 0.75rem;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--dim);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.12s;
+  white-space: nowrap;
+}
+
+.zone-tab:hover { color: var(--muted); }
+
+.zone-tab.active {
+  background: var(--row);
+  color: var(--fg);
+}
+
+/* =========================================
    Info Bar
    ========================================= */
 .info-bar {
@@ -145,6 +177,21 @@ a:hover { color: var(--fg); }
 }
 
 .fg select:focus { border-color: var(--accent); }
+
+.fg input {
+  padding: 0.4rem 0.65rem;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--fg);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.78rem;
+  outline: none;
+  width: 160px;
+}
+
+.fg input::placeholder { color: var(--dim); }
+.fg input:focus { border-color: var(--accent); }
 
 .back-link {
   font-size: 0.8rem;

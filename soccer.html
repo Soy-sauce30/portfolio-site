@@ -37,6 +37,15 @@
       </button>
     </nav>
 
+    <!-- Zone filter tabs -->
+    <nav class="zone-tabs" id="zoneTabs">
+      <button class="zone-tab active" data-zone="all">All</button>
+      <button class="zone-tab" data-zone="ucl">Champions League</button>
+      <button class="zone-tab" data-zone="uel">Europa League</button>
+      <button class="zone-tab" data-zone="uecl">Conference League</button>
+      <button class="zone-tab" data-zone="rel">Relegation</button>
+    </nav>
+
     <!-- Info bar -->
     <div class="info-bar">
       <div class="fg">
@@ -49,6 +58,10 @@
           <option value="pointsFor">GF</option>
           <option value="gamesPlayed">GP</option>
         </select>
+      </div>
+      <div class="fg search-fg">
+        <label>Search</label>
+        <input type="text" id="teamSearch" placeholder="Search team..." autocomplete="off">
       </div>
       <a href="index.html" class="back-link">&larr; Home</a>
     </div>

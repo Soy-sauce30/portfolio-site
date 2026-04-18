@@ -20,17 +20,21 @@
   // State
   let currentLeague = 'eng.1';
   let currentSort = 'rank';
+  let currentZone = 'all';
+  let searchQuery = '';
   let entries = [];
 
   // DOM
   const $ = id => document.getElementById(id);
   const els = {
-    tabs:     $('leagueTabs'),
-    statSort: $('statSort'),
-    content:  $('content'),
-    loading:  $('loading'),
-    empty:    $('empty'),
-    error:    $('error'),
+    leagueTabs: $('leagueTabs'),
+    zoneTabs:   $('zoneTabs'),
+    statSort:   $('statSort'),
+    search:     $('teamSearch'),
+    content:    $('content'),
+    loading:    $('loading'),
+    empty:      $('empty'),
+    error:      $('error'),
   };
 
   function show(which) {
@@ -47,7 +51,6 @@
       const res = await fetch(`${ESPN}/${league}/standings`);
       const data = await res.json();
 
-      // ESPN can return multiple groups (conferences for MLS)
       const groups = data.children || [];
       entries = [];
 
@@ -86,28 +89,51 @@
     }
   }
 
-  // ── Sorting ────────────────────────────────
-  function getSorted() {
-    const list = [...entries];
-    const key = currentSort;
+  // ── Zone helpers ───────────────────────────
+  function getZoneTag(rank, total) {
+    const z = LEAGUES[currentLeague]?.zones || {};
+    if (z.ucl && rank <= z.ucl) return 'ucl';
+    if (z.uel && rank <= z.uel) return 'uel';
+    if (z.uecl && rank <= z.uecl) return 'uecl';
+    if (z.rel && rank > total + z.rel) return 'rel';
+    return '';
+  }
 
-    if (key === 'rank') {
+  function getZoneClass(tag) {
+    if (tag === 'ucl') return 'zone-ucl';
+    if (tag === 'uel') return 'zone-uel';
+    if (tag === 'uecl') return 'zone-uecl';
+    if (tag === 'rel') return 'zone-rel';
+    return '';
+  }
+
+  // ── Filtering & Sorting ────────────────────
+  function getFiltered() {
+    const total = entries.length;
+    let list = [...entries];
+
+    // Zone filter
+    if (currentZone !== 'all') {
+      list = list.filter(t => getZoneTag(t.rank, total) === currentZone);
+    }
+
+    // Search filter
+    if (searchQuery) {
+      const q = searchQuery.toLowerCase();
+      list = list.filter(t =>
+        t.name.toLowerCase().includes(q) ||
+        t.abbr.toLowerCase().includes(q)
+      );
+    }
+
+    // Sort
+    if (currentSort === 'rank') {
       list.sort((a, b) => a.rank - b.rank);
     } else {
-      list.sort((a, b) => b[key] - a[key]);
+      list.sort((a, b) => b[currentSort] - a[currentSort]);
     }
 
     return list;
-  }
-
-  // ── Zone color (Champions League, relegation, etc.) ──
-  function getZone(rank, total) {
-    const z = LEAGUES[currentLeague]?.zones || {};
-    if (z.ucl && rank <= z.ucl) return 'zone-ucl';
-    if (z.uel && rank <= z.uel) return 'zone-uel';
-    if (z.uecl && rank <= z.uecl) return 'zone-uecl';
-    if (z.rel && rank > total + z.rel) return 'zone-rel';
-    return '';
   }
 
   // ── Render ─────────────────────────────────
@@ -118,7 +144,8 @@
   }
 
   function render() {
-    const sorted = getSorted();
+    const sorted = getFiltered();
+    const total = entries.length;
 
     // Remove old table
     const old = els.content.querySelector('.standings-table');
@@ -130,10 +157,9 @@
     }
     els.empty.style.display = 'none';
 
-    const total = sorted.length;
     let h = '<table class="standings-table"><thead><tr>';
     h += '<th class="col-rank active">#</th>';
-    h += '<th></th>'; // zone
+    h += '<th></th>';
     h += '<th>Club</th>';
 
     COLUMNS.forEach(k => {
@@ -146,7 +172,7 @@
     sorted.forEach((t, i) => {
       const displayRank = currentSort === 'rank' ? t.rank : i + 1;
       const medal = displayRank <= 3 ? ['gold', 'silver', 'bronze'][displayRank - 1] : '';
-      const zone = getZone(t.rank, total);
+      const zone = getZoneClass(getZoneTag(t.rank, total));
 
       h += '<tr>';
       h += `<td class="col-rank ${medal}">${displayRank}</td>`;
@@ -179,19 +205,42 @@
   }
 
   // ── Events ─────────────────────────────────
-  els.tabs.addEventListener('click', e => {
+  // League tabs
+  els.leagueTabs.addEventListener('click', e => {
     const tab = e.target.closest('.league-tab');
     if (!tab) return;
-    els.tabs.querySelectorAll('.league-tab').forEach(t => t.classList.remove('active'));
+    els.leagueTabs.querySelectorAll('.league-tab').forEach(t => t.classList.remove('active'));
     tab.classList.add('active');
     currentLeague = tab.dataset.league;
     currentSort = 'rank';
+    currentZone = 'all';
+    searchQuery = '';
     els.statSort.value = 'rank';
+    els.search.value = '';
+    els.zoneTabs.querySelectorAll('.zone-tab').forEach(t => t.classList.remove('active'));
+    els.zoneTabs.querySelector('[data-zone="all"]').classList.add('active');
     fetchStandings(currentLeague);
   });
 
+  // Zone tabs
+  els.zoneTabs.addEventListener('click', e => {
+    const tab = e.target.closest('.zone-tab');
+    if (!tab) return;
+    els.zoneTabs.querySelectorAll('.zone-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    currentZone = tab.dataset.zone;
+    render();
+  });
+
+  // Sort
   els.statSort.addEventListener('change', () => {
     currentSort = els.statSort.value;
+    render();
+  });
+
+  // Search
+  els.search.addEventListener('input', () => {
+    searchQuery = els.search.value.trim();
     render();
   });
 

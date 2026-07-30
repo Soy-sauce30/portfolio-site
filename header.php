@@ -7,6 +7,7 @@
         <li><a href="/#skills">Skills</a></li>
         <li><a href="/#projects">Projects</a></li>
         <li><a href="/#contact">Contact</a></li>
+        <li><a href="/games">Games</a></li>
         <li class="nav-dropdown">
           <a href="#" class="nav-dropdown-toggle">Sports</a>
           <ul class="nav-dropdown-menu">

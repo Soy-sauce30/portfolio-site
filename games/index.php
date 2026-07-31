@@ -126,9 +126,23 @@
 
     <div class="games-grid">
 
+      <a class="game-card" href="/games/worddle/">
+        <div class="game-icon">🟩</div>
+        <div class="game-name">Worddle</div>
+        <p class="game-desc">Guess the five-letter word in six tries. A new puzzle every day.</p>
+        <span class="game-tag">Play</span>
+      </a>
+
+      <a class="game-card" href="/games/pong/">
+        <div class="game-icon">🏓</div>
+        <div class="game-name">Pong</div>
+        <p class="game-desc">The classic paddle duel. Play against the computer or a friend.</p>
+        <span class="game-tag">Play</span>
+      </a>
+
       <a class="game-card disabled" aria-disabled="true">
         <div class="game-icon">🎮</div>
-        <div class="game-name">Coming Soon</div>
+        <div class="game-name">Coming Real Soon</div>
         <p class="game-desc">More games are on the way. Check back soon.</p>
         <span class="game-tag soon">In progress</span>
       </a>

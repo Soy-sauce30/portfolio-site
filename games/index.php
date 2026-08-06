@@ -140,11 +140,32 @@
         <span class="game-tag">Play</span>
       </a>
 
-      <a class="game-card disabled" aria-disabled="true">
-        <div class="game-icon">🎮</div>
-        <div class="game-name">Coming Real Soon</div>
-        <p class="game-desc">More games are on the way. Check back soon.</p>
-        <span class="game-tag soon">In progress</span>
+      <a class="game-card" href="/games/snake/">
+        <div class="game-icon">🐍</div>
+        <div class="game-name">Snake</div>
+        <p class="game-desc">Eat, grow, and don't run into yourself. Three speeds.</p>
+        <span class="game-tag">Play</span>
+      </a>
+
+      <a class="game-card" href="/games/2048/">
+        <div class="game-icon">🔢</div>
+        <div class="game-name">2048</div>
+        <p class="game-desc">Slide the tiles, merge the matches, reach 2048.</p>
+        <span class="game-tag">Play</span>
+      </a>
+
+      <a class="game-card" href="/games/minesweeper/">
+        <div class="game-icon">💣</div>
+        <div class="game-name">Minesweeper</div>
+        <p class="game-desc">Clear every safe square without detonating a mine.</p>
+        <span class="game-tag">Play</span>
+      </a>
+
+      <a class="game-card" href="/games/memory/">
+        <div class="game-icon">🧠</div>
+        <div class="game-name">Memory Match</div>
+        <p class="game-desc">Flip cards two at a time and clear the board in as few moves as you can.</p>
+        <span class="game-tag">Play</span>
       </a>
 
     </div>

@@ -183,6 +183,15 @@
       ball.vx = Math.cos(angle) * ball.speed * serveTo;
       ball.vy = Math.sin(angle) * ball.speed;
       running = true;
+
+      // The AI has to read the serve too, or it just parks at center court.
+      if (mode !== 'two' && ball.vx > 0) {
+        var cfg = AI[mode];
+        aimTarget = predictIntercept();
+        if (Math.random() > cfg.react) aimTarget = H / 2;
+        aimTarget += (Math.random() * 2 - 1) * cfg.error;
+      }
+
       say('');
     }
 

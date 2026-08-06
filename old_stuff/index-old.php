@@ -11,26 +11,8 @@
 </head>
 <body>
 
-<<<<<<< HEAD:index.html
-  <!-- Navigation -->
-  <nav class="nav" id="nav">
-    <div class="nav-container">
-      <a href="#" class="nav-logo">Sawyer</a>
-      <ul class="nav-links">
-        <li><a href="#about">About Me</a></li>
-        <li><a href="#skills">Skills</a></li>
-        <li><a href="#projects">Projects</a></li>
-        <li><a href="#contact">Contact</a></li>
-        <li><a href="leaderboard.html">Leaderboard</a></li>
-        <li><a href="baseball.html">MLB Leaders</a></li>
-        <li><a href="soccer.html">Soccer</a></li>
-      </ul>
-    </div>
-  </nav>
-=======
   <!-- Header -->
   <?php include 'header.php';?>
->>>>>>> c302c981852cbca1d9092b202728e11845c7c50e:old_stuff/index-old.php
 
   <!-- Hero Section -->
   <section class="hero" id="home">

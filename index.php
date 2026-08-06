@@ -11,155 +11,282 @@
   <script>
     (function(){var t=localStorage.getItem('theme')||(window.matchMedia('(prefers-color-scheme:light)').matches?'light':'dark');document.documentElement.setAttribute('data-theme',t)})();
   </script>
+  <style>
+    /* =========================================
+       Homepage — kept deliberately short
+       ========================================= */
+
+    .home-hero {
+      min-height: 88vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 7rem 1.5rem 3rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Soft glow that drifts toward the cursor. Purely decorative. */
+    .home-glow {
+      position: absolute;
+      width: 480px;
+      height: 480px;
+      border-radius: 50%;
+      background: radial-gradient(circle, var(--accent-glow) 0%, transparent 65%);
+      filter: blur(40px);
+      pointer-events: none;
+      opacity: 0.55;
+      left: 50%;
+      top: 45%;
+      transform: translate(-50%, -50%);
+      transition: opacity 0.4s ease;
+      z-index: -1;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .home-glow { display: none; }
+    }
+
+    .home-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2.6rem, 9vw, 5rem);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+      margin-bottom: 1rem;
+    }
+
+    .home-name .accent { color: var(--accent); }
+
+    .home-tagline {
+      font-size: clamp(1rem, 2.6vw, 1.35rem);
+      color: var(--text-muted);
+      margin-bottom: 2.25rem;
+      min-height: 1.6em;
+    }
+
+    .home-tagline .typed-text { color: var(--text); font-weight: 500; }
+
+    .cursor {
+      color: var(--accent);
+      animation: blink 1s step-end infinite;
+    }
+
+    .home-ctas {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .home-scroll {
+      position: absolute;
+      bottom: 1.75rem;
+      left: 50%;
+      transform: translateX(-50%);
+      color: var(--text-muted);
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      text-decoration: none;
+      opacity: 0.6;
+      transition: opacity 0.2s, color 0.2s;
+    }
+
+    .home-scroll:hover { opacity: 1; color: var(--accent); }
+
+    /* ---------- Things I've built ---------- */
+
+    .home-section {
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 4rem 1.5rem;
+    }
+
+    .home-heading {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.5rem;
+    }
+
+    .home-sub {
+      color: var(--text-muted);
+      font-size: 0.92rem;
+      margin-bottom: 2rem;
+      line-height: 1.7;
+    }
+
+    .home-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 1rem;
+    }
+
+    .home-card {
+      display: flex;
+      flex-direction: column;
+      padding: 1.5rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .home-card:hover {
+      border-color: var(--accent-glow);
+      transform: translateY(-2px);
+    }
+
+    .home-card-icon { font-size: 1.6rem; margin-bottom: 0.6rem; }
+
+    .home-card-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin-bottom: 0.35rem;
+    }
+
+    .home-card-desc {
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      line-height: 1.6;
+    }
+
+    /* ---------- About + contact ---------- */
+
+    .home-about p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.8;
+      margin-bottom: 1rem;
+    }
+
+    .home-contact {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.75rem 1.5rem;
+    }
+
+    .home-mail {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(1.1rem, 3.5vw, 1.6rem);
+      font-weight: 600;
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.2s;
+    }
+
+    .home-mail:hover { border-bottom-color: var(--accent); }
+
+    .home-links { display: flex; gap: 1rem; }
+
+    .home-links a {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .home-links a:hover { color: var(--accent); }
+
+    .home-rule {
+      max-width: 880px;
+      margin: 0 auto;
+      border: 0;
+      border-top: 1px solid var(--border);
+    }
+  </style>
 </head>
 <body>
 
   <!-- Header -->
   <?php include 'header.php';?>
 
-  <!-- Hero Section -->
-  <section class="hero" id="home">
-    <div class="hero-content">
-      <h1 class="hero-name">Hi, I'm <span class="accent">Sawyer A</span></h1>
-      <div class="hero-tagline">
-        I build <span class="typed-text" id="typedText"></span><span class="cursor">|</span>
-      </div>
-      <p class="hero-desc">Developer crafting fast, clean, and thoughtful web experiences.</p>
-      <div class="hero-ctas">
-        <a href="#projects" class="btn btn-primary">View My Work</a>
-        <a href="#contact" class="btn btn-outline">Get In Touch</a>
-      </div>
+  <!-- Hero -->
+  <section class="home-hero" id="home">
+    <div class="home-glow" id="homeGlow"></div>
+
+    <h1 class="home-name">Sawyer <span class="accent">Abrahani</span></h1>
+
+    <div class="home-tagline">
+      I build <span class="typed-text" id="typedText"></span><span class="cursor">|</span>
+    </div>
+
+    <div class="home-ctas">
+      <a href="/games/" class="btn btn-primary">Play my games</a>
+      <a href="#contact" class="btn btn-outline">Get in touch</a>
+    </div>
+
+    <a href="#built" class="home-scroll">Scroll &darr;</a>
+  </section>
+
+  <hr class="home-rule">
+
+  <!-- Things I've built -->
+  <section class="home-section" id="built">
+    <h2 class="home-heading">Things I've built</h2>
+    <p class="home-sub">Six browser games, written from scratch in plain JavaScript — no engines, no frameworks.</p>
+
+    <div class="home-grid">
+      <a class="home-card" href="/games/worddle/">
+        <div class="home-card-icon">🟩</div>
+        <div class="home-card-name">Worddle</div>
+        <p class="home-card-desc">A daily five-letter word puzzle with streaks and shareable results.</p>
+      </a>
+
+      <a class="home-card" href="/games/pong/">
+        <div class="home-card-icon">🏓</div>
+        <div class="home-card-name">Pong</div>
+        <p class="home-card-desc">Three AI difficulties plus two-player, with real paddle physics.</p>
+      </a>
+
+      <a class="home-card" href="/games/minesweeper/">
+        <div class="home-card-icon">💣</div>
+        <div class="home-card-name">Minesweeper</div>
+        <p class="home-card-desc">Three board sizes, flood-fill reveals, and a first click that's always safe.</p>
+      </a>
+
+      <a class="home-card" href="/games/">
+        <div class="home-card-icon">🎮</div>
+        <div class="home-card-name">All six &rarr;</div>
+        <p class="home-card-desc">Snake, 2048 and Memory Match are in here too.</p>
+      </a>
     </div>
   </section>
 
-  <!-- About Section -->
-  <section class="about" id="about">
-    <div class="container">
-      <h2 class="section-title">About Me</h2>
-      <div class="about-grid">
-        <div class="about-text">
-          <p>I'm a developer who loves turning ideas into reality through clean code and thoughtful design. Whether it's a complex web app or a simple landing page, I bring the same level of care to every project.</p>
-          <p>When I'm not coding, you can find me exploring new technologies, contributing to open source, or thinking about the future of the web.</p>
-        </div>
-        <div class="about-card">
-          <div class="code-block">
-            <div class="code-header">
-              <span class="dot red"></span>
-              <span class="dot yellow"></span>
-              <span class="dot green"></span>
-            </div>
-            <pre class="code-text"><span class="code-keyword">const</span> <span class="code-var">sawyer</span> = {
-  <span class="code-prop">role</span>: <span class="code-string">"Developer"</span>,
-  <span class="code-prop">location</span>: <span class="code-string">"Earth"</span>,
-  <span class="code-prop">passion</span>: <span class="code-string">"Building cool stuff"</span>,
-  <span class="code-prop">available</span>: <span class="code-bool">true</span>,
-  <span class="code-prop">coffee</span>: <span class="code-string">"always"</span>,
-};</pre>
-          </div>
-        </div>
-      </div>
-    </div>
+  <hr class="home-rule">
+
+  <!-- About -->
+  <section class="home-section home-about" id="about">
+    <h2 class="home-heading">About</h2>
+    <p>
+      I'm a developer who likes small, self-contained projects — things that load fast,
+      run in a single tab, and don't need a build step to be worth making.
+    </p>
+    <p>
+      This site is hand-written PHP and CSS with no framework behind it. The games are
+      plain JavaScript and canvas. It's all deliberately simple.
+    </p>
   </section>
 
-  <!-- Skills Section -->
-  <section class="skills" id="skills">
-    <div class="container">
-      <h2 class="section-title">Tech Stack</h2>
-      <div class="skills-grid">
-        <div class="skill-card">
-          <h3>Frontend</h3>
-          <div class="skill-tags">
-            <span>HTML / CSS</span>
-            <span>JavaScript</span>
-            <span>React</span>
-            <span>TypeScript</span>
-          </div>
-        </div>
-        <div class="skill-card">
-          <h3>Backend</h3>
-          <div class="skill-tags">
-            <span>Node.js</span>
-            <span>Python</span>
-            <span>REST APIs</span>
-            <span>Databases</span>
-          </div>
-        </div>
-        <div class="skill-card">
-          <h3>Tools</h3>
-          <div class="skill-tags">
-            <span>Git</span>
-            <span>VS Code</span>
-            <span>Figma</span>
-            <span>Vercel</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+  <hr class="home-rule">
 
-  <!-- Projects Section -->
-  <section class="projects" id="projects">
-    <div class="container">
-      <h2 class="section-title">Projects</h2>
-      <div class="projects-grid">
-        <div class="project-card">
-          <div class="project-tag">Web App</div>
-          <h3 class="project-title">Project One</h3>
-          <p class="project-desc">An awesome project that solves real problems with elegant solutions and a polished interface.</p>
-          <div class="project-stack">
-            <span>React</span>
-            <span>Node.js</span>
-            <span>MongoDB</span>
-          </div>
-          <div class="project-links">
-            <a href="#" class="project-link">GitHub &rarr;</a>
-            <a href="#" class="project-link">Live &rarr;</a>
-          </div>
-        </div>
-        <div class="project-card featured">
-          <div class="project-tag">Featured</div>
-          <h3 class="project-title">Project Two</h3>
-          <p class="project-desc">A featured project with complex architecture, beautiful design, and seamless user experience.</p>
-          <div class="project-stack">
-            <span>TypeScript</span>
-            <span>Next.js</span>
-            <span>Tailwind</span>
-          </div>
-          <div class="project-links">
-            <a href="#" class="project-link">GitHub &rarr;</a>
-            <a href="#" class="project-link">Live &rarr;</a>
-          </div>
-        </div>
-        <div class="project-card">
-          <div class="project-tag">Open Source</div>
-          <h3 class="project-title">Project Three</h3>
-          <p class="project-desc">An open source tool the community loves, built with clean code and thoughtful architecture.</p>
-          <div class="project-stack">
-            <span>Python</span>
-            <span>FastAPI</span>
-            <span>Docker</span>
-          </div>
-          <div class="project-links">
-            <a href="#" class="project-link">GitHub &rarr;</a>
-            <a href="#" class="project-link">Live &rarr;</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Contact Section -->
-  <section class="contact" id="contact">
-    <div class="container">
-      <h2 class="section-title">Get In Touch</h2>
-      <p class="contact-desc">Have a project in mind or just want to chat? My inbox is always open.</p>
-      <div class="contact-card">
-        <a href="mailto:hello@sawyer.dev" class="contact-email">hello@sawyer.dev</a>
-        <div class="contact-socials">
-          <a href="#" class="social-link">GitHub</a>
-          <a href="#" class="social-link">Twitter</a>
-          <a href="#" class="social-link">LinkedIn</a>
-        </div>
+  <!-- Contact -->
+  <section class="home-section" id="contact">
+    <h2 class="home-heading">Get in touch</h2>
+    <p class="home-sub">Happy to talk about a project, or about anything I've built here.</p>
+    <div class="home-contact">
+      <a href="mailto:sawyerabrahani@gmail.com" class="home-mail">sawyerabrahani@gmail.com</a>
+      <div class="home-links">
+        <a href="https://github.com/Soy-sauce30" target="_blank" rel="noopener">GitHub &rarr;</a>
       </div>
     </div>
   </section>
@@ -169,5 +296,29 @@
 
   <script src="script.js"></script>
   <script src="theme.js"></script>
+  <script>
+  (function () {
+    // Drift the hero glow toward the pointer.
+    var glow = document.getElementById('homeGlow');
+    var hero = document.getElementById('home');
+    if (!glow || !hero || !window.matchMedia('(pointer: fine)').matches) return;
+
+    var targetX = 0, targetY = 0, x = 0, y = 0, seeded = false;
+
+    hero.addEventListener('pointermove', function (e) {
+      var r = hero.getBoundingClientRect();
+      targetX = e.clientX - r.left;
+      targetY = e.clientY - r.top;
+      if (!seeded) { x = targetX; y = targetY; seeded = true; }
+    });
+
+    (function follow() {
+      x += (targetX - x) * 0.06;
+      y += (targetY - y) * 0.06;
+      if (seeded) glow.style.left = x + 'px', glow.style.top = y + 'px';
+      requestAnimationFrame(follow);
+    })();
+  })();
+  </script>
 </body>
 </html>

@@ -236,7 +236,24 @@ if ($wikiTitle) {
   }
 }
 
-/* ---------- 4. Prices: link out, since there's no free price data ---------- */
+/* ---------- 4. Prices: our approximate MSRP list, plus links for exact prices ---------- */
+
+$prices = json_decode(file_get_contents(__DIR__ . '/data/prices.json'), true);
+// Most specific first: this exact version ("Tesla|Model 3 Performance AWD"), then the
+// model ("BMW|M3"), then EPA's broader group ("BMW|M").
+$priceMake = $make === 'Mini' ? 'MINI' : $make;
+$variantPrices = json_decode(file_get_contents(__DIR__ . '/data/variant-prices.json'), true);
+$version = trim(preg_replace('/\s*\((?:[^)]*\bwheels?\b[^)]*|\d+\s*in[^)]*)\)/i', '', $model));
+if (isset($variantPrices["$priceMake|$version"])) $prices["$priceMake|$version"] = $variantPrices["$priceMake|$version"];
+$priceKey = null;
+foreach (["$priceMake|$version", "$priceMake|$baseModel", "$priceMake|" . ($v['baseModel'] ?: $baseModel)] as $k) {
+  if (isset($prices[$k])) { $priceKey = $k; break; }
+}
+$priceNew = '';
+if ($priceKey && $y >= (int)date('Y') - 1) { // only for versions still sold new
+  [$lo, $hi] = $prices[$priceKey];
+  $priceNew = $lo === $hi ? '$' . number_format($lo) : '$' . number_format($lo) . ' – $' . number_format($hi);
+}
 
 $name = "$y $make $baseModel";
 $links = [
@@ -251,10 +268,10 @@ $result = [
   'make' => $make,
   'model' => $baseModel,
   'years' => (string)$y,
-  'trim' => $model !== $baseModel ? $model : '',
+  'trim' => $version !== $baseModel ? $version : '',
   'body_style' => $body,
   'summary' => $summary,
-  'price_new' => '',
+  'price_new' => $priceNew,
   'price_used' => '',
   'specs' => $specs,
   'pros' => [],

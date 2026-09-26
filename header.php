@@ -6,6 +6,7 @@
         <li><a href="/#home">Car Finder</a></li>
         <li><a href="/#top">Top Rated</a></li>
         <li><a href="/#racing">Racing</a></li>
+        <li><a href="/cars/">All Cars</a></li>
         <li><a href="/games/">Games</a></li>
         <li><a href="/#contact">Contact</a></li>
       </ul>

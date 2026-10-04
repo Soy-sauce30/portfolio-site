@@ -150,6 +150,19 @@ $aiEnabled = (bool)getenv('ANTHROPIC_API_KEY') || is_readable($keyFile);
 
   <hr class="home-rule">
 
+  <!-- Quiz: questions are generated from the site's own data (cars/quiz.js) -->
+  <section class="home-section" id="quiz">
+    <div class="section-head">
+      <div>
+        <h2 class="home-heading">Car quiz</h2>
+        <p class="home-sub">How well do you know cars? Brands, prices, fuel economy, EVs and race cars.</p>
+      </div>
+    </div>
+    <div class="quiz-stage" id="quizStage"></div>
+  </section>
+
+  <hr class="home-rule">
+
   <div class="home-foot" id="contact">
     <span><?php echo $aiEnabled ? 'Specs and prices are estimates — always confirm with a dealer.' : 'Specs from the U.S. EPA (fueleconomy.gov) &middot; photos and descriptions from Wikipedia.'; ?></span>
     <span>Questions? <a href="mailto:sawyerabrahani@gmail.com">sawyerabrahani@gmail.com</a> &middot; <a href="/games/">Play my games &rarr;</a></span>
@@ -164,6 +177,7 @@ $aiEnabled = (bool)getenv('ANTHROPIC_API_KEY') || is_readable($keyFile);
   <script src="/cars/racing.js"></script>
   <script src="/cars/explain.js"></script>
   <script src="/cars/hud.js"></script>
+  <script src="/cars/quiz.js"></script>
   <script>
   (function () {
     // ---------- Top rated list ----------

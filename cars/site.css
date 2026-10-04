@@ -872,3 +872,81 @@ a.cat-card { text-decoration: none; }
 }
 .cat-select:disabled { opacity: 0.5; cursor: default; }
 .cat-more [hidden] { display: none !important; }
+
+/* =========================================
+   Spec explainer (cars/explain.js)
+   ========================================= */
+
+/* Tappable specs look exactly like normal text — just a pointer cursor,
+   and a focus ring for keyboard users. */
+[data-explain] { cursor: pointer; }
+[data-explain]:focus { outline: none; }
+[data-explain]:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* The Engine options table scrolls sideways, which would clip a normal focus ring. */
+.versions [data-explain]:focus-visible { outline-offset: -2px; }
+
+/* All Cars: the whole card opens the car (click handled in cars/index.php);
+   the name is the real link for keyboard and screen-reader users. */
+.cat-card { cursor: pointer; }
+.cat-link { display: block; color: inherit; text-decoration: none; }
+.cat-link:focus-visible { outline: none; }
+.cat-card:has(.cat-link:focus-visible) { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* The popup */
+.explain-pop {
+  position: absolute;
+  z-index: 300;
+  width: min(360px, calc(100vw - 24px));
+  padding: 1rem 1.1rem 1.1rem;
+  background: var(--bg-raised);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: 0 24px 60px -20px rgba(0, 0, 0, 0.55);
+  font-size: 0.88rem;
+  line-height: 1.6;
+  animation: explain-in 0.15s ease;
+}
+@keyframes explain-in { from { opacity: 0; transform: translateY(4px); } }
+.explain-close {
+  position: absolute;
+  top: 0.45rem;
+  right: 0.55rem;
+  width: 30px;
+  height: 30px;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  color: var(--text-muted);
+  font-size: 1.3rem;
+  line-height: 1;
+  cursor: pointer;
+}
+.explain-close:hover { color: var(--text); background: var(--accent-dim); }
+.explain-title { font-weight: 700; font-size: 1rem; padding-right: 2rem; margin-bottom: 0.15rem; }
+.explain-value { color: var(--accent); font-weight: 600; font-size: 0.84rem; margin-bottom: 0.5rem; }
+.explain-pop p { margin: 0.35rem 0 0; color: var(--text); opacity: 0.9; }
+.explain-extra { margin-top: 0.8rem; padding-top: 0.7rem; border-top: 1px solid var(--border); }
+.explain-sub { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.35rem; }
+.explain-extra ul { margin: 0; padding-left: 1.1rem; }
+.explain-extra li { margin: 0.25rem 0; }
+
+/* Phones: slide up from the bottom instead */
+@media (max-width: 600px) {
+  .explain-pop {
+    position: fixed;
+    left: 0 !important;
+    right: 0;
+    bottom: 0;
+    top: auto !important;
+    width: auto;
+    max-height: 70vh;
+    overflow-y: auto;
+    border-radius: 18px 18px 0 0;
+    padding-bottom: calc(1.2rem + env(safe-area-inset-bottom));
+    animation: explain-up 0.2s ease;
+  }
+  @keyframes explain-up { from { transform: translateY(100%); } }
+}
+@media (prefers-reduced-motion: reduce) { .explain-pop { animation: none; } }

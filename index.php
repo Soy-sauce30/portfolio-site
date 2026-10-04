@@ -114,6 +114,7 @@ $aiEnabled = (bool)getenv('ANTHROPIC_API_KEY') || is_readable($keyFile);
   <script src="script.js"></script>
   <script src="theme.js"></script>
   <script src="/cars/racing.js"></script>
+  <script src="/cars/explain.js"></script>
   <script>
   (function () {
     // ---------- Top rated list ----------
@@ -154,6 +155,11 @@ $aiEnabled = (bool)getenv('ANTHROPIC_API_KEY') || is_readable($keyFile);
                   'M84 13h26l10 13H84z', 34, 115, 50)
     };
 
+    // Specs keep their normal look; these attributes just make them tappable (cars/explain.js).
+    function explainAttrs(label, value) {
+      if (!window.Explain || !Explain.describe(label, value)) return ''; // nothing to explain → leave it plain
+      return ' data-explain="' + esc(label) + '"' + (value ? ' data-value="' + esc(value) + '"' : '') + ' role="button" tabindex="0" aria-expanded="false"';
+    }
     var CUBE = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"><path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="m3 7 9 5 9-5M12 12v10"/></svg>';
 
     function esc(s) {
@@ -271,16 +277,18 @@ $aiEnabled = (bool)getenv('ANTHROPIC_API_KEY') || is_readable($keyFile);
             '<p class="result-summary">' + esc(car.summary) + '</p>' +
             '<div class="viewer-wrap" id="viewer3d"></div>' +
             (hasPrices ? '<div class="price-row">' +
-              (car.price_new ? '<div class="price"><div class="price-label">New price (approx. MSRP)</div><div class="price-value">' + esc(car.price_new) + '</div></div>' : '') +
+              (car.price_new ? '<div class="price"' + explainAttrs('New price (approx. MSRP)', car.price_new) + '><div class="price-label">New price (approx. MSRP)</div><div class="price-value">' + esc(car.price_new) + '</div></div>' : '') +
               (car.price_used ? '<div class="price"><div class="price-label">Used</div><div class="price-value">' + esc(car.price_used) + '</div></div>' : '') +
             '</div>' : '') +
             '<div class="spec-grid">' + car.specs.map(function (s) {
-              return '<div class="spec"><div class="spec-label">' + esc(s.label) + '</div><div class="spec-value">' + esc(s.value) + '</div></div>';
+              return '<div class="spec"' + explainAttrs(s.label, s.value) + '><div class="spec-label">' + esc(s.label) + '</div><div class="spec-value">' + esc(s.value) + '</div></div>';
             }).join('') + '</div>' +
             (car.versions && car.versions.length ? '<div class="section-label">Engine options</div><div class="versions"><table>' +
-              '<tr><th>Engine</th><th>Transmission</th><th>Fuel economy</th></tr>' +
+              '<tr><th><span' + explainAttrs('Engine') + '>Engine</span></th><th><span' + explainAttrs('Transmission') + '>Transmission</span></th><th><span' + explainAttrs('Fuel economy') + '>Fuel economy</span></th></tr>' +
               car.versions.map(function (v) {
-                return '<tr><td>' + esc(v.engine) + '</td><td>' + esc(v.transmission) + '</td><td>' + esc(v.mpg) + '</td></tr>';
+                return '<tr><td><span' + explainAttrs('Engine', v.engine) + '>' + esc(v.engine) + '</span></td>' +
+                  '<td><span' + explainAttrs('Transmission', v.transmission) + '>' + esc(v.transmission) + '</span></td>' +
+                  '<td><span' + explainAttrs('Fuel economy', v.mpg) + '>' + esc(v.mpg) + '</span></td></tr>';
               }).join('') + '</table></div>' : '') +
             (car.facts && car.facts.length ? '<div class="section-label">Did you know</div><ul class="facts">' + list(car.facts) + '</ul>' : '') +
             (car.pros.length ? '<div class="procon">' +

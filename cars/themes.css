@@ -267,3 +267,14 @@ html:not([data-theme="light"]) .cat-select { border-radius: 0; border: 2px solid
 html:not([data-theme="light"]) .cat-tags span { border-radius: 0; border: 0; }
 html:not([data-theme="light"]) .cat-price { font-family: 'Barlow Condensed', sans-serif; font-style: italic; font-size: 1.3rem; font-weight: 800; }
 html:not([data-theme="light"]) .cat-card .car-name { font-size: 1.35rem; }
+
+/* ---------- Spec explainer ---------- */
+[data-theme="light"] .explain-pop { border: 1.5px solid #1c1917; border-radius: 2px; box-shadow: 6px 6px 0 #1c1917; background: #fffdf8; }
+[data-theme="light"] .explain-title { font-family: 'Fraunces', Georgia, serif; font-size: 1.15rem; }
+[data-theme="light"] .explain-extra { border-top-color: rgba(28, 25, 23, 0.25); }
+
+html:not([data-theme="light"]) .explain-pop { border-radius: 0; border: 0; border-top: 4px solid var(--livery); box-shadow: 0 24px 60px -16px rgba(0, 0, 0, 0.8); }
+html:not([data-theme="light"]) .explain-title { font-family: 'Barlow Condensed', sans-serif; font-style: italic; font-weight: 800; text-transform: uppercase; font-size: 1.35rem; letter-spacing: 0; }
+@media (max-width: 600px) {
+  [data-theme="light"] .explain-pop { box-shadow: 0 -6px 0 #1c1917; border-radius: 0; }
+}

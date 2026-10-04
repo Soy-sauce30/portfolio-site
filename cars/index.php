@@ -87,6 +87,7 @@
 
   <script src="/script.js"></script>
   <script src="/theme.js"></script>
+  <script src="/cars/explain.js"></script>
   <script>
   (function () {
     var PAGE = 60;
@@ -137,29 +138,64 @@
       newest: function (a, b) { return b.years[1] - a.years[1] || a.years[0] - b.years[0]; }
     };
 
+    // Specs keep their normal look; these attributes just make them tappable (cars/explain.js).
+    function explainAttrs(label, value) {
+      if (!window.Explain || !Explain.describe(label, value)) return ''; // nothing to explain → leave it plain
+      return ' data-explain="' + esc(label) + '"' + (value ? ' data-value="' + esc(value) + '"' : '') + ' role="button" tabindex="0" aria-expanded="false"';
+    }
+    function x(label, text) { return '<span' + explainAttrs(label, text) + '>' + esc(text) + '</span>'; }
+
     function card(c) {
       var years = c.years[0] === c.years[1] ? c.years[0] : c.years[0] + '–' + c.years[1];
       function span(r, unit) { return r ? (r[0] === r[1] ? r[1] : r[0] + '–' + r[1]) + unit : ''; }
-      var eff = [span(c.mpg, ' mpg'), span(c.mpge, ' MPGe'), c.range ? c.range + ' mi range' : ''].filter(Boolean).join(' · ');
-      var price = c.price ? '<span class="cat-price">' + priceText(c.price) + '</span>'
-        : c.modelPrice ? '<span class="cat-price">' + priceText(c.modelPrice) + '<small>' + esc(c.base) + ' range</small></span>'
+      var eff = [
+        c.mpg ? x('MPG', span(c.mpg, ' mpg')) : '',
+        c.mpge ? x('MPGe', span(c.mpge, ' MPGe')) : '',
+        c.range ? x('Range', c.range + ' mi range') : ''
+      ].filter(Boolean).join(' · ');
+      var p = c.price || c.modelPrice;
+      var price = p ? '<span class="cat-price"' + explainAttrs('Price', priceText(p)) + '>' + priceText(p) + (c.price ? '' : '<small>' + esc(c.base) + ' range</small>') + '</span>'
         : '<span class="cat-price cat-price-none">' + (c.current ? 'Price coming soon' : 'No longer sold new') + '</span>';
       // Older versions link with their last model year so the lookup finds the right car.
       var q = (c.current ? '' : c.years[1] + ' ') + c.make + ' ' + c.name;
-      return '<a class="car-card cat-card" href="/?car=' + encodeURIComponent(q) + '">' +
+      // The name is the real link; a click anywhere else on the card is forwarded to it (see below).
+      return '<article class="car-card cat-card">' +
         '<div class="car-info">' +
           '<div class="cat-make">' + esc(c.make) + (c.base !== c.name ? ' &middot; ' + esc(c.base) : '') + '</div>' +
-          '<div class="car-name">' + esc(c.name) + '</div>' +
+          '<a class="car-name cat-link" href="/?car=' + encodeURIComponent(q) + '">' + esc(c.name) + '</a>' +
           '<div class="cat-meta">' + years + (c.current ? ' &middot; <b>On sale</b>' : '') + '</div>' +
-          '<div class="cat-spec">' + esc([c.engine, c.drive].filter(Boolean).join(' · ')) + '</div>' +
+          '<div class="cat-spec">' + [c.engine ? x('Engine', c.engine) : '', c.drive ? x('Drivetrain', c.drive) : ''].filter(Boolean).join(' · ') + '</div>' +
           '<div class="cat-tags">' +
             c.types.map(function (t) { return '<span>' + TYPE_LABEL[t] + '</span>'; }).join('') +
-            c.fuels.filter(function (f) { return f !== 'gas' && !(f === 'ev' && c.engine === 'Electric'); }).map(function (f) { return '<span class="cat-fuel-' + f + '">' + FUEL_LABEL[f] + '</span>'; }).join('') +
+            c.fuels.filter(function (f) { return f !== 'gas' && !(f === 'ev' && c.engine === 'Electric'); }).map(function (f) {
+              return '<span class="cat-fuel-' + f + '"' + explainAttrs(FUEL_LABEL[f]) + '>' + FUEL_LABEL[f] + '</span>';
+            }).join('') +
           '</div>' +
           '<div class="cat-foot">' + price + (eff ? '<span class="cat-eff">' + eff + '</span>' : '') + '</div>' +
         '</div>' +
-      '</a>';
+      '</article>';
     }
+
+    // Clicking anywhere on a card opens that car — except the name link itself and the
+    // tappable specs (cars/explain.js handles those). Done in JS rather than by wrapping
+    // the card in a link, so the specs aren't buttons nested inside a link.
+    function cardLink(e) {
+      if (e.target.closest('a, [data-explain]')) return null;
+      if (String(window.getSelection && window.getSelection()).trim()) return null; // selecting text, not clicking
+      var card = e.target.closest('.cat-card');
+      return card && card.querySelector('.cat-link');
+    }
+    grid.addEventListener('click', function (e) {
+      var link = cardLink(e);
+      if (!link) return;
+      if (e.ctrlKey || e.metaKey || e.shiftKey) window.open(link.href, '_blank', 'noopener');
+      else location.href = link.href;
+    });
+    grid.addEventListener('auxclick', function (e) { // middle-click → new tab, like a normal link
+      if (e.button !== 1) return;
+      var link = cardLink(e);
+      if (link) { e.preventDefault(); window.open(link.href, '_blank', 'noopener'); }
+    });
 
     function render() {
       var list = cars.filter(matches).sort(SORTS[state.sort]);

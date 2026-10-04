@@ -2,6 +2,7 @@
    Homepage themes
    Light mode: "Magazine" — warm paper, serif headlines, ink borders.
    Dark mode:  "Racing"   — bold italic caps, purple livery, slanted shapes.
+   HUD mode lives in /cars/hud.css (car pages only).
    Loaded after the page's own styles, so these win.
    ========================================= */
 
@@ -91,7 +92,7 @@
    (dark is the default, so anything that isn't light)
    ========================================= */
 
-html:not([data-theme="light"]) {
+html:not([data-theme="light"]):not([data-theme="hud"]) {
   --bg: #0b0913;
   --bg-card: #13101d;
   --bg-raised: #1c1829;
@@ -105,29 +106,29 @@ html:not([data-theme="light"]) {
   --grad: linear-gradient(100deg, #7c3aed, #a855f7);
   --livery: #7c3aed;
 }
-html:not([data-theme="light"]) body::before { background: var(--bg); }
-html:not([data-theme="light"]) .nav.scrolled { background: rgba(11, 9, 19, 0.94); border-bottom: 3px solid var(--livery); }
+html:not([data-theme="light"]):not([data-theme="hud"]) body::before { background: var(--bg); }
+html:not([data-theme="light"]):not([data-theme="hud"]) .nav.scrolled { background: rgba(11, 9, 19, 0.94); border-bottom: 3px solid var(--livery); }
 
-html:not([data-theme="light"]) .nav-logo,
-html:not([data-theme="light"]) .home-name,
-html:not([data-theme="light"]) .home-heading,
-html:not([data-theme="light"]) .result-title,
-html:not([data-theme="light"]) .car-name {
+html:not([data-theme="light"]):not([data-theme="hud"]) .nav-logo,
+html:not([data-theme="light"]):not([data-theme="hud"]) .home-name,
+html:not([data-theme="light"]):not([data-theme="hud"]) .home-heading,
+html:not([data-theme="light"]):not([data-theme="hud"]) .result-title,
+html:not([data-theme="light"]):not([data-theme="hud"]) .car-name {
   font-family: 'Barlow Condensed', 'Space Grotesk', sans-serif;
   font-style: italic;
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0;
 }
-html:not([data-theme="light"]) .home-name { font-size: clamp(3rem, 10vw, 6.2rem); line-height: 0.92; }
-html:not([data-theme="light"]) .home-heading { font-size: clamp(2rem, 5vw, 2.8rem); }
-html:not([data-theme="light"]) .car-name { font-size: 1.45rem; }
-html:not([data-theme="light"]) .result-title { font-size: clamp(1.8rem, 5vw, 2.6rem); }
-html:not([data-theme="light"]) .grad-text { padding-right: 0.08em; } /* italic overhang */
+html:not([data-theme="light"]):not([data-theme="hud"]) .home-name { font-size: clamp(3rem, 10vw, 6.2rem); line-height: 0.92; }
+html:not([data-theme="light"]):not([data-theme="hud"]) .home-heading { font-size: clamp(2rem, 5vw, 2.8rem); }
+html:not([data-theme="light"]):not([data-theme="hud"]) .car-name { font-size: 1.45rem; }
+html:not([data-theme="light"]):not([data-theme="hud"]) .result-title { font-size: clamp(1.8rem, 5vw, 2.6rem); }
+html:not([data-theme="light"]):not([data-theme="hud"]) .grad-text { padding-right: 0.08em; } /* italic overhang */
 
 /* Livery stripes behind the hero */
-html:not([data-theme="light"]) section.home-hero { overflow: hidden; }
-html:not([data-theme="light"]) section.home-hero::before {
+html:not([data-theme="light"]):not([data-theme="hud"]) section.home-hero { overflow: hidden; }
+html:not([data-theme="light"]):not([data-theme="hud"]) section.home-hero::before {
   content: '';
   position: absolute;
   left: -10%;
@@ -143,7 +144,7 @@ html:not([data-theme="light"]) section.home-hero::before {
   z-index: -1;
 }
 
-html:not([data-theme="light"]) .home-kicker {
+html:not([data-theme="light"]):not([data-theme="hud"]) .home-kicker {
   border-radius: 0;
   background: var(--livery);
   color: #fff;
@@ -152,11 +153,11 @@ html:not([data-theme="light"]) .home-kicker {
   padding-left: 0.8rem;
   padding-right: 1rem;
 }
-html:not([data-theme="light"]) .home-kicker span { border-radius: 0; background: #0b0913; }
+html:not([data-theme="light"]):not([data-theme="hud"]) .home-kicker span { border-radius: 0; background: #0b0913; }
 
-html:not([data-theme="light"]) .finder { border: 3px solid #f3f1f8; border-radius: 0; background: var(--bg-card); box-shadow: none; }
-html:not([data-theme="light"]) .finder:focus-within { border-color: var(--accent); box-shadow: none; }
-html:not([data-theme="light"]) .finder-btn {
+html:not([data-theme="light"]):not([data-theme="hud"]) .finder { border: 3px solid #f3f1f8; border-radius: 0; background: var(--bg-card); box-shadow: none; }
+html:not([data-theme="light"]):not([data-theme="hud"]) .finder:focus-within { border-color: var(--accent); box-shadow: none; }
+html:not([data-theme="light"]):not([data-theme="hud"]) .finder-btn {
   border-radius: 0;
   clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
   padding-left: 1.5rem;
@@ -165,12 +166,12 @@ html:not([data-theme="light"]) .finder-btn {
   letter-spacing: 0.06em;
   font-style: italic;
 }
-html:not([data-theme="light"]) .finder-go { background: var(--livery); }
+html:not([data-theme="light"]):not([data-theme="hud"]) .finder-go { background: var(--livery); }
 
 /* Slanted chips and filters */
-html:not([data-theme="light"]) .finder-hint button,
-html:not([data-theme="light"]) .filters button,
-html:not([data-theme="light"]) .rivals button {
+html:not([data-theme="light"]):not([data-theme="hud"]) .finder-hint button,
+html:not([data-theme="light"]):not([data-theme="hud"]) .filters button,
+html:not([data-theme="light"]):not([data-theme="hud"]) .rivals button {
   border-radius: 0;
   border: 0;
   clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
@@ -178,13 +179,13 @@ html:not([data-theme="light"]) .rivals button {
   padding-right: 1rem;
   background: var(--bg-raised);
 }
-html:not([data-theme="light"]) .filters { border: 0; border-radius: 0; background: none; padding: 0; }
-html:not([data-theme="light"]) .filters button { font-weight: 700; text-transform: uppercase; font-size: 0.74rem; letter-spacing: 0.06em; }
-html:not([data-theme="light"]) .filters button[aria-pressed="true"] { background: var(--livery); color: #fff; }
+html:not([data-theme="light"]):not([data-theme="hud"]) .filters { border: 0; border-radius: 0; background: none; padding: 0; }
+html:not([data-theme="light"]):not([data-theme="hud"]) .filters button { font-weight: 700; text-transform: uppercase; font-size: 0.74rem; letter-spacing: 0.06em; }
+html:not([data-theme="light"]):not([data-theme="hud"]) .filters button[aria-pressed="true"] { background: var(--livery); color: #fff; }
 
 /* Cards: purple top stripe, checkered strip over the picture */
-html:not([data-theme="light"]) .car-card,
-html:not([data-theme="light"]) .result-card {
+html:not([data-theme="light"]):not([data-theme="hud"]) .car-card,
+html:not([data-theme="light"]):not([data-theme="hud"]) .result-card {
   border-radius: 0;
   border: 0;
   border-top: 5px solid var(--livery);
@@ -192,8 +193,8 @@ html:not([data-theme="light"]) .result-card {
   box-shadow: 0 16px 40px -24px rgba(0, 0, 0, 0.8);
   backdrop-filter: none;
 }
-html:not([data-theme="light"]) .car-card:hover { border-color: var(--accent-2); box-shadow: 0 20px 44px -22px rgba(124, 58, 237, 0.6); }
-html:not([data-theme="light"]) .car-stage {
+html:not([data-theme="light"]):not([data-theme="hud"]) .car-card:hover { border-color: var(--accent-2); box-shadow: 0 20px 44px -22px rgba(124, 58, 237, 0.6); }
+html:not([data-theme="light"]):not([data-theme="hud"]) .car-stage {
   background:
     repeating-conic-gradient(#f3f1f8 0 25%, #0b0913 0 50%) 0 0 / 12px 12px,
     linear-gradient(180deg, #1f1a2e, #13101d);
@@ -202,10 +203,10 @@ html:not([data-theme="light"]) .car-stage {
   border-bottom: 0;
   padding-top: 12px;
 }
-html:not([data-theme="light"]) .race-card .car-stage { padding-top: 0; background: #1a1626; }
-html:not([data-theme="light"]) .car-art { color: #c4b5fd; }
-html:not([data-theme="light"]) .car-tag,
-html:not([data-theme="light"]) .race-card .car-tag {
+html:not([data-theme="light"]):not([data-theme="hud"]) .race-card .car-stage { padding-top: 0; background: #1a1626; }
+html:not([data-theme="light"]):not([data-theme="hud"]) .car-art { color: #c4b5fd; }
+html:not([data-theme="light"]):not([data-theme="hud"]) .car-tag,
+html:not([data-theme="light"]):not([data-theme="hud"]) .race-card .car-tag {
   border-radius: 0;
   background: var(--livery);
   color: #fff;
@@ -215,31 +216,31 @@ html:not([data-theme="light"]) .race-card .car-tag {
   top: 20px;
   backdrop-filter: none;
 }
-html:not([data-theme="light"]) .race-card .car-tag { top: 12px; }
-html:not([data-theme="light"]) .badge-3d { border-radius: 0; clip-path: polygon(5px 0, 100% 0, calc(100% - 5px) 100%, 0 100%); padding-left: 0.7rem; padding-right: 0.7rem; }
-html:not([data-theme="light"]) .car-more { text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.74rem; font-style: italic; }
+html:not([data-theme="light"]):not([data-theme="hud"]) .race-card .car-tag { top: 12px; }
+html:not([data-theme="light"]):not([data-theme="hud"]) .badge-3d { border-radius: 0; clip-path: polygon(5px 0, 100% 0, calc(100% - 5px) 100%, 0 100%); padding-left: 0.7rem; padding-right: 0.7rem; }
+html:not([data-theme="light"]):not([data-theme="hud"]) .car-more { text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.74rem; font-style: italic; }
 
 /* Result panel */
-html:not([data-theme="light"]) .result-head {
+html:not([data-theme="light"]):not([data-theme="hud"]) .result-head {
   background:
     linear-gradient(100deg, transparent 62%, rgba(255, 255, 255, 0.08) 62% 66%, transparent 66% 70%, rgba(255, 255, 255, 0.08) 70% 72%, transparent 72%),
     linear-gradient(100deg, #5b21b6, #7c3aed);
   border-bottom: 0;
 }
-html:not([data-theme="light"]) .result-head .result-sub { color: #ddd6fe; }
-html:not([data-theme="light"]) .result-head .car-art { color: #fff; }
-html:not([data-theme="light"]) .result-photo { border-radius: 0; border-color: rgba(255, 255, 255, 0.25); }
-html:not([data-theme="light"]) .viewer,
-html:not([data-theme="light"]) .viewer-loading,
-html:not([data-theme="light"]) .viewer-picks button { border-radius: 0; }
-html:not([data-theme="light"]) .viewer-play { border-radius: 0; clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%); padding-left: 1.6rem; padding-right: 1.6rem; text-transform: uppercase; font-style: italic; letter-spacing: 0.05em; }
-html:not([data-theme="light"]) .spec { border-radius: 0; border: 0; border-left: 4px solid var(--livery); background: var(--bg-raised); }
-html:not([data-theme="light"]) .spec-value { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 1.15rem; }
-html:not([data-theme="light"]) .price { border-radius: 0; border: 0; border-left: 4px solid var(--accent-2); }
-html:not([data-theme="light"]) .price-value { font-family: 'Barlow Condensed', sans-serif; font-style: italic; font-size: 1.6rem; }
-html:not([data-theme="light"]) .facts li { border-radius: 0; background: var(--bg-raised); }
-html:not([data-theme="light"]) .facts li::before { color: var(--accent-2); }
-html:not([data-theme="light"]) .result-links a {
+html:not([data-theme="light"]):not([data-theme="hud"]) .result-head .result-sub { color: #ddd6fe; }
+html:not([data-theme="light"]):not([data-theme="hud"]) .result-head .car-art { color: #fff; }
+html:not([data-theme="light"]):not([data-theme="hud"]) .result-photo { border-radius: 0; border-color: rgba(255, 255, 255, 0.25); }
+html:not([data-theme="light"]):not([data-theme="hud"]) .viewer,
+html:not([data-theme="light"]):not([data-theme="hud"]) .viewer-loading,
+html:not([data-theme="light"]):not([data-theme="hud"]) .viewer-picks button { border-radius: 0; }
+html:not([data-theme="light"]):not([data-theme="hud"]) .viewer-play { border-radius: 0; clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%); padding-left: 1.6rem; padding-right: 1.6rem; text-transform: uppercase; font-style: italic; letter-spacing: 0.05em; }
+html:not([data-theme="light"]):not([data-theme="hud"]) .spec { border-radius: 0; border: 0; border-left: 4px solid var(--livery); background: var(--bg-raised); }
+html:not([data-theme="light"]):not([data-theme="hud"]) .spec-value { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 1.15rem; }
+html:not([data-theme="light"]):not([data-theme="hud"]) .price { border-radius: 0; border: 0; border-left: 4px solid var(--accent-2); }
+html:not([data-theme="light"]):not([data-theme="hud"]) .price-value { font-family: 'Barlow Condensed', sans-serif; font-style: italic; font-size: 1.6rem; }
+html:not([data-theme="light"]):not([data-theme="hud"]) .facts li { border-radius: 0; background: var(--bg-raised); }
+html:not([data-theme="light"]):not([data-theme="hud"]) .facts li::before { color: var(--accent-2); }
+html:not([data-theme="light"]):not([data-theme="hud"]) .result-links a {
   border-radius: 0;
   clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
   border: 0;
@@ -247,9 +248,9 @@ html:not([data-theme="light"]) .result-links a {
   padding-left: 1.3rem;
   padding-right: 1.3rem;
 }
-html:not([data-theme="light"]) .result-links a:first-child { background: var(--livery); }
+html:not([data-theme="light"]):not([data-theme="hud"]) .result-links a:first-child { background: var(--livery); }
 
-html:not([data-theme="light"]) .home-rule {
+html:not([data-theme="light"]):not([data-theme="hud"]) .home-rule {
   height: 3px;
   background: repeating-linear-gradient(90deg, #f3f1f8 0 12px, transparent 12px 24px);
   opacity: 0.12;
@@ -263,18 +264,18 @@ html:not([data-theme="light"]) .home-rule {
 [data-theme="light"] .cat-card .car-info { display: flex; flex-direction: column; }
 [data-theme="light"] .cat-search { box-shadow: 4px 4px 0 #1c1917; }
 
-html:not([data-theme="light"]) .cat-select { border-radius: 0; border: 2px solid rgba(255, 255, 255, 0.2); }
-html:not([data-theme="light"]) .cat-tags span { border-radius: 0; border: 0; }
-html:not([data-theme="light"]) .cat-price { font-family: 'Barlow Condensed', sans-serif; font-style: italic; font-size: 1.3rem; font-weight: 800; }
-html:not([data-theme="light"]) .cat-card .car-name { font-size: 1.35rem; }
+html:not([data-theme="light"]):not([data-theme="hud"]) .cat-select { border-radius: 0; border: 2px solid rgba(255, 255, 255, 0.2); }
+html:not([data-theme="light"]):not([data-theme="hud"]) .cat-tags span { border-radius: 0; border: 0; }
+html:not([data-theme="light"]):not([data-theme="hud"]) .cat-price { font-family: 'Barlow Condensed', sans-serif; font-style: italic; font-size: 1.3rem; font-weight: 800; }
+html:not([data-theme="light"]):not([data-theme="hud"]) .cat-card .car-name { font-size: 1.35rem; }
 
 /* ---------- Spec explainer ---------- */
 [data-theme="light"] .explain-pop { border: 1.5px solid #1c1917; border-radius: 2px; box-shadow: 6px 6px 0 #1c1917; background: #fffdf8; }
 [data-theme="light"] .explain-title { font-family: 'Fraunces', Georgia, serif; font-size: 1.15rem; }
 [data-theme="light"] .explain-extra { border-top-color: rgba(28, 25, 23, 0.25); }
 
-html:not([data-theme="light"]) .explain-pop { border-radius: 0; border: 0; border-top: 4px solid var(--livery); box-shadow: 0 24px 60px -16px rgba(0, 0, 0, 0.8); }
-html:not([data-theme="light"]) .explain-title { font-family: 'Barlow Condensed', sans-serif; font-style: italic; font-weight: 800; text-transform: uppercase; font-size: 1.35rem; letter-spacing: 0; }
+html:not([data-theme="light"]):not([data-theme="hud"]) .explain-pop { border-radius: 0; border: 0; border-top: 4px solid var(--livery); box-shadow: 0 24px 60px -16px rgba(0, 0, 0, 0.8); }
+html:not([data-theme="light"]):not([data-theme="hud"]) .explain-title { font-family: 'Barlow Condensed', sans-serif; font-style: italic; font-weight: 800; text-transform: uppercase; font-size: 1.35rem; letter-spacing: 0; }
 @media (max-width: 600px) {
   [data-theme="light"] .explain-pop { box-shadow: 0 -6px 0 #1c1917; border-radius: 0; }
 }

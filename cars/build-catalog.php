@@ -10,7 +10,8 @@
      data/catalog-all.json  every version since 1984
 
    Prices: data/variant-prices.json (per version) first,
-   then data/prices.json (per model range).
+   then data/prices.json (per model range). Models listed in
+   data/discontinued.json are marked as no longer sold new.
 
    Run from the command line:  php cars/build-catalog.php
    (Re-run every few months to pick up new models.)
@@ -44,6 +45,11 @@ function load_prices($file) {
 }
 $modelPrices = load_prices("$dataDir/prices.json");
 $variantPrices = load_prices("$dataDir/variant-prices.json");
+// Models the EPA still lists for a recent year but that are no longer sold new in the US
+// (fact-checked; see the note in the file). They show as "No longer sold new".
+$discList = json_decode(file_get_contents("$dataDir/discontinued.json"), true);
+$discontinued = array_flip($discList['models']);
+$discontinuedVersions = array_flip($discList['versions'] ?? []);
 
 $MAKE_FIX = ['Mini' => 'MINI'];
 
@@ -151,13 +157,14 @@ foreach ($v as $key => $c) {
     'fuels' => array_keys($c['fuels']),
     'engine' => count($engines) > 2 ? $engines[0] . ' + ' . (count($engines) - 1) . ' more' : implode(' / ', $engines),
     'drive' => implode('/', array_keys($c['drives'] ?? [])),
-    'current' => $c['to'] >= $currentYear,
+    'current' => $c['to'] >= $currentYear && !isset($discontinued[$c['make'] . '|' . $c['base']]) && !isset($discontinuedVersions[$key]),
   ];
   foreach (['mpg', 'mpge', 'range'] as $k) if (!empty($c[$k])) $e[$k] = $c[$k];
 
   // Prices only make sense for versions on sale now
   if ($e['current']) {
-    if (isset($variantPrices[$key])) { $e['price'] = $variantPrices[$key]; $usedVariantPrices[$key] = 1; }
+    // A null version price means the maker publishes no price: show none rather than the model's range.
+    if (array_key_exists($key, $variantPrices)) { if ($variantPrices[$key]) $e['price'] = $variantPrices[$key]; $usedVariantPrices[$key] = 1; }
     elseif (isset($modelPrices[$c['make'] . '|' . $c['base']])) $e['modelPrice'] = $modelPrices[$c['make'] . '|' . $c['base']];
   }
   $all[] = $e;

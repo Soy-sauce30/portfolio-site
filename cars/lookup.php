@@ -244,13 +244,20 @@ $prices = json_decode(file_get_contents(__DIR__ . '/data/prices.json'), true);
 $priceMake = $make === 'Mini' ? 'MINI' : $make;
 $variantPrices = json_decode(file_get_contents(__DIR__ . '/data/variant-prices.json'), true);
 $version = trim(preg_replace('/\s*\((?:[^)]*\bwheels?\b[^)]*|\d+\s*in[^)]*)\)/i', '', $model));
-if (isset($variantPrices["$priceMake|$version"])) $prices["$priceMake|$version"] = $variantPrices["$priceMake|$version"];
+$disc = json_decode(file_get_contents(__DIR__ . '/data/discontinued.json'), true);
+$noLongerSold = in_array("$priceMake|$version", $disc['versions'] ?? [], true)
+  || in_array("$priceMake|" . ($v['baseModel'] ?: $baseModel), $disc['models'] ?? [], true);
 $priceKey = null;
-foreach (["$priceMake|$version", "$priceMake|$baseModel", "$priceMake|" . ($v['baseModel'] ?: $baseModel)] as $k) {
-  if (isset($prices[$k])) { $priceKey = $k; break; }
+if (array_key_exists("$priceMake|$version", $variantPrices)) {
+  // This exact version: its own price, or none at all if the maker doesn't publish one (null).
+  if ($variantPrices["$priceMake|$version"]) { $prices["$priceMake|$version"] = $variantPrices["$priceMake|$version"]; $priceKey = "$priceMake|$version"; }
+} else {
+  foreach (["$priceMake|$baseModel", "$priceMake|" . ($v['baseModel'] ?: $baseModel)] as $k) {
+    if (isset($prices[$k])) { $priceKey = $k; break; }
+  }
 }
 $priceNew = '';
-if ($priceKey && $y >= (int)date('Y') - 1) { // only for versions still sold new
+if ($priceKey && !$noLongerSold && $y >= (int)date('Y') - 1) { // only for versions still sold new
   [$lo, $hi] = $prices[$priceKey];
   $priceNew = $lo === $hi ? '$' . number_format($lo) : '$' . number_format($lo) . ' – $' . number_format($hi);
 }

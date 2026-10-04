@@ -11,21 +11,47 @@ $aiEnabled = (bool)getenv('ANTHROPIC_API_KEY') || is_readable($keyFile);
   <title>Sawyer's Garage — Car Finder</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,600;1,9..144,600&family=Barlow+Condensed:ital,wght@1,700;1,800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,600;1,9..144,600&family=Barlow+Condensed:ital,wght@1,700;1,800&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <script>
-    (function(){var t=localStorage.getItem('theme')||(window.matchMedia('(prefers-color-scheme:light)').matches?'light':'dark');document.documentElement.setAttribute('data-theme',t)})();
+    // Car pages also offer a third "HUD" look (dark only), stored separately so other pages stay light/dark.
+    (function(){var d=document.documentElement,t,l;try{t=localStorage.getItem('theme');l=localStorage.getItem('look')}catch(e){}t=t||(window.matchMedia('(prefers-color-scheme:light)').matches?'light':'dark');if(t!=='light'&&l==='hud')t='hud';d.setAttribute('data-theme',t);d.setAttribute('data-hud-ok','')})();
   </script>
   <link rel="stylesheet" href="/cars/site.css">
   <link rel="stylesheet" href="/cars/themes.css">
+  <link rel="stylesheet" href="/cars/hud.css">
 </head>
 <body>
 
   <!-- Header -->
   <?php include 'header.php';?>
 
+  <?php include __DIR__ . '/cars/hud-bar.php'; ?>
+
   <!-- Hero + finder -->
   <section class="home-hero" id="home">
+    <!-- HUD theme only: live site status and real catalog numbers -->
+    <aside class="hud-col hud-left hud-only" aria-label="Site status">
+      <div class="hud-panel">
+        <h2 class="hud-panel-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2 4 6v6c0 5 3.5 8.5 8 10 4.5-1.5 8-5 8-10V6z"/></svg>System status</h2>
+        <ul class="hud-rows" id="hudSources"><li class="hud-row"><span>Checking data sources…</span></li></ul>
+      </div>
+      <div class="hud-panel">
+        <h2 class="hud-panel-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></svg>Garage data</h2>
+        <ul class="hud-rows" id="hudCatalog"></ul>
+      </div>
+    </aside>
+
+    <div class="hero-core">
+    <svg class="hud-reticle hud-only" viewBox="0 0 400 400" aria-hidden="true">
+      <g class="hud-reticle-spin">
+        <circle cx="200" cy="200" r="182" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="2 10" opacity=".7"/>
+        <path d="M200 40a160 160 0 0 1 138 80M338 280a160 160 0 0 1-138 80M62 280a160 160 0 0 1 0-160" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" opacity=".55"/>
+      </g>
+      <circle cx="200" cy="200" r="130" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="70 12" opacity=".5"/>
+      <circle cx="200" cy="200" r="34" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".6"/>
+      <path d="M200 0v60M200 340v60M0 200h60M340 200h60M200 186v-12M200 214v12M186 200h-12M214 200h12" stroke="currentColor" stroke-width="1.5" opacity=".7"/>
+    </svg>
     <div class="home-kicker"><span>Free</span> Look up any car sold in the US since 1984</div>
     <h1 class="home-name">Know any car<br><span class="grad-text">in seconds.</span></h1>
     <p class="home-tagline"><?php if ($aiEnabled): ?>Type a make and model, or snap a photo of one on the street — get the specs, price, and how it stacks up.<?php else: ?>Type any make and model — get the engine, fuel economy, running costs, and where to find prices.<?php endif; ?></p>
@@ -50,6 +76,28 @@ $aiEnabled = (bool)getenv('ANTHROPIC_API_KEY') || is_readable($keyFile);
       <button type="button" data-car="Ford Bronco">Ford Bronco</button>
       <button type="button" data-car="Toyota Supra">Toyota Supra</button>
     </p>
+    </div>
+
+    <!-- HUD theme only: what the last scan found, your own recent lookups, shortcuts -->
+    <aside class="hud-col hud-right hud-only" aria-label="Scan report and shortcuts">
+      <div class="hud-panel">
+        <h2 class="hud-panel-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/></svg>Scan report</h2>
+        <div class="hud-bubble" id="hudReport" aria-live="polite">Ready. Type any make and model into the scanner, or pick a car below.</div>
+      </div>
+      <div class="hud-panel">
+        <h2 class="hud-panel-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 8v4l3 2"/><circle cx="12" cy="12" r="9"/></svg>Recent lookups</h2>
+        <ul class="hud-recent" id="hudRecent"></ul>
+      </div>
+      <div class="hud-panel">
+        <h2 class="hud-panel-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Quick access</h2>
+        <nav class="hud-quick" aria-label="Quick access">
+          <a href="#home" data-hud-focus><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>Finder</a>
+          <a href="#racing"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 21V4M4 4h14l-3 4 3 4H4"/></svg>Racing</a>
+          <a href="/cars/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 13l2-6h14l2 6v5H3z"/><circle cx="7.5" cy="16" r="1.5"/><circle cx="16.5" cy="16" r="1.5"/></svg>All cars</a>
+          <a href="/games/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="2" y="7" width="20" height="11" rx="4"/><path d="M7 11v3M5.5 12.5h3M15 12h.01M18 13h.01"/></svg>Games</a>
+        </nav>
+      </div>
+    </aside>
   </section>
 
   <div class="result" id="result" aria-live="polite"></div>
@@ -115,6 +163,7 @@ $aiEnabled = (bool)getenv('ANTHROPIC_API_KEY') || is_readable($keyFile);
   <script src="theme.js"></script>
   <script src="/cars/racing.js"></script>
   <script src="/cars/explain.js"></script>
+  <script src="/cars/hud.js"></script>
   <script>
   (function () {
     // ---------- Top rated list ----------
@@ -234,6 +283,7 @@ $aiEnabled = (bool)getenv('ANTHROPIC_API_KEY') || is_readable($keyFile);
 
     function showMessage(html) {
       result.innerHTML = '<div class="result-card"><div class="result-msg">' + html + '</div></div>';
+      if (window.HUD) HUD.note(result.textContent);
     }
 
     function lookup(payload, photoUrl) {
@@ -251,6 +301,7 @@ $aiEnabled = (bool)getenv('ANTHROPIC_API_KEY') || is_readable($keyFile);
         .then(function (car) {
           if (car.error) return showMessage(esc(car.error));
           if (!car.identified) return showMessage('Couldn’t spot a car there.' + (car.note ? '<br><small>' + esc(car.note) + '</small>' : ''));
+          car._query = payload.query || '';
           render(car, photoUrl);
         })
         .catch(function () { showMessage('Couldn’t reach the server. Check your connection and try again.'); })
@@ -306,17 +357,19 @@ $aiEnabled = (bool)getenv('ANTHROPIC_API_KEY') || is_readable($keyFile);
         '</article>';
 
       if (car.models) showViewer(car.models);
-      else if (car.identified && car.model) findModels(car.make, car.model);
+      else if (car.identified && car.model) findModels(car.make, car.model, car.trim, car.years);
+      if (window.HUD) HUD.result(car);
     }
 
     // ---------- 3D viewer (Sketchfab) ----------
     // The poster is just an image; the heavy 3D player only loads when tapped.
     var viewerModels = [];
 
-    function findModels(make, model) {
+    function findModels(make, model, version, year) {
       var box = document.getElementById('viewer3d');
       box.innerHTML = '<div class="viewer-loading"><div class="spinner"></div>Looking for a 3D model\u2026</div>';
-      fetch('/cars/models.php?make=' + encodeURIComponent(make) + '&model=' + encodeURIComponent(model))
+      fetch('/cars/models.php?make=' + encodeURIComponent(make) + '&model=' + encodeURIComponent(model) +
+        '&version=' + encodeURIComponent(version || '') + '&year=' + encodeURIComponent(parseInt(year, 10) || ''))
         .then(function (r) { return r.json(); })
         .then(function (d) {
           if (box !== document.getElementById('viewer3d')) return; // a newer result replaced this one
@@ -377,7 +430,8 @@ $aiEnabled = (bool)getenv('ANTHROPIC_API_KEY') || is_readable($keyFile);
         pros: [], cons: [], rivals: [],
         links: [{ label: 'Learn more on Wikipedia', url: r.wiki }],
         note: 'Race car figures are approximate and change with the rules each season.',
-        models: [r.model]
+        models: [r.model],
+        raceId: r.id
       });
       result.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }

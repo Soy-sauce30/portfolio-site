@@ -6,17 +6,20 @@
   <title>All Cars — Sawyer's Garage</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,600;1,9..144,600&family=Barlow+Condensed:ital,wght@1,700;1,800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,600;1,9..144,600&family=Barlow+Condensed:ital,wght@1,700;1,800&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/style.css">
   <script>
-    (function(){var t=localStorage.getItem('theme')||(window.matchMedia('(prefers-color-scheme:light)').matches?'light':'dark');document.documentElement.setAttribute('data-theme',t)})();
+    // Car pages also offer a third "HUD" look (dark only), stored separately so other pages stay light/dark.
+    (function(){var d=document.documentElement,t,l;try{t=localStorage.getItem('theme');l=localStorage.getItem('look')}catch(e){}t=t||(window.matchMedia('(prefers-color-scheme:light)').matches?'light':'dark');if(t!=='light'&&l==='hud')t='hud';d.setAttribute('data-theme',t);d.setAttribute('data-hud-ok','')})();
   </script>
   <link rel="stylesheet" href="/cars/site.css">
   <link rel="stylesheet" href="/cars/themes.css">
+  <link rel="stylesheet" href="/cars/hud.css">
 </head>
 <body>
 
   <?php include __DIR__ . '/../header.php'; ?>
+  <?php include __DIR__ . '/hud-bar.php'; ?>
 
   <section class="home-hero cat-hero" id="home">
     <div class="home-kicker"><span>EPA data</span> Every model sold in the US since 1984</div>
@@ -88,6 +91,7 @@
   <script src="/script.js"></script>
   <script src="/theme.js"></script>
   <script src="/cars/explain.js"></script>
+  <script src="/cars/hud.js"></script>
   <script>
   (function () {
     var PAGE = 60;
@@ -155,7 +159,7 @@
       ].filter(Boolean).join(' · ');
       var p = c.price || c.modelPrice;
       var price = p ? '<span class="cat-price"' + explainAttrs('Price', priceText(p)) + '>' + priceText(p) + (c.price ? '' : '<small>' + esc(c.base) + ' range</small>') + '</span>'
-        : '<span class="cat-price cat-price-none">' + (c.current ? 'Price coming soon' : 'No longer sold new') + '</span>';
+        : '<span class="cat-price cat-price-none">' + (c.current ? 'Price not listed' : 'No longer sold new') + '</span>';
       // Older versions link with their last model year so the lookup finds the right car.
       var q = (c.current ? '' : c.years[1] + ' ') + c.make + ' ' + c.name;
       // The name is the real link; a click anywhere else on the card is forwarded to it (see below).

@@ -1,0 +1,471 @@
+/* =========================================
+   HUD theme — the third look on the car pages
+   (light → dark → HUD). A sci-fi heads-up display in
+   neon purple: glowing panels with corner brackets,
+   a scanner reticle around the search, live status
+   panels. Everything here is scoped to [data-theme="hud"]
+   except the rule that hides HUD-only parts in other themes.
+   ========================================= */
+
+/* HUD-only parts are hidden in the other themes */
+.hud-only { display: none; }
+.hero-core { display: contents; } /* invisible wrapper outside the HUD */
+
+[data-theme="hud"] {
+  --bg: #06030e;
+  --bg-card: rgba(22, 11, 46, 0.6);
+  --bg-raised: rgba(34, 17, 68, 0.55);
+  --border: rgba(170, 120, 255, 0.35);
+  --text: #ece4ff;
+  --text-muted: #a797cc;
+  --accent: #b98cff;
+  --accent-2: #ff4f7b;
+  --accent-dim: rgba(170, 110, 255, 0.14);
+  --accent-glow: rgba(170, 110, 255, 0.45);
+  --grad: linear-gradient(90deg, #8f4dff, #c39bff);
+  --on-accent: #0b0518;
+  --good: #5cf2a4;
+
+  --hud: #a66bff;
+  --hud-hi: #dcc8ff;
+  --hud-line: rgba(166, 107, 255, 0.6);
+  --hud-faint: rgba(166, 107, 255, 0.18);
+  --hud-alert: #ff4f7b;
+  --hud-font: 'Rajdhani', 'Space Grotesk', sans-serif;
+  --hud-glow: 0 0 0 1px rgba(166, 107, 255, 0.18), 0 0 22px rgba(140, 80, 255, 0.25), inset 0 0 26px rgba(140, 80, 255, 0.1);
+  --hud-text-glow: 0 0 14px rgba(166, 107, 255, 0.75);
+  /* Bright L-shaped brackets on the top-left and bottom-right corners of every panel */
+  --hud-corners:
+    linear-gradient(var(--hud-hi), var(--hud-hi)) left top / 18px 2px no-repeat,
+    linear-gradient(var(--hud-hi), var(--hud-hi)) left top / 2px 18px no-repeat,
+    linear-gradient(var(--hud-hi), var(--hud-hi)) right bottom / 18px 2px no-repeat,
+    linear-gradient(var(--hud-hi), var(--hud-hi)) right bottom / 2px 18px no-repeat;
+  --hud-panel-bg: linear-gradient(180deg, rgba(36, 17, 74, 0.6), rgba(10, 5, 24, 0.82));
+}
+
+/* ---------- Backdrop: dark violet with a faint grid and vignette ---------- */
+[data-theme="hud"] body { background: var(--bg); }
+[data-theme="hud"] body::before {
+  background:
+    radial-gradient(ellipse at center, transparent 45%, rgba(0, 0, 0, 0.65) 100%),
+    radial-gradient(1100px 650px at 50% 28%, rgba(110, 50, 220, 0.24), transparent 70%),
+    linear-gradient(rgba(166, 107, 255, 0.05) 1px, transparent 1px) 0 0 / 46px 46px,
+    linear-gradient(90deg, rgba(166, 107, 255, 0.05) 1px, transparent 1px) 0 0 / 46px 46px,
+    var(--bg);
+}
+
+/* ---------- Shared HUD panel look ---------- */
+[data-theme="hud"] .hud-panel,
+[data-theme="hud"] .car-card,
+[data-theme="hud"] .result-card,
+[data-theme="hud"] .explain-pop {
+  background: var(--hud-corners), var(--hud-panel-bg);
+  border: 1px solid var(--hud-line);
+  border-radius: 6px;
+  box-shadow: var(--hud-glow);
+  backdrop-filter: blur(8px);
+}
+
+[data-theme="hud"] .nav-logo,
+[data-theme="hud"] .home-name,
+[data-theme="hud"] .home-heading,
+[data-theme="hud"] .result-title,
+[data-theme="hud"] .car-name,
+[data-theme="hud"] .explain-title,
+[data-theme="hud"] .hud-panel-title {
+  font-family: var(--hud-font);
+  text-transform: uppercase;
+  font-style: normal;
+}
+
+/* ---------- Nav ---------- */
+[data-theme="hud"] .nav.scrolled {
+  background: rgba(6, 3, 14, 0.86);
+  border-bottom: 1px solid var(--hud-line);
+  box-shadow: 0 0 24px rgba(140, 80, 255, 0.25);
+}
+[data-theme="hud"] .nav-logo { letter-spacing: 0.14em; font-weight: 700; color: var(--hud-hi); text-shadow: var(--hud-text-glow); }
+[data-theme="hud"] .nav-links a { font-family: var(--hud-font); font-weight: 600; text-transform: uppercase; letter-spacing: 0.14em; font-size: 0.82rem; }
+[data-theme="hud"] .nav-links a:hover { color: var(--hud-hi); text-shadow: var(--hud-text-glow); }
+[data-theme="hud"] .theme-toggle { border-color: var(--hud-line); color: var(--hud-hi); box-shadow: 0 0 12px rgba(166, 107, 255, 0.35); }
+
+/* ---------- Top bar: motto, clock, weather ---------- */
+[data-theme="hud"] .hud-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 5.4rem 1.25rem 0;
+  font-family: var(--hud-font);
+}
+[data-theme="hud"] .hud-motto {
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--hud-hi);
+  text-shadow: var(--hud-text-glow);
+}
+[data-theme="hud"] .hud-motto i { font-style: normal; color: var(--hud); margin: 0 0.4em; }
+[data-theme="hud"] .hud-meta { display: flex; align-items: center; gap: 1.25rem; }
+[data-theme="hud"] .hud-clock { display: flex; flex-direction: column; align-items: flex-end; line-height: 1.1; }
+[data-theme="hud"] .hud-time { font-size: 1.7rem; font-weight: 600; color: var(--text); letter-spacing: 0.03em; }
+[data-theme="hud"] .hud-date { font-size: 0.95rem; color: var(--hud); }
+[data-theme="hud"] .hud-weather {
+  display: flex;
+  align-items: center;
+  min-height: 46px;
+  padding-left: 1.25rem;
+  border-left: 1px solid var(--hud-line);
+}
+[data-theme="hud"] .hud-weather-now { display: flex; align-items: center; gap: 0.6rem; color: var(--hud-hi); }
+[data-theme="hud"] .hud-weather-now[hidden] { display: none; }
+[data-theme="hud"] .hud-temp { font-size: 1.7rem; font-weight: 600; color: var(--text); }
+[data-theme="hud"] .hud-cond { font-size: 0.95rem; color: var(--hud); }
+[data-theme="hud"] .hud-weather-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: none;
+  border: 1px solid var(--hud-line);
+  border-radius: 999px;
+  color: var(--hud-hi);
+  font: 600 0.9rem var(--hud-font);
+  letter-spacing: 0.06em;
+  padding: 0.45rem 0.9rem;
+  cursor: pointer;
+}
+[data-theme="hud"] .hud-weather-btn:hover { background: var(--hud-faint); box-shadow: 0 0 14px rgba(166, 107, 255, 0.4); }
+[data-theme="hud"] .hud-weather-btn[hidden] { display: none; }
+[data-theme="hud"] .hud-weather-note { font-size: 0.9rem; color: var(--text-muted); }
+
+/* ---------- Homepage hero: status | scanner | report ---------- */
+[data-theme="hud"] section.home-hero {
+  display: grid;
+  grid-template-columns: minmax(250px, 310px) minmax(0, 1fr) minmax(250px, 310px);
+  align-items: start;
+  gap: 1.5rem;
+  max-width: 1400px;
+  min-height: 0;
+  margin: 0 auto;
+  padding: 1.5rem 1.25rem 3rem;
+  text-align: left;
+}
+[data-theme="hud"] .hud-col { display: flex; flex-direction: column; gap: 1.1rem; }
+[data-theme="hud"] .hero-core {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+  isolation: isolate;
+  min-height: 560px;
+  padding: 2rem 0.5rem;
+}
+
+[data-theme="hud"] .hud-reticle {
+  display: block;
+  position: absolute;
+  z-index: -1;
+  left: 50%;
+  top: 50%;
+  width: min(560px, 100%);
+  height: auto;
+  transform: translate(-50%, -50%);
+  color: var(--hud);
+  filter: drop-shadow(0 0 6px rgba(166, 107, 255, 0.7));
+  opacity: 0.55;
+  pointer-events: none;
+}
+[data-theme="hud"] .hud-reticle-spin { transform-origin: 200px 200px; animation: hud-spin 40s linear infinite; }
+@keyframes hud-spin { to { transform: rotate(360deg); } }
+
+[data-theme="hud"] .home-kicker {
+  border: 1px solid var(--hud-line);
+  border-radius: 3px;
+  background: rgba(10, 5, 24, 0.7);
+  font-family: var(--hud-font);
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+[data-theme="hud"] .home-kicker span { border-radius: 2px; background: var(--hud); color: var(--on-accent); }
+[data-theme="hud"] .home-name {
+  font-size: clamp(2.6rem, 6vw, 4.6rem);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  line-height: 0.98;
+  color: var(--text);
+  text-shadow: 0 0 22px rgba(166, 107, 255, 0.45);
+}
+[data-theme="hud"] .grad-text { background: none; color: var(--hud-hi); text-shadow: 0 0 22px rgba(166, 107, 255, 0.9); }
+[data-theme="hud"] .home-tagline { color: var(--text-muted); max-width: 440px; }
+
+/* Search box styled like an "Ask…" console input */
+[data-theme="hud"] .finder {
+  max-width: 560px;
+  background: rgba(8, 4, 20, 0.82);
+  border: 1px solid var(--hud-line);
+  border-radius: 999px;
+  box-shadow: var(--hud-glow);
+}
+[data-theme="hud"] .finder:focus-within { border-color: var(--hud-hi); box-shadow: 0 0 0 3px var(--hud-faint), 0 0 30px rgba(166, 107, 255, 0.5); }
+[data-theme="hud"] .finder-icon { color: var(--hud); }
+[data-theme="hud"] .finder-btn,
+[data-theme="hud"] .cat-more .finder-btn {
+  border-radius: 999px;
+  font-family: var(--hud-font);
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+[data-theme="hud"] .finder-go { background: transparent; color: var(--hud-hi); border: 1px solid var(--hud-hi); box-shadow: 0 0 14px rgba(166, 107, 255, 0.45); }
+[data-theme="hud"] .finder-go:hover { background: var(--hud); color: var(--on-accent); filter: none; }
+[data-theme="hud"] .finder-photo { background: transparent; color: var(--hud-hi); border: 1px solid var(--hud-line); }
+[data-theme="hud"] .finder-hint button { border-radius: 3px; border-color: var(--hud-line); background: rgba(10, 5, 24, 0.7); }
+[data-theme="hud"] .finder-hint button:hover { color: var(--hud-hi); border-color: var(--hud-hi); box-shadow: 0 0 12px rgba(166, 107, 255, 0.4); }
+
+/* ---------- Side panels ---------- */
+[data-theme="hud"] .hud-panel { padding: 1rem 1.1rem 1.1rem; }
+[data-theme="hud"] .hud-panel-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 0.6rem;
+  padding-bottom: 0.55rem;
+  border-bottom: 1px solid var(--hud-faint);
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--hud-hi);
+  text-shadow: var(--hud-text-glow);
+}
+[data-theme="hud"] .hud-panel-title svg { color: var(--hud); flex-shrink: 0; }
+[data-theme="hud"] .hud-rows,
+[data-theme="hud"] .hud-recent { list-style: none; margin: 0; padding: 0; }
+[data-theme="hud"] .hud-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.75rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(166, 107, 255, 0.12);
+  font-size: 0.9rem;
+}
+[data-theme="hud"] .hud-row:last-child { border-bottom: 0; }
+[data-theme="hud"] .hud-row-label { color: var(--text); }
+[data-theme="hud"] .hud-row-value { font-family: var(--hud-font); font-weight: 600; font-size: 1rem; letter-spacing: 0.06em; text-align: right; color: var(--hud-hi); }
+[data-theme="hud"] .hud-row-value.is-ok { color: var(--good); text-transform: uppercase; text-shadow: 0 0 10px rgba(92, 242, 164, 0.5); }
+[data-theme="hud"] .hud-row-value.is-off { color: var(--hud-alert); text-shadow: 0 0 10px rgba(255, 79, 123, 0.45); }
+
+[data-theme="hud"] .hud-bubble {
+  background: rgba(70, 34, 140, 0.32);
+  border: 1px solid var(--hud-faint);
+  border-radius: 8px;
+  padding: 0.8rem 0.95rem;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+[data-theme="hud"] .hud-bubble p { margin: 0 0 0.35rem; }
+[data-theme="hud"] .hud-bubble ul { margin: 0.35rem 0; padding-left: 1rem; }
+[data-theme="hud"] .hud-bubble li { margin: 0.15rem 0; }
+[data-theme="hud"] .hud-bubble b { color: var(--hud-hi); font-weight: 600; }
+[data-theme="hud"] .hud-report-title { font-family: var(--hud-font); font-weight: 700; font-size: 1.1rem; letter-spacing: 0.05em; text-transform: uppercase; color: var(--hud-hi); }
+[data-theme="hud"] .hud-report-more { color: var(--text-muted); font-size: 0.8rem; }
+
+[data-theme="hud"] .hud-recent-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.5rem 0.1rem;
+  background: none;
+  border: 0;
+  border-bottom: 1px solid rgba(166, 107, 255, 0.12);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.9rem;
+  text-align: left;
+  cursor: pointer;
+}
+[data-theme="hud"] .hud-recent li:last-child .hud-recent-item { border-bottom: 0; }
+[data-theme="hud"] .hud-recent-item:hover .hud-recent-title { color: var(--hud-hi); text-shadow: var(--hud-text-glow); }
+[data-theme="hud"] .hud-recent-time { color: var(--text-muted); font-size: 0.8rem; white-space: nowrap; }
+[data-theme="hud"] .hud-empty { color: var(--text-muted); font-size: 0.88rem; padding: 0.3rem 0; }
+
+[data-theme="hud"] .hud-quick { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.4rem; }
+[data-theme="hud"] .hud-quick a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.6rem 0.2rem;
+  border-radius: 6px;
+  color: var(--text);
+  font: 600 0.85rem var(--hud-font);
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  text-align: center;
+}
+[data-theme="hud"] .hud-quick svg { width: 30px; height: 30px; color: var(--hud-hi); filter: drop-shadow(0 0 6px rgba(166, 107, 255, 0.7)); }
+[data-theme="hud"] .hud-quick a:hover { background: var(--hud-faint); color: var(--hud-hi); }
+
+/* ---------- Sections ---------- */
+[data-theme="hud"] .home-heading { font-weight: 700; letter-spacing: 0.08em; color: var(--text); text-shadow: 0 0 18px rgba(166, 107, 255, 0.45); }
+[data-theme="hud"] .home-rule { height: 1px; background: linear-gradient(90deg, transparent, var(--hud-line), transparent); box-shadow: 0 0 10px rgba(166, 107, 255, 0.5); }
+
+[data-theme="hud"] .filters { border: 0; background: none; padding: 0; gap: 0.4rem; }
+[data-theme="hud"] .filters button {
+  border: 1px solid rgba(166, 107, 255, 0.35);
+  border-radius: 3px;
+  font-family: var(--hud-font);
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+[data-theme="hud"] .filters button:hover { color: var(--hud-hi); border-color: var(--hud-line); }
+[data-theme="hud"] .filters button[aria-pressed="true"] { background: rgba(166, 107, 255, 0.24); border-color: var(--hud-hi); color: #fff; box-shadow: 0 0 14px rgba(166, 107, 255, 0.45); }
+
+/* ---------- Car cards ---------- */
+[data-theme="hud"] .car-card:hover { border-color: var(--hud-hi); box-shadow: 0 0 0 1px rgba(220, 200, 255, 0.3), 0 0 34px rgba(150, 90, 255, 0.45), inset 0 0 26px rgba(140, 80, 255, 0.14); }
+[data-theme="hud"] .car-stage {
+  background:
+    radial-gradient(130px 50px at 50% 100%, rgba(166, 107, 255, 0.4), transparent 70%),
+    linear-gradient(rgba(166, 107, 255, 0.08) 1px, transparent 1px) 0 0 / 18px 18px,
+    linear-gradient(90deg, rgba(166, 107, 255, 0.08) 1px, transparent 1px) 0 0 / 18px 18px;
+  border-bottom: 1px solid var(--hud-faint);
+}
+[data-theme="hud"] .car-art { color: var(--hud-hi); filter: drop-shadow(0 0 6px rgba(166, 107, 255, 0.85)); }
+[data-theme="hud"] .car-tag,
+[data-theme="hud"] .badge-3d {
+  border: 1px solid var(--hud-line);
+  border-radius: 3px;
+  background: rgba(6, 3, 14, 0.75);
+  color: var(--hud-hi);
+  font-family: var(--hud-font);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+}
+[data-theme="hud"] .race-card .car-stage { background: #120a24; }
+[data-theme="hud"] .car-name { font-weight: 700; font-size: 1.3rem; letter-spacing: 0.04em; }
+[data-theme="hud"] .car-more { font-family: var(--hud-font); font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--hud-hi); }
+[data-theme="hud"] .car-price { font-family: var(--hud-font); font-size: 1rem; color: var(--hud-hi); }
+
+/* ---------- Result: styled like a target-lock readout ---------- */
+[data-theme="hud"] .result-head {
+  background: linear-gradient(90deg, rgba(255, 79, 123, 0.16), transparent 65%);
+  border-bottom: 1px solid rgba(255, 79, 123, 0.5);
+}
+[data-theme="hud"] .result-title { font-weight: 700; letter-spacing: 0.04em; color: var(--text); }
+[data-theme="hud"] .result-title::before {
+  content: 'Scan complete';
+  display: block;
+  margin-bottom: 0.2rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  color: var(--hud-alert);
+  text-shadow: 0 0 10px rgba(255, 79, 123, 0.6);
+}
+[data-theme="hud"] .result-sub { color: var(--hud); }
+[data-theme="hud"] .result-photo { border-radius: 3px; border: 1px solid rgba(255, 79, 123, 0.7); box-shadow: 0 0 16px rgba(255, 79, 123, 0.35); }
+[data-theme="hud"] .result-head .car-art { color: var(--hud-hi); }
+[data-theme="hud"] .badge { border-radius: 3px; font-family: var(--hud-font); }
+
+[data-theme="hud"] .price { border: 1px solid var(--hud-line); border-radius: 4px; background: rgba(166, 107, 255, 0.1); }
+[data-theme="hud"] .price-label,
+[data-theme="hud"] .section-label,
+[data-theme="hud"] .spec-label,
+[data-theme="hud"] .versions th {
+  font-family: var(--hud-font);
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+[data-theme="hud"] .section-label { color: var(--hud-hi); font-size: 0.85rem; }
+[data-theme="hud"] .price-value { font-family: var(--hud-font); font-size: 1.8rem; color: var(--hud-hi); text-shadow: var(--hud-text-glow); }
+
+[data-theme="hud"] .spec {
+  background: rgba(20, 10, 42, 0.6);
+  border: 1px solid rgba(166, 107, 255, 0.25);
+  border-left: 2px solid var(--hud);
+  border-radius: 4px;
+}
+[data-theme="hud"] .spec-label { font-size: 0.74rem; }
+[data-theme="hud"] .spec-value { font-family: var(--hud-font); font-size: 1.15rem; font-weight: 600; letter-spacing: 0.02em; }
+
+[data-theme="hud"] .versions th,
+[data-theme="hud"] .versions td { border-color: rgba(166, 107, 255, 0.18); }
+[data-theme="hud"] .facts li { border-radius: 4px; background: rgba(166, 107, 255, 0.08); border-left: 2px solid var(--hud); }
+[data-theme="hud"] .facts li::before { color: var(--hud-hi); }
+
+[data-theme="hud"] .result-links a,
+[data-theme="hud"] .rivals button {
+  border: 1px solid var(--hud-line);
+  border-radius: 4px;
+  background: rgba(10, 5, 24, 0.6);
+  font-family: var(--hud-font);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+[data-theme="hud"] .result-links a:first-child { background: var(--hud); color: var(--on-accent); border-color: var(--hud); }
+[data-theme="hud"] .result-links a:hover { color: var(--hud-hi); box-shadow: 0 0 14px rgba(166, 107, 255, 0.45); }
+[data-theme="hud"] .result-links a:first-child:hover { color: var(--on-accent); }
+
+[data-theme="hud"] .viewer,
+[data-theme="hud"] .viewer-loading { border: 1px solid var(--hud-line); border-radius: 4px; box-shadow: var(--hud-glow); }
+[data-theme="hud"] .viewer-play { background: var(--hud); color: var(--on-accent); font-family: var(--hud-font); letter-spacing: 0.12em; text-transform: uppercase; }
+[data-theme="hud"] .viewer-picks button { border-radius: 3px; }
+
+/* ---------- Spec explainer popup ---------- */
+[data-theme="hud"] .explain-title { font-weight: 700; font-size: 1.2rem; letter-spacing: 0.08em; color: var(--hud-hi); text-shadow: var(--hud-text-glow); }
+
+/* ---------- All Cars page ---------- */
+/* Its hero has no side panels, so keep the normal centered column */
+[data-theme="hud"] section.cat-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: none;
+  padding: 2rem 1rem 1.5rem;
+}
+[data-theme="hud"] .cat-select { background-color: rgba(8, 4, 20, 0.82); border: 1px solid var(--hud-line); border-radius: 4px; color: var(--text); }
+[data-theme="hud"] .cat-search { border-radius: 4px; }
+[data-theme="hud"] .cat-count { font-family: var(--hud-font); font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--hud); }
+[data-theme="hud"] .cat-make { font-family: var(--hud-font); font-weight: 600; letter-spacing: 0.16em; color: var(--hud); }
+[data-theme="hud"] .cat-card .car-name { font-size: 1.25rem; }
+[data-theme="hud"] .cat-tags span { border-radius: 3px; border-color: rgba(166, 107, 255, 0.3); background: transparent; }
+[data-theme="hud"] .cat-price { font-family: var(--hud-font); font-size: 1.25rem; color: var(--hud-hi); text-shadow: 0 0 10px rgba(166, 107, 255, 0.5); }
+
+[data-theme="hud"] .home-foot a { color: var(--hud-hi); }
+
+/* ---------- Smaller screens: panels stack under the scanner ---------- */
+@media (max-width: 1100px) {
+  [data-theme="hud"] section.home-hero { grid-template-columns: 1fr 1fr; }
+  [data-theme="hud"] .hero-core { grid-column: 1 / -1; order: -1; min-height: 480px; }
+}
+@media (max-width: 520px) {
+  /* The button wraps under the input here, so a pill shape would turn into an oval */
+  [data-theme="hud"] .finder { border-radius: 14px; }
+  [data-theme="hud"] .finder-btn { border-radius: 10px; }
+}
+@media (max-width: 700px) {
+  [data-theme="hud"] .hud-motto { display: none; }
+  [data-theme="hud"] .hud-bar { justify-content: flex-end; padding-top: 4.6rem; }
+  [data-theme="hud"] .hud-time,
+  [data-theme="hud"] .hud-temp { font-size: 1.35rem; }
+  [data-theme="hud"] section.home-hero { grid-template-columns: 1fr; padding-top: 0.5rem; }
+  [data-theme="hud"] .hero-core { min-height: 420px; padding: 1rem 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-theme="hud"] .hud-reticle-spin { animation: none; }
+}

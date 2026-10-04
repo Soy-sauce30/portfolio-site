@@ -12,7 +12,7 @@ var RACE_CARS = [
     tag: 'Open-wheel',
     type: 'open',
     desc: 'The fastest cars on road courses, built by teams like Ferrari, McLaren and Red Bull.',
-    summary: 'Formula 1 is the top level of single-seater racing, with Grands Prix on every continent. Each team designs its own car within strict rules, and the cars generate so much downforce that at speed they could, in theory, drive upside down.',
+    summary: 'Formula 1 is the top level of single-seater racing, with Grands Prix on five continents. Each team designs its own car within strict rules, and the cars generate so much downforce that at speed they could, in theory, drive upside down.',
     specs: [
       ['Engine', '1.6L turbo V6 hybrid'],
       ['Power', '~1,000 hp (about half electric from 2026)'],
@@ -66,10 +66,9 @@ var RACE_CARS = [
     summary: 'NASCAR’s Cup Series is America’s most popular motorsport. Since 2022 every team runs the “Next Gen” car — a shared chassis wearing Chevrolet, Ford or Toyota bodywork — racing mostly on ovals, plus a few road courses.',
     specs: [
       ['Engine', '5.86L (358 cu in) V8, no turbo'],
-      ['Power', '~670 hp (less at Daytona & Talladega)'],
+      ['Power', '~670–750 hp (less at Daytona & Talladega)'],
       ['Transmission', '5-speed sequential'],
       ['Top speed', '~200 mph in the draft'],
-      ['Weight', '~3,400 lb without driver & fuel'],
       ['Wheels', '18-inch, single center lug'],
       ['Car', 'Next Gen (2022–present)']
     ],
@@ -117,7 +116,7 @@ var RACE_CARS = [
     summary: 'The World Rally Championship runs on closed public roads — gravel, snow, ice and tarmac — one car at a time against the clock. Rally1 cars look like small hatchbacks but are purpose-built with all-wheel drive, huge suspension travel and a protective space frame.',
     specs: [
       ['Engine', '1.6L turbo 4-cylinder'],
-      ['Power', '~380 hp (hybrid boost dropped for 2025)'],
+      ['Power', '~365 hp (hybrid boost dropped for 2025)'],
       ['Drivetrain', 'All-wheel drive'],
       ['Transmission', '5-speed sequential'],
       ['Weight', '~2,600 lb'],
@@ -137,20 +136,21 @@ var RACE_CARS = [
     name: 'Le Mans Hypercar',
     tag: 'Endurance',
     type: 'endurance',
-    desc: 'Hybrid prototypes that race flat-out for 24 hours straight at Le Mans.',
-    summary: 'Hypercars are the top class of the World Endurance Championship. Manufacturers like Porsche, Ferrari, Toyota and Cadillac build hybrid prototypes, and a “Balance of Performance” system keeps them evenly matched. The biggest race is the 24 Hours of Le Mans.',
+    desc: 'Mostly hybrid prototypes that race flat-out for 24 hours straight at Le Mans.',
+    summary: 'Hypercars are the top class of the World Endurance Championship. Manufacturers like Ferrari, Toyota, Cadillac and BMW build prototypes (almost all hybrids), and a “Balance of Performance” system keeps them evenly matched. The biggest race is the 24 Hours of Le Mans.',
     specs: [
       ['Power', '~670 hp combined (capped by the rules)'],
-      ['Engine', 'Varies — Porsche 963: 4.6L twin-turbo V8 hybrid'],
+      ['Engine', 'Varies — Ferrari 499P: 3.0L twin-turbo V6 hybrid'],
       ['Top speed', '~210 mph on the Mulsanne Straight'],
       ['Weight', '~2,270 lb (adjusted per car)'],
-      ['Race length', '24 hours, ~2,900 miles'],
+      ['Race length', '24 hours, ~3,200 miles'],
       ['Drivers', '3 per car, taking turns']
     ],
     facts: [
       'Two rule sets (LMH and LMDh) race together, evened out by Balance of Performance.',
       'Drivers swap every few hours and race through the night.',
-      'Le Mans has been running since 1923.'
+      'Le Mans has been running since 1923.',
+      'The 3D model is the Porsche 963, which raced in the Hypercar class at Le Mans from 2023 to 2025.'
     ],
     wiki: 'https://en.wikipedia.org/wiki/Le_Mans_Hypercar',
     model: { uid: '0b46fea1c4484a0c887bd0b9aac86f5d', name: '2023 Porsche 963 LMDh Racecar No.5', author: 'Ddiaz Design', license: 'CC Attribution-NonCommercial-ShareAlike',
@@ -162,7 +162,7 @@ var RACE_CARS = [
     tag: 'Open-wheel',
     type: 'open',
     desc: 'All-electric single-seaters racing on tight city street circuits.',
-    summary: 'Formula E is the world championship for electric single-seaters. Races run on temporary street circuits in cities like London, Tokyo and Mexico City, and energy management matters as much as raw speed.',
+    summary: 'Formula E is the world championship for electric single-seaters. Most races run on temporary street circuits in cities like London, Tokyo and Monaco, and energy management matters as much as raw speed.',
     specs: [
       ['Power', 'Up to 350 kW (~470 hp)'],
       ['Motors', 'Rear drive + front motor for regen and AWD boost'],
@@ -173,9 +173,9 @@ var RACE_CARS = [
       ['Tracks', 'Mostly city street circuits']
     ],
     facts: [
-      'Today’s Gen3 car has no rear brake discs — the motor does the slowing.',
+      'The 2023–26 Gen3 car has no rear brake discs — the motor does the slowing.',
       '“Attack Mode” gives extra power if a driver drives off the racing line to arm it.',
-      'The 3D model shows the earlier Gen2 EVO design; today’s Gen3 car looks different.'
+      'The 3D model shows the Gen2 EVO design, which was cancelled before it ever raced; today’s car looks different.'
     ],
     wiki: 'https://en.wikipedia.org/wiki/Formula_E',
     model: { uid: '63787978b9e341d0b559dc265cf48317', name: 'Formula E Gen2 EVO Car', author: 'Naudaff3D', license: 'Editorial',
@@ -186,7 +186,7 @@ var RACE_CARS = [
     name: 'Formula Drift',
     tag: 'Drift',
     type: 'stock',
-    desc: 'Judged on angle, speed and style — 1,000 hp cars going sideways in pairs.',
+    desc: 'Judged on line, angle and style — 1,000 hp cars going sideways in pairs.',
     summary: 'Formula Drift is the top US drifting series. Instead of racing the clock, drivers are judged on their line, angle and style as they slide through a course, usually in tandem battles where one car chases another inches apart.',
     specs: [
       ['Power', '~1,000+ hp is common'],

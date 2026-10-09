@@ -108,18 +108,31 @@ function find_make($text, $makes, $aliases) {
 }
 
 // Score how well an EPA model name ("MX-5", "GR Supra", "Camry HEV FF LE") matches what was typed.
-function score_model($model, $rest) {
+// Score how well an EPA model name ("MX-5", "GR Supra", "Camry HEV FF LE") matches what was typed.
+// $tokens are the typed words after the make. Short ones ("S", "3", "M3") are model identifiers,
+// so they must match a whole word of the model — "Model S" must never match "Model Y L".
+function score_model($model, $rest, $tokens) {
   if ($rest === '') return 0;
   $words = array_values(array_filter(array_map('norm', preg_split('/[\s\/]+/', $model))));
+  foreach ($tokens as $t) {
+    if (strlen($t) <= 2 && !in_array($t, $words, true)) return 0;
+  }
   $matched = 0; $missed = 0;
   foreach ($words as $w) {
-    // Single letters ("Model Y", "Type R") only count once a real word has matched.
-    if (str_contains($rest, $w) && (strlen($w) > 1 || $matched > 0)) $matched += strlen($w);
-    else $missed++;
+    $hit = strlen($w) <= 2 ? in_array($w, $tokens, true) : str_contains($rest, $w);
+    if ($hit) $matched += strlen($w); else $missed++;
   }
   // Needs to explain most of what was typed, e.g. "supra" or "civictyper".
-  if ($matched < 2 || $matched < strlen($rest) * 0.5) return 0;
-  return $matched * 10 - $missed * 3 + (norm($model) === $rest ? 50 : 0);
+  if ($matched === 0 || $matched < strlen($rest) * 0.5) return 0;
+  return max(1, $matched * 10 - $missed * 3 + (norm($model) === $rest ? 50 : 0));
+}
+
+// The typed words that come after the make ("chevy corvette z06" → ["corvette", "z06"]).
+function model_tokens($text, $rest) {
+  $tokens = array_values(array_filter(array_map('norm', preg_split('/\s+/', $text)), 'strlen'));
+  $skip = strlen(norm($text)) - strlen($rest); // characters used up by the make
+  while ($tokens && $skip > 0) { $skip -= strlen(array_shift($tokens)); }
+  return $tokens;
 }
 
 function find_vehicle($text, $year, $aliases, $currentYear) {
@@ -129,12 +142,13 @@ function find_vehicle($text, $year, $aliases, $currentYear) {
     if (!$makes) continue;
     [$make, $rest] = find_make($text, $makes, $aliases);
     if (!$make) continue;
+    $tokens = model_tokens($text, $rest);
     $best = null; $bestScore = 0;
     foreach (array_column(menu('model?year=' . $y . '&make=' . rawurlencode($make)), 'value') as $model) {
-      $s = score_model($model, $rest);
+      $s = score_model($model, $rest, $tokens);
       if ($s > $bestScore) { $best = $model; $bestScore = $s; }
     }
-    if ($best) return ['year' => $y, 'make' => $make, 'model' => $best, 'rest' => $rest];
+    if ($best) return ['year' => $y, 'make' => $make, 'model' => $best, 'rest' => $rest, 'tokens' => $tokens];
   }
   return null;
 }
@@ -151,6 +165,18 @@ $wikiTitle = null;
 if (!$found) {
   $wikiTitle = wiki_search("$text car");
   if ($wikiTitle) $found = find_vehicle(preg_replace('/\s*\(.*\)$/', '', $wikiTitle), $year, $MAKE_ALIASES, $currentYear);
+}
+
+// Still nothing? The EPA may not list that exact version ("Civic Type R" is part of "Civic 5Dr"),
+// so drop words from the end until the model itself matches — and say it's the closest match.
+$closest = false;
+if (!$found) {
+  $words = preg_split('/\s+/', trim($text));
+  while (!$found && count($words) > 2) {
+    array_pop($words);
+    $found = find_vehicle(implode(' ', $words), $year, $MAKE_ALIASES, $currentYear);
+  }
+  $closest = (bool)$found;
 }
 
 if (!$found) {
@@ -248,7 +274,12 @@ $disc = json_decode(file_get_contents(__DIR__ . '/data/discontinued.json'), true
 $noLongerSold = in_array("$priceMake|$version", $disc['versions'] ?? [], true)
   || in_array("$priceMake|" . ($v['baseModel'] ?: $baseModel), $disc['models'] ?? [], true);
 $priceKey = null;
-if (array_key_exists("$priceMake|$version", $variantPrices)) {
+// Use a version's own price only if the search named that version ("911 GT3"); a general search
+// ("Tesla Model 3") gets the whole model's price range instead of one arbitrary version's price.
+$baseWords = array_map('norm', preg_split('/\s+/', $v['baseModel'] ?: $baseModel));
+if (isset($prices["$priceMake|$baseModel"])) $baseWords = array_merge($baseWords, array_map('norm', preg_split('/\s+/', $baseModel))); // e.g. "BMW|M3"
+$askedWords = array_diff($found['tokens'] ?? [], $baseWords);
+if ($askedWords && array_key_exists("$priceMake|$version", $variantPrices)) {
   // This exact version: its own price, or none at all if the maker doesn't publish one (null).
   if ($variantPrices["$priceMake|$version"]) { $prices["$priceMake|$version"] = $variantPrices["$priceMake|$version"]; $priceKey = "$priceMake|$version"; }
 } else {
@@ -278,7 +309,8 @@ $result = [
   'trim' => $version !== $baseModel ? $version : '',
   'body_style' => $body,
   'summary' => $summary,
-  'price_new' => $priceNew,
+  // A recent model the maker has stopped selling: say so instead of showing no price at all.
+  'price_new' => $priceNew ?: ($noLongerSold && $y >= (int)date('Y') - 1 ? 'No longer sold new' : ''),
   'price_used' => '',
   'specs' => $specs,
   'pros' => [],
@@ -287,7 +319,8 @@ $result = [
   'image' => $image,
   'versions' => count($versionRows) > 1 ? $versionRows : [],
   'links' => $links,
-  'note' => 'Specs: U.S. EPA fueleconomy.gov. Description and photo: Wikipedia.',
+  'note' => ($closest ? "Closest match for \u{201C}$query\u{201D} \u{2014} the EPA doesn't list that exact version separately, so these specs cover the {$make} {$baseModel} versions shown. " : '')
+    . 'Specs: U.S. EPA fueleconomy.gov. Description and photo: Wikipedia.',
 ];
 
 $out = json_encode($result);

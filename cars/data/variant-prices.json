@@ -1,76 +1,231 @@
 {
-  "_note": "Approximate US MSRP for specific versions (keyed by EPA make|version name, wheel sizes removed). Versions not listed fall back to their model's range in prices.json.",
-
-  "Tesla|Model 3 Standard RWD": [37000, 37000],
-  "Tesla|Model 3 Premium RWD": [43000, 43000],
-  "Tesla|Model 3 Premium AWD": [48000, 48000],
-  "Tesla|Model 3 Long Range RWD": [43000, 43000],
-  "Tesla|Model 3 Long Range AWD": [48000, 48000],
-  "Tesla|Model 3 Performance": [55000, 55000],
-  "Tesla|Model 3 Performance AWD": [55000, 55000],
-  "Tesla|Model Y Standard RWD": [40000, 40000],
-  "Tesla|Model Y Long Range RWD": [45000, 45000],
-  "Tesla|Model Y Long Range AWD": [49000, 49000],
-  "Tesla|Model Y Performance AWD": [57000, 57000],
-  "Tesla|Model S": [85000, 85000],
-  "Tesla|Model S Plaid": [100000, 100000],
-  "Tesla|Model X": [90000, 90000],
-  "Tesla|Model X Plaid": [105000, 105000],
-  "Tesla|Cybertruck Long Range": [70000, 70000],
-  "Tesla|Cybertruck Dual Motor AWD": [80000, 80000],
-
-  "Porsche|911 Carrera": [122000, 122000],
-  "Porsche|911 Carrera Cabriolet": [135000, 135000],
-  "Porsche|911 Carrera T": [130000, 130000],
-  "Porsche|911 Carrera T Cabriolet": [143000, 143000],
-  "Porsche|911 Carrera S": [138000, 138000],
-  "Porsche|911 Carrera S Cabriolet": [151000, 151000],
-  "Porsche|911 Carrera 4S": [146000, 146000],
-  "Porsche|911 Carrera 4S Cabriolet": [159000, 159000],
-  "Porsche|911 Carrera GTS": [166000, 166000],
-  "Porsche|911 Carrera GTS Cabriolet": [180000, 180000],
-  "Porsche|911 Carrera 4 GTS": [174000, 174000],
-  "Porsche|911 Carrera 4 GTS Cabriolet": [188000, 188000],
-  "Porsche|911 Targa 4S": [160000, 160000],
-  "Porsche|911 Targa 4 GTS": [188000, 188000],
-  "Porsche|911 Turbo": [198000, 198000],
-  "Porsche|911 Turbo Cabriolet": [211000, 211000],
-  "Porsche|911 Turbo S": [273000, 273000],
-  "Porsche|911 Turbo S Cabriolet": [286000, 286000],
-  "Porsche|911 GT3": [222000, 222000],
-  "Porsche|911 GT3 Touring": [222000, 222000],
-
-  "BMW|M2 Coupe": [65000, 65000],
-  "BMW|M2 M xDrive Coupe": [68000, 68000],
-  "BMW|M2 Coupe CS": [99000, 99000],
-  "BMW|M3 Sedan": [77000, 77000],
-  "BMW|M3 Competition Sedan": [81000, 81000],
-  "BMW|M3 Competition M xDrive Sedan": [86000, 86000],
-  "BMW|M4 Coupe": [80000, 80000],
-  "BMW|M4 Competition Coupe": [84000, 84000],
-  "BMW|M4 Competition M xDrive Coupe": [88000, 88000],
-  "BMW|M4 Competition M xDrive Convertible": [96000, 96000],
-  "BMW|M4 CS Coupe": [125000, 125000],
-  "BMW|M5 Sedan": [120000, 120000],
-  "BMW|M5 Touring": [122000, 122000],
-  "BMW|M8 Competition Coupe": [140000, 140000],
-  "BMW|M8 Competition Convertible": [150000, 150000],
-  "BMW|M8 Competition Gran Coupe": [132000, 132000],
-
-  "Chevrolet|Corvette": [70000, 83000],
-  "Chevrolet|Corvette E-Ray": [108000, 125000],
-  "Chevrolet|Corvette Z06": [112000, 130000],
-  "Chevrolet|Corvette ZR1": [175000, 185000],
-  "Chevrolet|Corvette ZR1X": [208000, 210000],
-
-  "Ford|Mustang": [32000, 57000],
-  "Ford|Mustang Dark Horse": [61000, 65000],
-  "Ford|Mustang GTD": [325000, 325000],
-  "Ford|F150 Pickup Tremor 4WD": [65000, 70000],
-  "Ford|F150 RAPTOR 4WD": [79000, 85000],
-  "Ford|F150 RAPTOR R 4WD": [110000, 115000],
-  "Ford|Bronco Raptor 4WD": [92000, 95000],
-
-  "Toyota|GR Corolla": [38000, 47000],
-  "Toyota|Corolla Hatchback": [24000, 28000]
+ "_note": "Approximate US base MSRP for specific versions (EPA make|version name, wheel sizes removed), fact-checked October 2026 against manufacturer sites. null = no official price published (show no price). Versions not listed fall back to their model range in prices.json.",
+ "BMW|M2 Coupe": [
+  69500,
+  69500
+ ],
+ "BMW|M2 M xDrive Coupe": [
+  73500,
+  73500
+ ],
+ "BMW|M3 Competition M xDrive Sedan": [
+  88500,
+  88500
+ ],
+ "BMW|M3 Competition Sedan": [
+  83500,
+  83500
+ ],
+ "BMW|M3 Sedan": [
+  79500,
+  79500
+ ],
+ "BMW|M4 Competition Coupe": [
+  86500,
+  86500
+ ],
+ "BMW|M4 Competition M xDrive Convertible": [
+  98500,
+  98500
+ ],
+ "BMW|M4 Competition M xDrive Coupe": [
+  91500,
+  91500
+ ],
+ "BMW|M4 Coupe": [
+  82000,
+  82000
+ ],
+ "BMW|M5 Sedan": [
+  123500,
+  123500
+ ],
+ "BMW|M5 Touring": [
+  125500,
+  125500
+ ],
+ "Chevrolet|Corvette": [
+  71500,
+  90500
+ ],
+ "Chevrolet|Corvette Grand Sport": null,
+ "Chevrolet|Corvette Grand Sport X Hybrid": null,
+ "Chevrolet|Corvette Z06": [
+  119000,
+  140000
+ ],
+ "Chevrolet|Corvette Z06 Carbon Aero": null,
+ "Chevrolet|Corvette ZR1": [
+  195000,
+  216000
+ ],
+ "Chevrolet|Corvette ZR1X": [
+  225000,
+  246500
+ ],
+ "Chevrolet|Corvette ZR1X Hybrid": [
+  225000,
+  246500
+ ],
+ "Ford|Bronco Raptor 4WD": [
+  80000,
+  80000
+ ],
+ "Ford|F150 Pickup Tremor 4WD": [
+  65000,
+  65000
+ ],
+ "Ford|F150 RAPTOR 4WD": [
+  79000,
+  79000
+ ],
+ "Ford|F150 RAPTOR R 4WD": [
+  111000,
+  111000
+ ],
+ "Ford|Mustang": [
+  33000,
+  56500
+ ],
+ "Ford|Mustang Dark Horse": [
+  63000,
+  69000
+ ],
+ "Ford|Mustang GTD": null,
+ "Porsche|911 Carrera": [
+  135500,
+  135500
+ ],
+ "Porsche|911 Carrera 4 GTS": [
+  189500,
+  189500
+ ],
+ "Porsche|911 Carrera 4 GTS Cabriolet": [
+  203500,
+  203500
+ ],
+ "Porsche|911 Carrera 4S": [
+  164500,
+  164500
+ ],
+ "Porsche|911 Carrera 4S Cabriolet": [
+  178500,
+  178500
+ ],
+ "Porsche|911 Carrera Cabriolet": [
+  149500,
+  149500
+ ],
+ "Porsche|911 Carrera GTS": [
+  181000,
+  181000
+ ],
+ "Porsche|911 Carrera GTS Cabriolet": [
+  195000,
+  195000
+ ],
+ "Porsche|911 Carrera S": [
+  156000,
+  156000
+ ],
+ "Porsche|911 Carrera S Cabriolet": [
+  170000,
+  170000
+ ],
+ "Porsche|911 Carrera T": [
+  148000,
+  148000
+ ],
+ "Porsche|911 Carrera T Cabriolet": [
+  162000,
+  162000
+ ],
+ "Porsche|911 GT3": [
+  236000,
+  236000
+ ],
+ "Porsche|911 GT3 Touring": [
+  236000,
+  236000
+ ],
+ "Porsche|911 Targa 4 GTS": [
+  203500,
+  203500
+ ],
+ "Porsche|911 Targa 4S": [
+  180000,
+  180000
+ ],
+ "Porsche|911 Turbo S": [
+  270500,
+  270500
+ ],
+ "Porsche|911 Turbo S Cabriolet": [
+  284500,
+  284500
+ ],
+ "Tesla|Cybertruck Dual Motor AWD": [
+  75000,
+  75000
+ ],
+ "Tesla|Model 3 Long Range AWD": [
+  47500,
+  47500
+ ],
+ "Tesla|Model 3 Long Range RWD": [
+  42500,
+  42500
+ ],
+ "Tesla|Model 3 Performance": [
+  55000,
+  55000
+ ],
+ "Tesla|Model 3 Performance AWD": [
+  55000,
+  55000
+ ],
+ "Tesla|Model 3 Premium AWD": [
+  47500,
+  47500
+ ],
+ "Tesla|Model 3 Premium RWD": [
+  42500,
+  42500
+ ],
+ "Tesla|Model 3 Standard RWD": [
+  37000,
+  37000
+ ],
+ "Tesla|Model Y Long Range AWD": [
+  50000,
+  50000
+ ],
+ "Tesla|Model Y Long Range RWD": [
+  46000,
+  46000
+ ],
+ "Tesla|Model Y Performance AWD": [
+  58000,
+  58000
+ ],
+ "Tesla|Model Y Standard AWD": [
+  42000,
+  42000
+ ],
+ "Tesla|Model Y Standard RWD": [
+  40000,
+  40000
+ ],
+ "Toyota|Corolla Hatchback": [
+  25000,
+  25000
+ ],
+ "Toyota|Corolla Hatchback XSE": [
+  28000,
+  28000
+ ],
+ "Toyota|GR Corolla": [
+  40500,
+  48500
+ ]
 }

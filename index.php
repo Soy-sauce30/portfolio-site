@@ -1,4 +1,7 @@
 <?php
+// Asset links carry the file's modified time (?v=…) so browsers always pick up the latest version.
+function asset($path) { return $path . '?v=' . (@filemtime($_SERVER['DOCUMENT_ROOT'] . $path) ?: 1); }
+
 // Photo ID needs an Anthropic API key. Without one, search uses free EPA + Wikipedia data instead.
 $keyFile = dirname(__DIR__) . '/sawyerabrahani-secrets/anthropic_key';
 $aiEnabled = (bool)getenv('ANTHROPIC_API_KEY') || is_readable($keyFile);
@@ -12,14 +15,14 @@ $aiEnabled = (bool)getenv('ANTHROPIC_API_KEY') || is_readable($keyFile);
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,600;1,9..144,600&family=Barlow+Condensed:ital,wght@1,700;1,800&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="<?= asset('/style.css') ?>">
   <script>
     // Car pages also offer a third "HUD" look (dark only), stored separately so other pages stay light/dark.
     (function(){var d=document.documentElement,t,l;try{t=localStorage.getItem('theme');l=localStorage.getItem('look')}catch(e){}t=t||(window.matchMedia('(prefers-color-scheme:light)').matches?'light':'dark');if(t!=='light'&&l==='hud')t='hud';d.setAttribute('data-theme',t);d.setAttribute('data-hud-ok','')})();
   </script>
-  <link rel="stylesheet" href="/cars/site.css">
-  <link rel="stylesheet" href="/cars/themes.css">
-  <link rel="stylesheet" href="/cars/hud.css">
+  <link rel="stylesheet" href="<?= asset('/cars/site.css') ?>">
+  <link rel="stylesheet" href="<?= asset('/cars/themes.css') ?>">
+  <link rel="stylesheet" href="<?= asset('/cars/hud.css') ?>">
 </head>
 <body>
 
@@ -172,12 +175,12 @@ $aiEnabled = (bool)getenv('ANTHROPIC_API_KEY') || is_readable($keyFile);
 <?php include 'footer.php';?>
 
 
-  <script src="script.js"></script>
-  <script src="theme.js"></script>
-  <script src="/cars/racing.js"></script>
-  <script src="/cars/explain.js"></script>
-  <script src="/cars/hud.js"></script>
-  <script src="/cars/quiz.js"></script>
+  <script src="<?= asset('/script.js') ?>"></script>
+  <script src="<?= asset('/theme.js') ?>"></script>
+  <script src="<?= asset('/cars/racing.js') ?>"></script>
+  <script src="<?= asset('/cars/explain.js') ?>"></script>
+  <script src="<?= asset('/cars/hud.js') ?>"></script>
+  <script src="<?= asset('/cars/quiz.js') ?>"></script>
   <script>
   (function () {
     // ---------- Top rated list ----------

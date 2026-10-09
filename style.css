@@ -92,6 +92,7 @@
 [data-theme="light"] .icon-sun  { display: block; }
 [data-theme="light"] .icon-moon { display: none; }
 .icon-hud { display: none; }
+.icon-hud svg { display: block; }
 [data-theme="hud"] .icon-hud  { display: block; }
 [data-theme="hud"] .icon-moon { display: none; }
 

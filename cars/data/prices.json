@@ -1,72 +1,1191 @@
 {
-  "_note": "Approximate US MSRP ranges (base trim to top trim, before destination fees), from recent model years. Keyed by EPA make|baseModel. Models without a confident figure are left out.",
-  "Acura|ADX": [35000, 43000], "Acura|Integra": [33000, 47000], "Acura|MDX": [50000, 75000], "Acura|RDX": [44000, 55000], "Acura|TLX": [45000, 58000], "Acura|ZDX": [65000, 75000],
-  "Alfa Romeo|Giulia": [44000, 81000], "Alfa Romeo|Stelvio": [47000, 90000], "Alfa Romeo|Tonale": [38000, 47000], "Alfa Romeo|Tonale eAWD": [45000, 54000],
-  "Aston Martin|DB12 V8": [250000, 275000], "Aston Martin|DBX 707": [245000, 260000], "Aston Martin|Valhalla": [800000, 800000], "Aston Martin|Vanquish": [425000, 440000], "Aston Martin|Vantage": [190000, 210000],
-  "Audi|A3": [38000, 44000], "Audi|A4": [42000, 52000], "Audi|A5": [50000, 60000], "Audi|A6": [58000, 70000], "Audi|A6 e-tron": [66000, 80000], "Audi|A7": [72000, 85000], "Audi|A8": [90000, 100000],
-  "Audi|Q3": [38000, 46000], "Audi|Q4 e-tron": [50000, 60000], "Audi|Q5": [46000, 60000], "Audi|Q6 e-tron": [64000, 75000], "Audi|Q7": [60000, 80000], "Audi|Q8": [75000, 90000], "Audi|Q8 e-tron": [75000, 90000],
-  "Audi|RS": [64000, 130000], "Audi|RS Q8": [125000, 140000], "Audi|RS e-tron": [150000, 175000], "Audi|S e-tron": [125000, 135000], "Audi|S3": [50000, 55000], "Audi|S4": [53000, 60000], "Audi|S5": [60000, 68000],
-  "Audi|S6": [76000, 82000], "Audi|S6 e-tron": [80000, 90000], "Audi|S7": [85000, 95000], "Audi|S8": [120000, 130000], "Audi|SQ5": [57000, 68000], "Audi|SQ6 e-tron": [73000, 82000], "Audi|SQ7": [90000, 100000], "Audi|SQ8": [98000, 110000], "Audi|SQ8 e-tron": [90000, 100000],
-  "BMW|2 Series": [40000, 58000], "BMW|3 Series": [45000, 62000], "BMW|4 Series": [50000, 72000], "BMW|5 Series": [59000, 80000], "BMW|7 Series": [97000, 125000], "BMW|8 Series": [90000, 110000], "BMW|M": [65000, 150000], "BMW|M2": [65000, 75000], "BMW|M3": [77000, 100000], "BMW|M4": [80000, 125000], "BMW|M5": [120000, 130000], "BMW|M8": [130000, 145000],
-  "BMW|X1": [43000, 52000], "BMW|X2": [45000, 53000], "BMW|X3": [50000, 66000], "BMW|X4": [56000, 68000], "BMW|X5": [67000, 92000], "BMW|X6": [75000, 95000], "BMW|X7": [85000, 115000], "BMW|XM": [160000, 185000], "BMW|Z4": [55000, 72000],
-  "BMW|i4": [58000, 72000], "BMW|i5": [68000, 85000], "BMW|i7": [106000, 170000], "BMW|iX": [88000, 112000],
-  "Bentley|Bentayga": [205000, 260000], "Bentley|Continental": [250000, 340000], "Bentley|Flying Spur": [225000, 280000],
-  "Bugatti|Mistral": [5000000, 5000000], "Bugatti Rimac|Nevera": [2200000, 2200000],
-  "Buick|Enclave": [45000, 60000], "Buick|Encore": [25000, 32000], "Buick|Envision": [37000, 45000], "Buick|Envista": [24000, 30000],
-  "Cadillac|CELESTIQ": [340000, 400000], "Cadillac|CT4": [35000, 60000], "Cadillac|CT5": [49000, 100000], "Cadillac|Escalade": [90000, 150000], "Cadillac|LYRIQ": [59000, 80000], "Cadillac|OPTIQ": [55000, 61000], "Cadillac|VISTIQ": [78000, 95000],
-  "Cadillac|XT4": [36000, 45000], "Cadillac|XT5": [44000, 58000], "Cadillac|XT6": [50000, 62000],
-  "Chevrolet|BOLT": [29000, 31000], "Chevrolet|Blazer": [37000, 60000], "Chevrolet|Colorado": [32000, 62000], "Chevrolet|Corvette": [70000, 210000], "Chevrolet|Equinox": [29000, 47000], "Chevrolet|Malibu": [26000, 30000],
-  "Chevrolet|Silverado": [38000, 95000], "Chevrolet|Suburban": [62000, 90000], "Chevrolet|Tahoe": [59000, 85000], "Chevrolet|Trailblazer": [23000, 30000], "Chevrolet|Traverse": [40000, 57000], "Chevrolet|Trax": [21000, 25000],
-  "Chrysler|Pacifica": [43000, 56000], "Chrysler|Voyager": [40000, 41000],
-  "Dodge|Charger": [50000, 80000], "Dodge|Durango": [40000, 80000], "Dodge|Hornet": [30000, 45000],
-  "Ferrari|12Cilindri": [420000, 470000], "Ferrari|296 GTB": [320000, 340000], "Ferrari|296 GTS": [360000, 380000], "Ferrari|Daytona SP3": [2200000, 2200000], "Ferrari|F80": [3900000, 3900000], "Ferrari|Purosangue": [400000, 420000],
-  "Ferrari|Roma": [245000, 270000], "Ferrari|SF90": [525000, 600000],
-  "Fiat|500e": [30000, 34000],
-  "Ford|Bronco": [40000, 92000], "Ford|Bronco Sport": [31000, 40000], "Ford|Escape": [29000, 40000], "Ford|Expedition": [62000, 90000], "Ford|Explorer": [40000, 60000], "Ford|F-150 Lightning": [62000, 92000], "Ford|F150": [38000, 110000],
-  "Ford|Maverick": [28000, 42000], "Ford|Mustang": [32000, 65000], "Ford|Mustang Mach-E": [38000, 55000], "Ford|Ranger": [34000, 58000],
-  "GMC|Acadia": [44000, 60000], "GMC|Canyon": [38000, 65000], "GMC|Hummer EV": [90000, 115000], "GMC|Sierra": [40000, 100000], "GMC|Terrain": [33000, 38000], "GMC|Yukon": [62000, 100000],
-  "Genesis|G70": [42000, 55000], "Genesis|G80": [57000, 80000], "Genesis|G90": [90000, 100000], "Genesis|GV60": [53000, 70000], "Genesis|GV70": [47000, 75000], "Genesis|GV80": [59000, 82000],
-  "Honda|Accord": [29000, 40000], "Honda|CR-V": [30000, 43000], "Honda|Civic": [25000, 46000], "Honda|HR-V": [26000, 31000], "Honda|Odyssey": [42000, 53000], "Honda|Passport": [45000, 54000], "Honda|Pilot": [41000, 55000],
-  "Honda|Prologue": [48000, 58000], "Honda|Ridgeline": [41000, 48000],
-  "Hyundai|Elantra": [22000, 35000], "Hyundai|Ioniq 5": [42000, 67000], "Hyundai|Ioniq 6": [38000, 54000], "Hyundai|Ioniq 9": [59000, 77000], "Hyundai|Kona": [24000, 45000], "Hyundai|Palisade": [38000, 56000],
-  "Hyundai|Santa Cruz": [28000, 42000], "Hyundai|Santa Fe": [34000, 49000], "Hyundai|Sonata": [27000, 37000], "Hyundai|Tucson": [28000, 42000], "Hyundai|Venue": [21000, 24000],
-  "INEOS Automotive|Grenadier": [72000, 85000],
-  "Infiniti|QX50": [43000, 55000], "Infiniti|QX55": [50000, 58000], "Infiniti|QX60": [50000, 66000], "Infiniti|QX80": [83000, 112000],
-  "Jaguar|F-Pace": [58000, 90000],
-  "Jeep|Compass": [26000, 36000], "Jeep|Gladiator": [38000, 65000], "Jeep|Grand Cherokee": [38000, 75000], "Jeep|Grand Wagoneer": [90000, 115000], "Jeep|Wagoneer": [62000, 80000], "Jeep|Wrangler": [33000, 95000],
-  "Kia|Carnival": [36000, 53000], "Kia|EV6": [43000, 65000], "Kia|EV9": [55000, 75000], "Kia|K4": [22000, 30000], "Kia|K5": [27000, 35000], "Kia|Niro": [27000, 40000], "Kia|Seltos": [24000, 31000],
-  "Kia|Sorento": [31000, 50000], "Kia|Soul": [20000, 25000], "Kia|Sportage": [28000, 40000], "Kia|Telluride": [37000, 54000],
-  "Lamborghini|Revuelto": [608000, 608000], "Lamborghini|Urus": [240000, 260000],
-  "Land Rover|Defender": [58000, 155000], "Land Rover|Discovery": [50000, 78000], "Land Rover|Range Rover": [50000, 240000],
-  "Lexus|ES": [43000, 55000], "Lexus|GX": [65000, 82000], "Lexus|IS": [40000, 62000], "Lexus|LC": [100000, 115000], "Lexus|LS": [80000, 115000], "Lexus|LX": [105000, 140000], "Lexus|NX": [42000, 62000],
-  "Lexus|RC": [46000, 82000], "Lexus|RX": [50000, 75000], "Lexus|RZ": [45000, 65000], "Lexus|TX": [55000, 82000], "Lexus|UX": [38000, 47000],
-  "Lincoln|Aviator": [60000, 90000], "Lincoln|Corsair": [41000, 57000], "Lincoln|Nautilus": [51000, 80000], "Lincoln|Navigator": [98000, 120000],
-  "Lotus|Emira": [100000, 115000],
-  "Lucid|Air": [70000, 250000], "Lucid|Gravity": [80000, 95000],
-  "MINI|Cooper": [30000, 45000], "MINI|Countryman": [40000, 55000], "MINI|John Cooper Works": [40000, 55000],
-  "Maserati|Grancabrio": [190000, 210000], "Maserati|Granturismo": [160000, 210000], "Maserati|Grecale": [70000, 110000], "Maserati|MC20": [240000, 280000],
-  "Mazda|3": [25000, 38000], "Mazda|CX-30": [26000, 37000], "Mazda|CX-5": [29000, 41000], "Mazda|CX-50": [31000, 44000], "Mazda|CX-70": [42000, 58000], "Mazda|CX-90": [40000, 60000], "Mazda|MX-5": [30000, 40000],
-  "Mercedes-Benz|AMG GT": [140000, 200000], "Mercedes-Benz|C-Class": [48000, 85000], "Mercedes-Benz|CLA-Class": [45000, 60000], "Mercedes-Benz|CLE-Class": [57000, 90000], "Mercedes-Benz|E-Class": [63000, 92000],
-  "Mercedes-Benz|EQB": [53000, 58000], "Mercedes-Benz|EQE": [77000, 110000], "Mercedes-Benz|EQS": [105000, 150000], "Mercedes-Benz|G-Class": [150000, 190000], "Mercedes-Benz|GLA-Class": [43000, 60000],
-  "Mercedes-Benz|GLB-Class": [46000, 60000], "Mercedes-Benz|GLC-Class": [50000, 90000], "Mercedes-Benz|GLE-Class": [63000, 120000], "Mercedes-Benz|GLS-Class": [88000, 180000], "Mercedes-Benz|S-Class": [118000, 200000], "Mercedes-Benz|SL-Class": [110000, 185000],
-  "Mitsubishi|Eclipse Cross": [28000, 35000], "Mitsubishi|Outlander": [30000, 52000],
-  "Nissan|ARIYA": [40000, 55000], "Nissan|Altima": [27000, 37000], "Nissan|Armada": [57000, 85000], "Nissan|Frontier": [32000, 45000], "Nissan|Kicks": [22000, 27000], "Nissan|LEAF": [30000, 40000],
-  "Nissan|Murano": [42000, 52000], "Nissan|Pathfinder": [37000, 53000], "Nissan|Rogue": [30000, 43000], "Nissan|Sentra": [21000, 26000], "Nissan|Versa": [18000, 21000], "Nissan|Z": [42000, 67000],
-  "Polestar|2": [50000, 60000], "Polestar|3": [70000, 83000], "Polestar|4": [55000, 68000],
-  "Porsche|718": [70000, 165000], "Porsche|911": [125000, 250000], "Porsche|Cayenne": [85000, 195000], "Porsche|Macan": [62000, 110000], "Porsche|Panamera": [100000, 230000], "Porsche|Taycan": [100000, 230000],
-  "Ram|1500": [40000, 80000],
-  "Rivian|R1S": [77000, 120000], "Rivian|R1T": [70000, 115000], "Rivian|R2": [45000, 55000],
-  "Rolls-Royce|Cullinan": [355000, 420000], "Rolls-Royce|Ghost": [345000, 400000], "Rolls-Royce|Phantom": [470000, 560000], "Rolls-Royce|Spectre": [420000, 480000],
-  "Subaru|Ascent": [36000, 51000], "Subaru|BRZ": [31000, 36000], "Subaru|Crosstrek": [26000, 36000], "Subaru|Forester": [30000, 42000], "Subaru|Impreza": [23000, 30000], "Subaru|Legacy": [25000, 36000],
-  "Subaru|Outback": [30000, 46000], "Subaru|Solterra": [38000, 52000], "Subaru|WRX": [33000, 47000],
-  "Tesla|Cybertruck": [70000, 100000], "Tesla|Model 3": [37000, 55000], "Tesla|Model S": [80000, 95000], "Tesla|Model X": [85000, 100000], "Tesla|Model Y": [40000, 52000],
-  "Toyota|4Runner": [41000, 68000], "Toyota|Camry": [29000, 37000], "Toyota|Corolla": [23000, 47000], "Toyota|Corolla Cross": [25000, 34000], "Toyota|Crown": [41000, 55000], "Toyota|Crown Signia": [44000, 49000],
-  "Toyota|GR 86": [30000, 37000], "Toyota|GR Supra": [47000, 66000], "Toyota|Grand Highlander": [41000, 60000], "Toyota|Highlander": [40000, 56000], "Toyota|Land Cruiser": [57000, 74000], "Toyota|Mirai": [51000, 67000],
-  "Toyota|Prius": [28000, 37000], "Toyota|RAV4": [30000, 45000], "Toyota|Sequoia": [63000, 85000], "Toyota|Sienna": [39000, 57000], "Toyota|Tacoma": [32000, 65000], "Toyota|Tundra": [41000, 80000],
-  "Toyota|bZ": [35000, 50000], "Toyota|bZ4X": [38000, 49000],
-  "Vinfast|VF 8": [47000, 57000], "Vinfast|VF 9": [75000, 85000],
-  "Volkswagen|Atlas": [38000, 54000], "Volkswagen|GLI": [32000, 35000], "Volkswagen|Golf/GTI": [32000, 47000], "Volkswagen|ID. Buzz": [60000, 70000], "Volkswagen|ID.4": [40000, 55000], "Volkswagen|Jetta": [22000, 30000],
-  "Volkswagen|Taos": [25000, 35000], "Volkswagen|Tiguan": [30000, 42000],
-  "Volvo|EC40": [55000, 62000], "Volvo|EX30": [39000, 47000], "Volvo|EX40": [53000, 60000], "Volvo|EX90": [80000, 90000], "Volvo|S60": [43000, 55000], "Volvo|S90": [58000, 68000], "Volvo|V60": [50000, 55000],
-  "Volvo|V90": [58000, 62000], "Volvo|XC40": [38000, 49000], "Volvo|XC60": [48000, 72000], "Volvo|XC90": [58000, 80000]
+ "_note": "Approximate US MSRP ranges (base trim to top trim, before destination fees) for the current model year. Fact-checked October 2026 against manufacturer US sites and cars.com / autofinder.com; models without a trustworthy source are left out. Keyed by EPA make|baseModel.",
+ "Acura|ADX": [
+  35000,
+  44500
+ ],
+ "Acura|Integra": [
+  33000,
+  54000
+ ],
+ "Acura|MDX": [
+  51500,
+  76000
+ ],
+ "Acura|RDX": [
+  45000,
+  55000
+ ],
+ "Alfa Romeo|Giulia": [
+  44500,
+  47000
+ ],
+ "Alfa Romeo|Stelvio": [
+  49500,
+  50000
+ ],
+ "Alfa Romeo|Tonale": [
+  37000,
+  42000
+ ],
+ "Aston Martin|DB12 S": [
+  276000,
+  293000
+ ],
+ "Aston Martin|DB12 V8": [
+  262000,
+  282000
+ ],
+ "Aston Martin|DBX 707": [
+  257000,
+  257000
+ ],
+ "Aston Martin|DBX 727": [
+  262500,
+  262500
+ ],
+ "Aston Martin|Vanquish": [
+  459000,
+  497000
+ ],
+ "Aston Martin|Vantage": [
+  210000,
+  227000
+ ],
+ "Audi|A3": [
+  40000,
+  43000
+ ],
+ "Audi|A5": [
+  50000,
+  57000
+ ],
+ "Audi|A6": [
+  64000,
+  79500
+ ],
+ "Audi|A6 e-tron": [
+  66500,
+  77000
+ ],
+ "Audi|A8": [
+  95000,
+  95500
+ ],
+ "Audi|Q3": [
+  44000,
+  44500
+ ],
+ "Audi|Q4 e-tron": [
+  50500,
+  63500
+ ],
+ "Audi|Q5": [
+  52500,
+  63000
+ ],
+ "Audi|Q6 e-tron": [
+  64500,
+  76000
+ ],
+ "Audi|Q7": [
+  70500,
+  85000
+ ],
+ "Audi|Q8": [
+  76500,
+  87500
+ ],
+ "Audi|RS": [
+  67500,
+  133000
+ ],
+ "Audi|RS Q8": [
+  139500,
+  140000
+ ],
+ "Audi|RS e-tron": [
+  170500,
+  170500
+ ],
+ "Audi|S e-tron": [
+  127500,
+  128000
+ ],
+ "Audi|S3": [
+  52500,
+  52500
+ ],
+ "Audi|S5": [
+  63000,
+  71000
+ ],
+ "Audi|S6 e-tron": [
+  79500,
+  83500
+ ],
+ "Audi|S8": [
+  130000,
+  130000
+ ],
+ "Audi|SQ5": [
+  65000,
+  73500
+ ],
+ "Audi|SQ6 e-tron": [
+  73000,
+  79000
+ ],
+ "Audi|SQ7": [
+  98500,
+  99000
+ ],
+ "Audi|SQ8": [
+  100500,
+  108500
+ ],
+ "BMW|2 Series": [
+  40000,
+  56000
+ ],
+ "BMW|3 Series": [
+  48000,
+  64500
+ ],
+ "BMW|4 Series": [
+  51000,
+  77500
+ ],
+ "BMW|5 Series": [
+  60500,
+  75500
+ ],
+ "BMW|7 Series": [
+  99500,
+  103000
+ ],
+ "BMW|M": [
+  69500,
+  125500
+ ],
+ "BMW|M2": [
+  69500,
+  74000
+ ],
+ "BMW|M3": [
+  79000,
+  89000
+ ],
+ "BMW|M4": [
+  82000,
+  99000
+ ],
+ "BMW|M5": [
+  123000,
+  125500
+ ],
+ "BMW|X1": [
+  43000,
+  52500
+ ],
+ "BMW|X2": [
+  44500,
+  54000
+ ],
+ "BMW|X3": [
+  51000,
+  66500
+ ],
+ "BMW|X5": [
+  68000,
+  131000
+ ],
+ "BMW|X6": [
+  77000,
+  136500
+ ],
+ "BMW|X7": [
+  87500,
+  115000
+ ],
+ "BMW|XM": [
+  159500,
+  160000
+ ],
+ "BMW|i4": [
+  57500,
+  71000
+ ],
+ "BMW|i5": [
+  67000,
+  84500
+ ],
+ "BMW|i7": [
+  106000,
+  125000
+ ],
+ "BMW|iX3": [
+  61500,
+  61500
+ ],
+ "Bentley|Bentayga": [
+  222500,
+  369500
+ ],
+ "Bentley|Continental": [
+  284500,
+  415000
+ ],
+ "Bentley|Flying Spur": [
+  250500,
+  344000
+ ],
+ "Bugatti Rimac|Nevera": [
+  2200000,
+  2500000
+ ],
+ "Bugatti|Mistral": [
+  5000000,
+  5000000
+ ],
+ "Buick|Enclave": [
+  46500,
+  65500
+ ],
+ "Buick|Encore": [
+  26500,
+  33500
+ ],
+ "Buick|Envision": [
+  41000,
+  51000
+ ],
+ "Buick|Envista": [
+  24500,
+  29500
+ ],
+ "Cadillac|CT4": [
+  36000,
+  64000
+ ],
+ "Cadillac|CT5": [
+  49000,
+  99000
+ ],
+ "Cadillac|Escalade": [
+  102500,
+  169500
+ ],
+ "Cadillac|LYRIQ": [
+  59000,
+  84000
+ ],
+ "Cadillac|OPTIQ": [
+  49500,
+  67500
+ ],
+ "Cadillac|VISTIQ": [
+  77500,
+  97000
+ ],
+ "Cadillac|XT5": [
+  44500,
+  63000
+ ],
+ "Chevrolet|BOLT": [
+  27500,
+  32000
+ ],
+ "Chevrolet|Blazer": [
+  34000,
+  61000
+ ],
+ "Chevrolet|Colorado": [
+  32000,
+  62500
+ ],
+ "Chevrolet|Corvette": [
+  71000,
+  246500
+ ],
+ "Chevrolet|Equinox": [
+  29000,
+  47500
+ ],
+ "Chevrolet|Silverado": [
+  36500,
+  96500
+ ],
+ "Chevrolet|Suburban": [
+  64000,
+  87500
+ ],
+ "Chevrolet|Tahoe": [
+  61000,
+  84500
+ ],
+ "Chevrolet|Trailblazer": [
+  23000,
+  30000
+ ],
+ "Chevrolet|Traverse": [
+  40500,
+  58500
+ ],
+ "Chevrolet|Trax": [
+  21500,
+  25500
+ ],
+ "Chrysler|Pacifica": [
+  41500,
+  58000
+ ],
+ "Dodge|Charger": [
+  49500,
+  67000
+ ],
+ "Dodge|Durango": [
+  38500,
+  81000
+ ],
+ "Ferrari|12Cilindri": [
+  460500,
+  505500
+ ],
+ "Ferrari|296 GTB": [
+  342000,
+  342000
+ ],
+ "Ferrari|296 GTS": [
+  368000,
+  368500
+ ],
+ "Ferrari|296 Speciale": [
+  470000,
+  470500
+ ],
+ "Ferrari|296 Speciale A": [
+  537500,
+  538000
+ ],
+ "Ferrari|Amalfi": [
+  283000,
+  283000
+ ],
+ "Ferrari|F167 ABA": [
+  460500,
+  505500
+ ],
+ "Ferrari|F80": [
+  3900000,
+  3900000
+ ],
+ "Ferrari|Purosangue": [
+  423500,
+  424000
+ ],
+ "Ferrari|Roma": [
+  274500,
+  275000
+ ],
+ "Fiat|500e": [
+  35500,
+  38000
+ ],
+ "Ford|Bronco": [
+  40500,
+  80000
+ ],
+ "Ford|Bronco Sport": [
+  31500,
+  37500
+ ],
+ "Ford|Escape": [
+  30000,
+  39000
+ ],
+ "Ford|Expedition": [
+  63500,
+  90000
+ ],
+ "Ford|Explorer": [
+  38000,
+  57000
+ ],
+ "Ford|F150": [
+  37000,
+  111000
+ ],
+ "Ford|Maverick": [
+  28000,
+  41000
+ ],
+ "Ford|Mustang": [
+  33000,
+  69000
+ ],
+ "Ford|Mustang Mach-E": [
+  37500,
+  53500
+ ],
+ "Ford|Ranger": [
+  33500,
+  57500
+ ],
+ "GMC|Acadia": [
+  43500,
+  65500
+ ],
+ "GMC|Canyon": [
+  38500,
+  67500
+ ],
+ "GMC|Hummer EV": [
+  97000,
+  105500
+ ],
+ "GMC|Sierra": [
+  38000,
+  99000
+ ],
+ "GMC|Terrain": [
+  30500,
+  42500
+ ],
+ "GMC|Yukon": [
+  69500,
+  108000
+ ],
+ "Genesis|G70": [
+  43500,
+  54000
+ ],
+ "Genesis|G80": [
+  59000,
+  80500
+ ],
+ "Genesis|G90": [
+  92500,
+  106000
+ ],
+ "Genesis|GV60": [
+  46000,
+  70000
+ ],
+ "Genesis|GV70": [
+  49000,
+  72000
+ ],
+ "Genesis|GV80": [
+  58500,
+  90500
+ ],
+ "Honda|Accord": [
+  28000,
+  39500
+ ],
+ "Honda|CR-V": [
+  31500,
+  43000
+ ],
+ "Honda|Civic": [
+  24500,
+  49000
+ ],
+ "Honda|HR-V": [
+  26500,
+  32000
+ ],
+ "Honda|Odyssey": [
+  43000,
+  52500
+ ],
+ "Honda|Passport": [
+  45000,
+  55500
+ ],
+ "Honda|Pilot": [
+  42000,
+  55500
+ ],
+ "Honda|Prelude": [
+  42000,
+  43000
+ ],
+ "Honda|Prologue": [
+  39500,
+  50500
+ ],
+ "Honda|Ridgeline": [
+  40500,
+  48000
+ ],
+ "Hyundai|Elantra": [
+  22500,
+  37000
+ ],
+ "Hyundai|Ioniq 5": [
+  35000,
+  60000
+ ],
+ "Hyundai|Ioniq 6": [
+  37500,
+  55000
+ ],
+ "Hyundai|Ioniq 9": [
+  58500,
+  76500
+ ],
+ "Hyundai|Kona": [
+  25500,
+  41500
+ ],
+ "Hyundai|Palisade": [
+  39500,
+  60000
+ ],
+ "Hyundai|Santa Cruz": [
+  29500,
+  44000
+ ],
+ "Hyundai|Santa Fe": [
+  35000,
+  51000
+ ],
+ "Hyundai|Sonata": [
+  27000,
+  38500
+ ],
+ "Hyundai|Tucson": [
+  29500,
+  49000
+ ],
+ "Hyundai|Venue": [
+  20500,
+  23000
+ ],
+ "INEOS Automotive|Grenadier": [
+  71500,
+  86500
+ ],
+ "Infiniti|QX60": [
+  51500,
+  67000
+ ],
+ "Infiniti|QX65": [
+  53500,
+  63000
+ ],
+ "Infiniti|QX80": [
+  85500,
+  113000
+ ],
+ "Jaguar|F-Pace": [
+  57000,
+  95000
+ ],
+ "Jeep|Cherokee": [
+  35000,
+  43500
+ ],
+ "Jeep|Compass": [
+  29500,
+  35500
+ ],
+ "Jeep|Gladiator": [
+  39500,
+  65000
+ ],
+ "Jeep|Grand Cherokee": [
+  39500,
+  65500
+ ],
+ "Jeep|Grand Wagoneer": [
+  65000,
+  104500
+ ],
+ "Jeep|Recon": [
+  66500,
+  67000
+ ],
+ "Jeep|Wagoneer": [
+  65000,
+  70500
+ ],
+ "Jeep|Wrangler": [
+  36500,
+  80000
+ ],
+ "Kia|Carnival": [
+  37000,
+  54000
+ ],
+ "Kia|EV3": [
+  29500,
+  46000
+ ],
+ "Kia|EV6": [
+  37500,
+  53000
+ ],
+ "Kia|EV9": [
+  54500,
+  72000
+ ],
+ "Kia|K4": [
+  22000,
+  29000
+ ],
+ "Kia|K5": [
+  27500,
+  34000
+ ],
+ "Kia|Niro": [
+  29500,
+  45000
+ ],
+ "Kia|Seltos": [
+  24500,
+  33000
+ ],
+ "Kia|Sorento": [
+  32000,
+  53500
+ ],
+ "Kia|Sportage": [
+  28500,
+  47500
+ ],
+ "Kia|Telluride": [
+  39000,
+  58000
+ ],
+ "Lamborghini|Revuelto": [
+  664500,
+  665000
+ ],
+ "Lamborghini|Urus": [
+  276500,
+  277000
+ ],
+ "Land Rover|Defender": [
+  61000,
+  169500
+ ],
+ "Land Rover|Discovery": [
+  49500,
+  84500
+ ],
+ "Land Rover|Range Rover": [
+  49500,
+  275000
+ ],
+ "Lexus|ES": [
+  47500,
+  59500
+ ],
+ "Lexus|GX": [
+  67500,
+  84500
+ ],
+ "Lexus|IS": [
+  46000,
+  50500
+ ],
+ "Lexus|LC": [
+  101500,
+  109500
+ ],
+ "Lexus|LS": [
+  97500,
+  98000
+ ],
+ "Lexus|LX": [
+  107500,
+  142000
+ ],
+ "Lexus|NX": [
+  45000,
+  63500
+ ],
+ "Lexus|RX": [
+  53500,
+  72000
+ ],
+ "Lexus|RZ": [
+  46000,
+  57000
+ ],
+ "Lexus|TX": [
+  56500,
+  81000
+ ],
+ "Lexus|UX": [
+  37000,
+  47500
+ ],
+ "Lincoln|Aviator": [
+  57000,
+  86000
+ ],
+ "Lincoln|Corsair": [
+  39500,
+  54500
+ ],
+ "Lincoln|Nautilus": [
+  53500,
+  78000
+ ],
+ "Lincoln|Navigator": [
+  89500,
+  121000
+ ],
+ "Lotus|Emira": [
+  106500,
+  123000
+ ],
+ "Lucid|Air": [
+  70500,
+  249000
+ ],
+ "Lucid|Gravity": [
+  79500,
+  99000
+ ],
+ "MINI|Cooper": [
+  29500,
+  38000
+ ],
+ "MINI|Countryman": [
+  38500,
+  47000
+ ],
+ "MINI|John Cooper Works": [
+  38500,
+  47000
+ ],
+ "Maserati|GT2 Stradale": [
+  310000,
+  312000
+ ],
+ "Maserati|Grancabrio": [
+  153000,
+  206500
+ ],
+ "Maserati|Granturismo": [
+  145000,
+  197500
+ ],
+ "Maserati|Grecale": [
+  84500,
+  120000
+ ],
+ "Maserati|MCPURA": [
+  246000,
+  281000
+ ],
+ "Mazda|3": [
+  24500,
+  38500
+ ],
+ "Mazda|CX-30": [
+  26000,
+  38000
+ ],
+ "Mazda|CX-5": [
+  29500,
+  39000
+ ],
+ "Mazda|CX-50": [
+  29500,
+  43000
+ ],
+ "Mazda|CX-70": [
+  42500,
+  57000
+ ],
+ "Mazda|CX-90": [
+  39000,
+  59000
+ ],
+ "Mazda|MX-5": [
+  30500,
+  42500
+ ],
+ "Mercedes-Benz|AMG GT": [
+  108500,
+  205000
+ ],
+ "Mercedes-Benz|C-Class": [
+  49500,
+  88000
+ ],
+ "Mercedes-Benz|CLA-Class": [
+  42500,
+  68000
+ ],
+ "Mercedes-Benz|CLE-Class": [
+  60500,
+  86000
+ ],
+ "Mercedes-Benz|E-Class": [
+  65000,
+  95500
+ ],
+ "Mercedes-Benz|EQB": [
+  53000,
+  61000
+ ],
+ "Mercedes-Benz|EQE": [
+  64500,
+  97000
+ ],
+ "Mercedes-Benz|EQS": [
+  89500,
+  180000
+ ],
+ "Mercedes-Benz|G-Class": [
+  153500,
+  199000
+ ],
+ "Mercedes-Benz|GLA-Class": [
+  41500,
+  59000
+ ],
+ "Mercedes-Benz|GLB-Class": [
+  43500,
+  61000
+ ],
+ "Mercedes-Benz|GLC-Class": [
+  52000,
+  76000
+ ],
+ "Mercedes-Benz|GLE-Class": [
+  68000,
+  133500
+ ],
+ "Mercedes-Benz|GLS-Class": [
+  93500,
+  180000
+ ],
+ "Mercedes-Benz|S-Class": [
+  112500,
+  244500
+ ],
+ "Mercedes-Benz|SL-Class": [
+  114500,
+  226000
+ ],
+ "Mitsubishi|Eclipse Cross": [
+  27500,
+  32000
+ ],
+ "Mitsubishi|Outlander": [
+  23500,
+  54000
+ ],
+ "Nissan|Altima": [
+  27500,
+  30500
+ ],
+ "Nissan|Armada": [
+  64000,
+  85000
+ ],
+ "Nissan|Frontier": [
+  32000,
+  43000
+ ],
+ "Nissan|Kicks": [
+  22500,
+  29500
+ ],
+ "Nissan|LEAF": [
+  29500,
+  39000
+ ],
+ "Nissan|Murano": [
+  43500,
+  50000
+ ],
+ "Nissan|Pathfinder": [
+  39500,
+  52000
+ ],
+ "Nissan|Rogue": [
+  29500,
+  40000
+ ],
+ "Nissan|Sentra": [
+  22500,
+  28000
+ ],
+ "Nissan|Z": [
+  44000,
+  67500
+ ],
+ "Polestar|3": [
+  67500,
+  79500
+ ],
+ "Polestar|4": [
+  56000,
+  73000
+ ],
+ "Porsche|718": [
+  75000,
+  170500
+ ],
+ "Porsche|911": [
+  135500,
+  284500
+ ],
+ "Porsche|Cayenne": [
+  89500,
+  215000
+ ],
+ "Porsche|Macan": [
+  65000,
+  113000
+ ],
+ "Porsche|Panamera": [
+  113000,
+  167000
+ ],
+ "Porsche|Taycan": [
+  111500,
+  244000
+ ],
+ "Ram|1500": [
+  42500,
+  100000
+ ],
+ "Rivian|R1S": [
+  83500,
+  122000
+ ],
+ "Rivian|R1T": [
+  79500,
+  116000
+ ],
+ "Rivian|R2": [
+  57500,
+  58000
+ ],
+ "Rolls-Royce|Cullinan": [
+  438000,
+  508000
+ ],
+ "Rolls-Royce|Ghost": [
+  368000,
+  438000
+ ],
+ "Rolls-Royce|Phantom": [
+  552000,
+  632000
+ ],
+ "Rolls-Royce|Spectre": [
+  395000,
+  465000
+ ],
+ "Subaru|Ascent": [
+  40500,
+  52000
+ ],
+ "Subaru|BRZ": [
+  36000,
+  39000
+ ],
+ "Subaru|Crosstrek": [
+  26500,
+  35000
+ ],
+ "Subaru|Forester": [
+  29500,
+  42000
+ ],
+ "Subaru|Impreza": [
+  26500,
+  29500
+ ],
+ "Subaru|Outback": [
+  34500,
+  48000
+ ],
+ "Subaru|Solterra": [
+  38000,
+  46000
+ ],
+ "Subaru|Trailseeker": [
+  39500,
+  47000
+ ],
+ "Subaru|Uncharted": [
+  34500,
+  44000
+ ],
+ "Subaru|WRX": [
+  32000,
+  45000
+ ],
+ "Tesla|Cybertruck": [
+  74500,
+  100000
+ ],
+ "Tesla|Model 3": [
+  36500,
+  55000
+ ],
+ "Tesla|Model Y": [
+  39500,
+  62000
+ ],
+ "Toyota|4Runner": [
+  41000,
+  68500
+ ],
+ "Toyota|C-HR": [
+  37000,
+  39500
+ ],
+ "Toyota|Camry": [
+  29500,
+  38000
+ ],
+ "Toyota|Corolla": [
+  23000,
+  49000
+ ],
+ "Toyota|Corolla Cross": [
+  25500,
+  34500
+ ],
+ "Toyota|Crown": [
+  41500,
+  55500
+ ],
+ "Toyota|Crown Signia": [
+  44500,
+  49500
+ ],
+ "Toyota|GR 86": [
+  31000,
+  37500
+ ],
+ "Toyota|GR Supra": [
+  58000,
+  69500
+ ],
+ "Toyota|Grand Highlander": [
+  42500,
+  60500
+ ],
+ "Toyota|Highlander": [
+  46000,
+  56000
+ ],
+ "Toyota|Land Cruiser": [
+  58000,
+  63500
+ ],
+ "Toyota|Mirai": [
+  51500,
+  52000
+ ],
+ "Toyota|Prius": [
+  28500,
+  41000
+ ],
+ "Toyota|RAV4": [
+  31500,
+  48500
+ ],
+ "Toyota|Sequoia": [
+  65500,
+  86500
+ ],
+ "Toyota|Sienna": [
+  40000,
+  58000
+ ],
+ "Toyota|Tacoma": [
+  32000,
+  64500
+ ],
+ "Toyota|Tundra": [
+  41000,
+  81000
+ ],
+ "Toyota|bZ": [
+  34500,
+  47500
+ ],
+ "Vinfast|VF 8": [
+  39500,
+  45000
+ ],
+ "Vinfast|VF 9": [
+  62500,
+  63000
+ ],
+ "Volkswagen|Atlas": [
+  38000,
+  57000
+ ],
+ "Volkswagen|GLI": [
+  33500,
+  34000
+ ],
+ "Volkswagen|Golf/GTI": [
+  34500,
+  49500
+ ],
+ "Volkswagen|ID. Buzz": [
+  59500,
+  70000
+ ],
+ "Volkswagen|ID.4": [
+  45000,
+  58000
+ ],
+ "Volkswagen|Jetta": [
+  23500,
+  30000
+ ],
+ "Volkswagen|Taos": [
+  26500,
+  36000
+ ],
+ "Volkswagen|Tiguan": [
+  30500,
+  43500
+ ],
+ "Volvo|EX30": [
+  35000,
+  48500
+ ],
+ "Volvo|EX40": [
+  55000,
+  61000
+ ],
+ "Volvo|EX60": [
+  58000,
+  67500
+ ],
+ "Volvo|EX90": [
+  76500,
+  90000
+ ],
+ "Volvo|XC40": [
+  39500,
+  52000
+ ],
+ "Volvo|XC60": [
+  49500,
+  72500
+ ],
+ "Volvo|XC90": [
+  61000,
+  84000
+ ]
 }
